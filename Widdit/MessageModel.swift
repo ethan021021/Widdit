@@ -11,9 +11,11 @@ import UIKit
 struct MessageModel {
   var name: String
   var body: String
+  var createdAt: NSDate
 
-  init(name: String, body: String) {
+  init(name: String, body: String, createdAt: NSDate) {
     self.name = name
     self.body = body
+    self.createdAt = createdAt
   }
 }

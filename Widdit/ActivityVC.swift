@@ -8,179 +8,92 @@
 
 import UIKit
 import Parse
+import MBProgressHUD
 
 
-class ActivityVC: UICollectionViewController {
+class ActivityVC: UITableViewController {
     
-    // arrays to hold data from server
-    var usernameArray = [String]()
-    var avaArray = [PFFile]()
-    var typeArray = [String]()
-    var dateArray = [NSDate?]()
-    var uuidArray = [String]()
-    var ownerArray = [String]()
-    var postTextArray = [String]()
+    let activity = WDTActivity()
+    var chatsAndDowns: [PFObject] = []
+    
+    override func viewWillAppear(animated: Bool) {
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Activity"
         
-        // dynamic collectionView height - dynamic cell
-        collectionView?.backgroundColor = UIColor .whiteColor()
         
-        // title at the top
-        self.navigationItem.title = "Activity"
+        tableView.backgroundColor = UIColor .whiteColor()
+        tableView.registerClass(ActivityCell.self, forCellReuseIdentifier: "ActivityCell")
+        tableView.separatorStyle = .None
+        tableView.rowHeight = UITableViewAutomaticDimension;
+        tableView.estimatedRowHeight = 60;
+
         
-        // request notifications
-        let query = PFQuery(className: "Activity")
-        query.whereKey("to", equalTo: PFUser.currentUser()!.username!)
-        query.limit = 30
-        query.findObjectsInBackgroundWithBlock { (objects: [PFObject]?, error: NSError?) -> Void in
-            if error == nil {
-                
-                // clean up
-                self.usernameArray.removeAll(keepCapacity: false)
-                self.avaArray.removeAll(keepCapacity: false)
-                self.typeArray.removeAll(keepCapacity: false)
-                self.dateArray.removeAll(keepCapacity: false)
-                self.uuidArray.removeAll(keepCapacity: false)
-                self.ownerArray.removeAll(keepCapacity: false)
-                self.postTextArray.removeAll(keepCapacity: false)
-                
-                // found related objects
-                for object in objects! {
-                    
-                    self.usernameArray.append(object.objectForKey("by") as! String)
-                    self.avaArray.append(object.objectForKey("ava") as! PFFile)
-                    self.typeArray.append(object.objectForKey("type") as! String)
-                    self.dateArray.append(object.createdAt)
-                    self.uuidArray.append(object.objectForKey("uuid") as! String)
-                    self.ownerArray.append(object.objectForKey("owner") as! String)
-                    self.postTextArray.append(object.objectForKey("postText") as! String)
-                    
-                    
-                    // save notifcations as checked
-                    object["checked"] = "yes"
-                    object.saveEventually()
-                    
-                }
-                
-                // reload CollectionView to show received data
-                self.collectionView?.reloadData()
-                
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        activity.requestDowns { (success) in
+            self.tableView.reloadData()
+            self.activity.requestChats { (success) in
+                self.tableView.reloadData()
             }
         }
-
     }
-
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return self.activity.chats.count
+        } else {
+            return self.activity.downs.count
+        }
     }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
     }
-
-
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return usernameArray.count
-    }
-
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! ActivityCell
-        
-        cell.usernameBtn.setTitle(usernameArray[indexPath.row], forState: .Normal)
-        cell.usernameBtn.titleLabel?.text = usernameArray[indexPath.row]
-        cell.infoLbl.text = "is down for your post"
-        avaArray[indexPath.row].getDataInBackgroundWithBlock { (data: NSData?, error: NSError?) -> Void in
-            if error == nil {
-                cell.avaImg.image = UIImage(data: data!)
-            } else {
-                print(error?.localizedDescription)
-            }
+    
+    // Create table view rows
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)
+        -> UITableViewCell
+    {
+        let cell = self.tableView!.dequeueReusableCellWithIdentifier("ActivityCell", forIndexPath: indexPath) as! ActivityCell
+        cell.replyButton.tag = indexPath.row
+        cell.activityVC = self
+        if indexPath.section == 0 {
+            cell.downCell = false
+            cell.fillCell(self.activity.chats[indexPath.row])
+        } else {
+            cell.downCell = true
+            cell.fillCell(self.activity.downs[indexPath.row])
         }
-        cell.postText.text = postTextArray[indexPath.row]
-        
-        // calculate post date
-        let from = dateArray[indexPath.row]
-        let now = NSDate()
-        let components : NSCalendarUnit = [.Second, .Minute, .Hour, .Day, .WeekOfMonth]
-        let difference = NSCalendar.currentCalendar().components(components, fromDate: from!, toDate: now, options: [])
-        
-        // logic what to show: seconds, minuts, hours, days or weeks
-        if difference.second <= 0 {
-            cell.dateLbl.text = "now"
-        }
-        if difference.second > 0 && difference.minute == 0 {
-            cell.dateLbl.text = "\(difference.second)s."
-        }
-        if difference.minute > 0 && difference.hour == 0 {
-            cell.dateLbl.text = "\(difference.minute)m."
-        }
-        if difference.hour > 0 && difference.day == 0 {
-            cell.dateLbl.text = "\(difference.hour)h."
-        }
-        if difference.day > 0 && difference.weekOfMonth == 0 {
-            cell.dateLbl.text = "\(difference.day)d."
-        }
-        if difference.weekOfMonth > 0 {
-            cell.dateLbl.text = "\(difference.weekOfMonth)w."
-        }
- 
-        
-        // define info text
-        if typeArray[indexPath.row] == "down" {
-            cell.infoLbl.text = "is down for your post"
-        }
-        
-        // Asign index of button
-        cell.usernameBtn.layer.setValue(indexPath, forKey: "index")
+        cell.selectionStyle = .Gray
+        cell.setNeedsUpdateConstraints()
+        cell.updateConstraintsIfNeeded()
         
         return cell
     }
     
-
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let activityObj: PFObject!
+        if indexPath.section == 0 {
+            activityObj = self.activity.chats[indexPath.row]
+        } else {
+            activityObj = self.activity.downs[indexPath.row]
+        }
+        
+//        let user = activityObj["by"] as! PFUser
+        let post = activityObj["post"] as! PFObject
+        let guest = MorePostsVC()
+//        guest.user = user
+        guest.collectionOfPosts = [post]
+        self.navigationController?.pushViewController(guest, animated: true)
+        
+        
+        
     }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
 
 }

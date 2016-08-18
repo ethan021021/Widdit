@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FBInfo: NSObject {
+class FBInfo {
     
     let strFirstName: String
     let strEmail: String

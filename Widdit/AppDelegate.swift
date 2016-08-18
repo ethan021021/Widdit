@@ -10,6 +10,12 @@ import UIKit
 import CoreData
 import Parse
 import Bolts
+import ParseFacebookUtilsV4
+import XCGLogger
+import IQKeyboardManagerSwift
+import Whisper
+
+let log = XCGLogger.defaultInstance()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +25,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-
+        
+        log.setup(.Debug, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: "path/to/file", fileLogLevel: .Debug)
+        
+        log.debug("A debug message")
+        IQKeyboardManager.sharedManager().enable = true
+//        IQKeyboardManager.sharedManager().enableAutoToolbar = false
+//        IQKeyboardManager.sharedManager().
+//        IQKeyboardManager.sharedManager().disabledToolbarClasses.insert("NewPostVC")
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(NewPostVC.self)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(ReplyViewController.self)
+        
+        IQKeyboardManager.sharedManager().disableDistanceHandlingInViewControllerClass(ReplyViewController.self)
 
         //configure push notifications
         let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
@@ -28,28 +45,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         //app wide navigation bar changes
-        UINavigationBar.appearance().backgroundColor = UIColor.whiteColor()
-        UINavigationBar.appearance().barTintColor = UIColor(red: 0.00, green: 0.51, blue: 1.00, alpha: 1.0)
-        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        UINavigationBar.appearance().barTintColor = UIColor.WDTGrayBlueColor()
+        UINavigationBar.appearance().tintColor = UIColor.WDTBlueColor()
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.WDTBlueColor(), NSFontAttributeName: UIFont.WDTAgoraRegular(16)]
+        UINavigationBar.appearance().translucent = true
+        
 
+        
         //app wide bar button item changes
-        UITabBar.appearance().backgroundColor = UIColor.blackColor()
-        UITabBar.appearance().tintColor = UIColor(red: 0.00, green: 0.51, blue: 1.00, alpha: 1.0)
+        UITabBar.appearance().tintColor = UIColor.WDTBlueColor()
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.WDTBlueColor(), NSFontAttributeName: UIFont.WDTAgoraRegular(16)], forState: .Normal)
+        
 //        UITabBar.appearance().barTintColor = UIColor.blueColor()
 
         //app wide status bar changes
-//        UIApplication.sharedApplication().statusBarStyle = .LightContent
-        UINavigationBar.appearance().barStyle = .Black
+        UINavigationBar.appearance().barStyle = .Default
 
         // [Optional] Power your app with Local Datastore. For more info, go to
         // https://parse.com/docs/ios_guide#localdatastore/iOS
         Parse.enableLocalDatastore()
         
+        
+        //WDTPostModel.initialize()
         // Initialize Parse.
+        
         Parse.setApplicationId("CbvFKWpmIJFzo8gKzwPXdM5lN1bGPXu2Ln3lbjGx",
             clientKey: "H6X4RPx8lay4X1YUCu9gA1kPjI2gFxepr152h5x6")
-        
+        PFUser.enableRevocableSessionInBackground()
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         
@@ -58,25 +80,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // color of window
         window?.backgroundColor = .whiteColor()
+
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
+
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        guard let launchOptions = launchOptions else {return true}
+        if let userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as? [NSObject: AnyObject] {
+            if let topController = UIApplication.topViewController() {
+                let destVC = ActivityVC()
+                topController.navigationController?.pushViewController(destVC, animated: true)
+            }
+            
+//            if let postObjectId = userInfo["post"], userObjectId = userInfo["who"] {
+//                let post = PFObject(withoutDataWithClassName: "posts", objectId: postObjectId as? String)
+//                let query = PFUser.query()
+//                query?.whereKey("objectId", equalTo: userObjectId)
+//                query?.getObjectInBackgroundWithId(userObjectId as! String, block: { (user: PFObject?, error: NSError?) in
+//                    if let topController = UIApplication.topViewController() {
+//                        let destVC = ReplyViewController()
+//                        destVC.usersPost = post
+//                        destVC.toUser = user as! PFUser
+//                        topController.navigationController?.pushViewController(destVC, animated: true)
+//                    }
+//                })
+//            }
+        }
+        
+        return true
     }
+    
+    
+    func delayedAction() {
+        let alert2 = UIAlertController(title: "Ok2", message: "Ok", preferredStyle: .Alert)
+        if let topController = UIApplication.topViewController() {
+            topController.presentViewController(alert2, animated: true, completion: nil)
+        }
+    }
+    
     
     func login() {
         
-        // remember user's login
-        let username : String? = NSUserDefaults.standardUserDefaults().stringForKey("username")
-        
         // if loged in
-        if username != nil {
-            
-            let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let myTabBar = storyboard.instantiateViewControllerWithIdentifier("TabBar") as! UITabBarController
-            window?.rootViewController = myTabBar
- 
+        if let user = PFUser.currentUser() {
+            if let signUpFinished = user["signUpFinished"] as? Bool where signUpFinished == true {
+                let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let myTabBar = storyboard.instantiateViewControllerWithIdentifier("TabBar") as! UITabBarController
+                window?.rootViewController = myTabBar
+            }
         }
-        
     }
+
 
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let installation = PFInstallation.currentInstallation()
@@ -86,7 +141,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        PFPush.handlePush(userInfo)
+        if let topController = UIApplication.topViewController() {
+            
+            let userObjectId = userInfo["who"] as! String
+            let postObjectId = userInfo["post"] as! String
+            
+            let post = PFObject(withoutDataWithClassName: "posts", objectId: postObjectId)
+            
+            let query = PFUser.query()
+            query?.whereKey("objectId", equalTo: userObjectId)
+            
+            query?.getObjectInBackgroundWithId(userObjectId, block: { (userObject: PFObject?, error: NSError?) in
+                let destVC = ReplyViewController()
+                let user = userObject as! PFUser
+                destVC.toUser = user
+                destVC.usersPost = post
+                
+                if topController.isKindOfClass(ReplyViewController) {
+                    let replyVC = topController as! ReplyViewController
+                    replyVC.requestMessages()
+                } else {
+                    if let aps = userInfo["aps"] as? NSDictionary {
+                        if let alert = aps["alert"] as? NSDictionary {
+                            if let message = alert["message"] as? String {
+                                let newMessageMurmur = Murmur(title: message)
+                                Whistle(newMessageMurmur, action: .Show(2.5))
+                            }
+                        } else if let alert = aps["alert"] as? String {
+                            let newMessageMurmur = Murmur(title: alert)
+                            Whistle(newMessageMurmur, action: .Show(2.5))
+                        }
+                    }
+                    
+//                    if let alert = userInfo["alert"] as? String {
+//                        
+//                    }
+//                    topController.navigationController?.pushViewController(destVC, animated: true)
+                }
+            })
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -110,6 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             installation.badge = 0
             installation.saveEventually()
         }
+        FBSDKAppEvents.activateApp()
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool
@@ -189,3 +283,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension NSObject {
+    var theClassName: String {
+        return NSStringFromClass(self.dynamicType)
+    }
+}
+
+extension UIApplication {
+    class func topViewController(base: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topViewController(nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController {
+            if let selected = tab.selectedViewController {
+                return topViewController(selected)
+            }
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(presented)
+        }
+        return base
+    }
+}
+
+extension NSTimer {
+    /**
+     Creates and schedules a one-time `NSTimer` instance.
+     
+     - Parameters:
+     - delay: The delay before execution.
+     - handler: A closure to execute after `delay`.
+     
+     - Returns: The newly-created `NSTimer` instance.
+     */
+    class func schedule(delay delay: NSTimeInterval, handler: NSTimer! -> Void) -> NSTimer {
+        let fireDate = delay + CFAbsoluteTimeGetCurrent()
+        let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, 0, 0, 0, handler)
+        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
+        return timer
+    }
+    
+    /**
+     Creates and schedules a repeating `NSTimer` instance.
+     
+     - Parameters:
+     - repeatInterval: The interval (in seconds) between each execution of
+     `handler`. Note that individual calls may be delayed; subsequent calls
+     to `handler` will be based on the time the timer was created.
+     - handler: A closure to execute at each `repeatInterval`.
+     
+     - Returns: The newly-created `NSTimer` instance.
+     */
+    class func schedule(repeatInterval interval: NSTimeInterval, handler: NSTimer! -> Void) -> NSTimer {
+        let fireDate = interval + CFAbsoluteTimeGetCurrent()
+        let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, interval, 0, 0, handler)
+        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
+        return timer
+    }
+}
