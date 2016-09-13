@@ -2,17 +2,15 @@
 //  SignUpStep1.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 14.07.16.
+//  Created by Igor Kuznetsov on 14.07.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 
 import UIKit
 import Parse
-import MBProgressHUD
 import SinchVerification
 import ParseFacebookUtilsV4
 import libPhoneNumber_iOS
-import SimpleAlert
 import SwiftDate
 
 class SignUp: UIViewController {
@@ -21,26 +19,27 @@ class SignUp: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.WDTBlueColor()
-        navigationController?.navigationBarHidden = true
+        setTealBG()
+//        view.backgroundColor = UIColor.WDTBlueColor()
+//        navigationController?.navigationBarHidden = true
         
-        let backBtn = UIButton(type: .Custom)
-        backBtn.setImage(UIImage(named: "backbutton"), forState: .Normal)
-        backBtn.addTarget(self, action: #selector(backBtnTapped), forControlEvents: .TouchUpInside)
-        backBtn.tintColor = UIColor.whiteColor()
-        view.addSubview(backBtn)
-        backBtn.snp_makeConstraints { (make) in
-            make.left.equalTo(view).offset(10)
-            make.top.equalTo(view).offset(30)
-            make.width.equalTo(25)
-            make.height.equalTo(25)
-        }
+//        let backBtn = UIButton(type: .Custom)
+//        backBtn.setImage(UIImage(named: "backbutton"), forState: .Normal)
+//        backBtn.addTarget(self, action: #selector(backBtnTapped), forControlEvents: .TouchUpInside)
+//        backBtn.tintColor = UIColor.whiteColor()
+//        view.addSubview(backBtn)
+//        backBtn.snp_makeConstraints { (make) in
+//            make.left.equalTo(view).offset(10)
+//            make.top.equalTo(view).offset(30)
+//            make.width.equalTo(25)
+//            make.height.equalTo(25)
+//        }
         
     }
     
-    func backBtnTapped() {
-        navigationController?.popViewControllerAnimated(true)
-    }
+//    func backBtnTapped() {
+//        navigationController?.popViewControllerAnimated(true)
+//    }
 }
 
 class SignUpMainStep1: SignUp {
@@ -100,7 +99,7 @@ class SignUpMainStep1: SignUp {
                     if self.facebookMode {
                         nextVC = SignUpPhone()
                     } else {
-                        nextVC = SignUpMainStep2()
+//                        nextVC = SignUpMainStep2()
                     }
                     nextVC.user = self.user
                     nextVC.facebookMode = self.facebookMode
@@ -117,119 +116,6 @@ class SignUpMainStep1: SignUp {
 
 
 
-class SignUpMainStep2: SignUp {
-    let firstNameTF = UITextField()
-    let emailTF = UITextField()
-    let passwordTF = UITextField()
-    let passwordAgainTF = UITextField()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        firstNameTF.WDTRoundedWhite(nil, height: 50)
-        firstNameTF.WDTFontSettings("Enter First Name")
-        firstNameTF.autocapitalizationType = .None
-        firstNameTF.becomeFirstResponder()
-        
-        view.addSubview(firstNameTF)
-        firstNameTF.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(60)
-            make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
-        }
-        
-        emailTF.WDTRoundedWhite(nil, height: 50)
-        emailTF.WDTFontSettings("Enter Email")
-        emailTF.autocapitalizationType = .None
-        
-        view.addSubview(emailTF)
-        emailTF.snp_makeConstraints { (make) in
-            make.top.equalTo(firstNameTF.snp_bottom).offset(20)
-            make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
-        }
-        
-        passwordTF.WDTRoundedWhite(nil, height: 50)
-        passwordTF.WDTFontSettings("Enter Password")
-        passwordTF.autocapitalizationType = .None
-        passwordTF.secureTextEntry = true
-        
-        view.addSubview(passwordTF)
-        passwordTF.snp_makeConstraints { (make) in
-            make.top.equalTo(emailTF.snp_bottom).offset(20)
-            make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
-        }
-        
-        passwordAgainTF.WDTRoundedWhite(nil, height: 50)
-        passwordAgainTF.WDTFontSettings("Re Enter Password")
-        passwordAgainTF.autocapitalizationType = .None
-        passwordAgainTF.secureTextEntry = true
-        
-        view.addSubview(passwordAgainTF)
-        passwordAgainTF.snp_makeConstraints { (make) in
-            make.top.equalTo(passwordTF.snp_bottom).offset(20)
-            make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
-        }
-        
-        let nextBtn: UIButton = UIButton(type: .Custom)
-        nextBtn.WDTButtonStyle(UIColor.whiteColor(), title: "Next")
-        nextBtn.addTarget(self, action: #selector(nextBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(nextBtn)
-        nextBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(passwordAgainTF.snp_bottom).offset(25)
-            make.left.equalTo(passwordAgainTF)
-            make.right.equalTo(passwordAgainTF)
-            make.height.equalTo(50)
-        }
-    }
-    
-    func nextBtnTapped() {
-        view.endEditing(true)
-        guard emailTF.text!.validateEmail() == true else {
-            showAlert("Please provide correct email address")
-            return
-        }
-        
-        guard passwordTF.text?.isEmpty == false else {
-            showAlert("Enter password")
-            return
-        }
-        
-        guard passwordTF.text == passwordAgainTF.text else {
-            showAlert("Reentered password is wrong")
-            return
-        }
-        
-        let userQuery = PFUser.query()
-        
-        userQuery!.whereKey("email", equalTo: emailTF.text!)
-        showHud()
-        userQuery!.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, err) in
-            self.hideHud()
-            
-            guard let objects = objects where objects.isEmpty == true else {
-                self.showAlert("Email already exists")
-                return
-            }
-            
-            let phoneVerifyVC = SignUpPhone()
-            self.user["firstName"] = self.firstNameTF.text!
-            self.user["email"] = self.emailTF.text!
-            self.user.password = self.passwordTF.text!.lowercaseString
-            
-            phoneVerifyVC.user = self.user
-            phoneVerifyVC.facebookMode = self.facebookMode
-            self.navigationController?.pushViewController(phoneVerifyVC, animated: true)
-            
-            
-        })
-    }
-}
 
 
 
@@ -249,25 +135,41 @@ class SignUpPhone: SignUp, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        addBackButton()
+        
+        
+        let phoneNumber = UILabel()
+        phoneNumber.text = "Phone number"
+        phoneNumber.font = UIFont.wddMiniinvertcenterFont()
+        phoneNumber.textColor = UIColor.whiteColor()
+        view.addSubview(phoneNumber)
+        phoneNumber.snp_makeConstraints { (make) in
+            make.top.equalTo(view).offset(86.5.x2)
+            make.centerX.equalTo(view)
+        }
+        
+        
         phoneFormatter = NBAsYouTypeFormatter(regionCode: regionCode)
-        
-        
-        phoneTF.WDTRoundedWhite(nil, height: 50)
-        phoneTF.WDTFontSettings("Enter Phone")
+        phoneTF.placeholder = "phone"
+        phoneTF.textAlignment = .Center
+        phoneTF.font = UIFont.wddHtwoinvertcenterFont()
+        phoneTF.textColor = UIColor.whiteColor()
         phoneTF.delegate = self
         phoneTF.autocapitalizationType = .None
         phoneTF.becomeFirstResponder()
         phoneTF.keyboardType = .PhonePad
         view.addSubview(phoneTF)
         phoneTF.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(60)
-            make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
+            make.top.equalTo(view).offset(100.5.x2)
+            make.width.equalTo(view)
+            make.height.equalTo(12.x2)
         }
         
         let verifyBtn: UIButton = UIButton(type: .Custom)
-        verifyBtn.WDTButtonStyle(UIColor.whiteColor(), title: "Verify")
+        verifyBtn.setTitle("Verify", forState: .Normal)
+        verifyBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+
         verifyBtn.addTarget(self, action: #selector(verifyBtnTapped), forControlEvents: .TouchUpInside)
         view.addSubview(verifyBtn)
         verifyBtn.snp_makeConstraints { (make) in
@@ -278,9 +180,18 @@ class SignUpPhone: SignUp, UITextFieldDelegate {
         }
         
     }
-
     
     func verifyBtnTapped() {
+        view.endEditing(true)
+        let pinVerify = SignUpPinVerification()
+        self.user["phoneNumber"] = "1234567890"
+        pinVerify.verification = self.verification
+        pinVerify.user = self.user
+        pinVerify.facebookMode = self.facebookMode
+        self.navigationController?.pushViewController(pinVerify, animated: true)
+    }
+    
+    func verifyBtnTapped2() {
         view.endEditing(true)
         do {
             let phoneNumber: NBPhoneNumber = try phoneUtil.parse(phoneTF.text, defaultRegion: regionCode)
@@ -347,30 +258,65 @@ class SignUpPinVerification: SignUp {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        addBackButton()
+        
+        let phoneNumberLbl = UILabel()
+        phoneNumberLbl.numberOfLines = 2
+        phoneNumberLbl.text = "We texted a code to (305) 673-7466"
+        phoneNumberLbl.font = UIFont.wddMiniinvertcenterFont()
+        phoneNumberLbl.textColor = UIColor.whiteColor()
+        phoneNumberLbl.textAlignment = .Center
+        view.addSubview(phoneNumberLbl)
+        phoneNumberLbl.snp_makeConstraints { (make) in
+            make.top.equalTo(view).offset(39.5.x2)
+            make.left.equalTo(view).offset(47.3.x2)
+            make.right.equalTo(view).offset(-46.8.x2)
+        }
+        
+        pinTF.font = UIFont.wddHtwoinvertcenterFont()
+        pinTF.textColor = UIColor.whiteColor()
+        pinTF.placeholder = "code"
         pinTF.becomeFirstResponder()
-        pinTF.WDTRoundedWhite(nil, height: 50)
-        pinTF.WDTFontSettings("Enter Code")
         pinTF.autocapitalizationType = .None
         pinTF.keyboardType = .NumberPad
+        pinTF.textAlignment = .Center
         view.addSubview(pinTF)
         pinTF.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(60)
+            make.top.equalTo(view).offset(100.5.x2)
             make.centerX.equalTo(view)
             make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
         }
         
-        let verifyBtn: UIButton = UIButton(type: .Custom)
-        verifyBtn.WDTButtonStyle(UIColor.whiteColor(), title: "Verify")
-        verifyBtn.addTarget(self, action: #selector(verifyBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(verifyBtn)
-        verifyBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(pinTF.snp_bottom).offset(30)
+//        let verifyBtn: UIButton = UIButton(type: .Custom)
+//        resendBtn.titleLabel?.font = UIFont.wddMiniinvertcenterFont()
+//        verifyBtn.addTarget(self, action: #selector(verifyBtnTapped), forControlEvents: .TouchUpInside)
+//        view.addSubview(verifyBtn)
+//        verifyBtn.snp_makeConstraints { (make) in
+//            make.top.equalTo(pinTF.snp_bottom).offset(30)
+//            make.centerX.equalTo(view)
+//            make.width.equalTo(view).multipliedBy(0.7)
+//            make.height.equalTo(50)
+//        }
+//        
+        let resendBtn: UIButton = UIButton(type: .Custom)
+        resendBtn.titleLabel?.font = UIFont.wddMiniinvertcenterFont()
+        resendBtn.setTitle("Resend SMS", forState: .Normal)
+        resendBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        resendBtn.addTarget(self, action: #selector(resendBtnTapped), forControlEvents: .TouchUpInside)
+        view.addSubview(resendBtn)
+        resendBtn.snp_makeConstraints { (make) in
+            make.top.equalTo(view).offset(152.5.x2)
             make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
         }
         
+    }
+    
+    func resendBtnTapped() {
+        let signUpMain = SignUpMain()
+        signUpMain.user = self.user
+        signUpMain.facebookMode = self.facebookMode
+        self.navigationController?.pushViewController(signUpMain, animated: true)
     }
     
     func verifyBtnTapped() {
@@ -393,7 +339,250 @@ class SignUpPinVerification: SignUp {
     }
 }
 
+import ALCameraViewController
+import SRKControls
 
+class SignUpMain: SignUp {
+    let usernameTF = UITextField()
+    let nameTF = UITextField()
+    let emailTF = UITextField()
+    let birthdayTF = UITextField()
+//    let passwordTF = UITextField()
+//    let passwordAgainTF = UITextField()
+    let avatarBtn: UIButton = UIButton(type: .Custom)
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.whiteColor()
+        
+        avatarBtn.setImage(UIImage(named: "add_avatar"), forState: .Normal)
+        avatarBtn.imageView?.contentMode = .ScaleAspectFit
+        avatarBtn.addTarget(self, action: #selector(avatarBtnTapped), forControlEvents: .TouchUpInside)
+        view.addSubview(avatarBtn)
+        avatarBtn.snp_makeConstraints { (make) in
+            make.top.equalTo(view).offset(6.x2 + 32.x2)
+            make.left.equalTo(view).offset(58.x2)
+            make.width.equalTo(44.x2)
+            make.height.equalTo(44.x2)
+        }
+        
+        let addAvatarBtn: UIButton = UIButton(type: .Custom)
+        addAvatarBtn.titleLabel?.font = UIFont.wddSmallgreencenterFont()
+        addAvatarBtn.setTitleColor(UIColor.wddGreenColor(), forState: .Normal)
+        addAvatarBtn.setTitle("Add avatar", forState: .Normal)
+        addAvatarBtn.addTarget(self, action: #selector(avatarBtnTapped), forControlEvents: .TouchUpInside)
+        view.addSubview(addAvatarBtn)
+        addAvatarBtn.snp_makeConstraints { (make) in
+            make.top.equalTo(avatarBtn.snp_bottom).offset(4.5.x2)
+            make.centerX.equalTo(view)
+        }
+        
+
+        usernameTF.autocapitalizationType = .None
+        usernameTF.becomeFirstResponder()
+        usernameTF.placeholder = "Username"
+        view.addSubview(usernameTF)
+        usernameTF.snp_makeConstraints { (make) in
+            make.top.equalTo(addAvatarBtn.snp_bottom).offset(19.x2)
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.height.equalTo(11.5.x2)
+        }
+        
+        let usernameBottomLine = UIView()
+        usernameBottomLine.backgroundColor = UIColor.wddSilverColor()
+        view.addSubview(usernameBottomLine)
+        usernameBottomLine.snp_makeConstraints { (make) in
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.top.equalTo(usernameTF.snp_bottom).offset(4.x2)
+            make.height.equalTo(0.5.x2)
+        }
+        
+        nameTF.placeholder = "Name"
+        nameTF.autocapitalizationType = .None
+        view.addSubview(nameTF)
+        nameTF.snp_makeConstraints { (make) in
+            make.top.equalTo(usernameTF.snp_bottom).offset(22.x2)
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.height.equalTo(11.5.x2)
+        }
+        
+        let nameBottomLine = UIView()
+        nameBottomLine.backgroundColor = UIColor.wddSilverColor()
+        view.addSubview(nameBottomLine)
+        nameBottomLine.snp_makeConstraints { (make) in
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.top.equalTo(nameTF.snp_bottom).offset(4.x2)
+            make.height.equalTo(0.5.x2)
+        }
+        
+        emailTF.placeholder = "E-mail"
+        emailTF.autocapitalizationType = .None
+        emailTF.secureTextEntry = true
+        view.addSubview(emailTF)
+        emailTF.snp_makeConstraints { (make) in
+            make.top.equalTo(nameTF.snp_bottom).offset(22.x2)
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.height.equalTo(11.5.x2)
+        }
+        
+        let emailBottomLine = UIView()
+        emailBottomLine.backgroundColor = UIColor.wddSilverColor()
+        view.addSubview(emailBottomLine)
+        emailBottomLine.snp_makeConstraints { (make) in
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.top.equalTo(emailTF.snp_bottom).offset(4.x2)
+            make.height.equalTo(0.5.x2)
+        }
+        
+        birthdayTF.placeholder = "Birthday"
+        birthdayTF.autocapitalizationType = .None
+        birthdayTF.secureTextEntry = true
+        
+        view.addSubview(birthdayTF)
+        birthdayTF.snp_makeConstraints { (make) in
+            make.top.equalTo(emailTF.snp_bottom).offset(22.x2)
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.height.equalTo(11.5.x2)
+        }
+        
+        let birthdayBottomLine = UIView()
+        birthdayBottomLine.backgroundColor = UIColor.wddSilverColor()
+        view.addSubview(birthdayBottomLine)
+        birthdayBottomLine.snp_makeConstraints { (make) in
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.top.equalTo(birthdayTF.snp_bottom).offset(4.x2)
+            make.height.equalTo(0.5.x2)
+        }
+        
+        let registerBtn: UIButton = UIButton(type: .Custom)
+        registerBtn.setBackgroundColor(UIColor.wddGreenColor(), forUIControlState: .Normal)
+        registerBtn.setTitle("Register", forState: .Normal)
+        registerBtn.layer.cornerRadius = 12 * 2
+        registerBtn.clipsToBounds = true
+        registerBtn.addTarget(self, action: #selector(nextBtnTapped), forControlEvents: .TouchUpInside)
+        view.addSubview(registerBtn)
+        registerBtn.snp_makeConstraints { (make) in
+            make.bottom.equalTo(view).offset(-7.5.x2)
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.height.equalTo(26.x2)
+        }
+    }
+    
+    
+    func avatarBtnTapped() {
+        let cameraViewController = CameraViewController(croppingEnabled: true) { image in
+            if let image = image.0 {
+                var resizedImage: UIImage!
+                
+                
+                resizedImage = UIImage.resizeImage(image, newWidth: 400)
+                resizedImage = resizedImage.roundCorners(20)
+                let avaData = UIImageJPEGRepresentation(resizedImage, 0.5)
+                let avaFile = PFFile(name: "ava.jpg", data: avaData!)
+                
+
+                self.avatarBtn.setImage(resizedImage, forState: .Normal)
+                self.user["ava"] = avaFile
+                
+                self.user.saveInBackgroundWithBlock ({ (success:Bool, error:NSError?) -> Void in
+                    if success {
+                        
+                    }
+                })
+            }
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        presentViewController(cameraViewController, animated: true, completion: nil)
+    }
+    
+    func nextBtnTapped() {
+        showHud()
+        PFUser.logInWithUsernameInBackground("igor", password: "q") { (user: PFUser?, error: NSError?) -> Void in
+            user!["signUpFinished"] = true
+            self.hideHud()
+            if error == nil {
+                print(user)
+                // Remember user or save in App Memory did the user login or not
+                NSUserDefaults.standardUserDefaults().setObject(user!.username?.lowercaseString, forKey: "username")
+                NSUserDefaults.standardUserDefaults().synchronize()
+                
+                // Call Login Function from AppDelegate.swift class
+                let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                appDelegate.login()
+            } else {
+                let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .Alert)
+                let ok = UIAlertAction(title: "Ok", style: .Cancel, handler: nil)
+                alert.addAction(ok)
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+            }
+        }
+        
+        /*
+        view.endEditing(true)
+        guard emailTF.text!.validateEmail() == true else {
+            showAlert("Please provide correct email address")
+            return
+        }
+        
+        guard passwordTF.text?.isEmpty == false else {
+            showAlert("Enter password")
+            return
+        }
+        
+        guard passwordTF.text == passwordAgainTF.text else {
+            showAlert("Reentered password is wrong")
+            return
+        }
+        
+        let userQuery = PFUser.query()
+        
+        userQuery!.whereKey("email", equalTo: emailTF.text!)
+        showHud()
+        userQuery!.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, err) in
+            self.hideHud()
+            
+            guard let objects = objects where objects.isEmpty == true else {
+                self.showAlert("Email already exists")
+                return
+            }
+            
+            let phoneVerifyVC = SignUpPhone()
+            self.user["firstName"] = self.usernameTF.text!
+            self.user["email"] = self.emailTF.text!
+            self.user.password = self.passwordTF.text!.lowercaseString
+            
+            phoneVerifyVC.user = self.user
+            phoneVerifyVC.facebookMode = self.facebookMode
+            self.navigationController?.pushViewController(phoneVerifyVC, animated: true)
+            
+            
+        })
+ */
+    }
+    
+
+}
 
 
 

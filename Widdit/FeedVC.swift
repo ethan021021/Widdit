@@ -10,16 +10,18 @@ import UIKit
 import Parse
 import ImageViewer
 import XCGLogger
-
+import PermissionScope
 
 protocol WDTLoad {
     func loadPosts()
 }
 
 class WDTFeed: UITableViewController, WDTLoad {
-    func loadPosts() {
-        
-    }
+    func loadPosts() {}
+}
+
+class WDTFeedVC: UIViewController, WDTLoad {
+    func loadPosts() {}
 }
 
 class FeedVC: WDTFeed {
@@ -33,35 +35,80 @@ class FeedVC: WDTFeed {
     
     var geoPoint: PFGeoPoint?
     let wdtPost = WDTPost()
+    let pscope = PermissionScope()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
+        
+        pscope.addPermission(NotificationsPermission(notificationCategories: nil),
+                             message: "We use this to send you\r\nspam and love notes")
+        pscope.addPermission(LocationWhileInUsePermission(),
+                             message: "We use this to track\r\nwhere you live")
+        
+        
+        pscope.show({ finished, results in
+            print("got results \(results)")
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+            self.loadPosts()
+            }, cancelled: { (results) -> Void in
+                print("thing was cancelled")
+        })
+        
+        
+        
         self.navigationController?.navigationBar.setBottomBorderColor()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "New Post", style: .Done, target: self, action: #selector(newPostButtonTapped))
+        
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_navbar_add"), style: .Done, target: self, action: #selector(newPostButtonTapped))
+        rightBarButtonItem.tintColor = UIColor.whiteColor()
+        navigationItem.rightBarButtonItem = rightBarButtonItem
         
         let queryOfAllUsers = PFUser.query()
         queryOfAllUsers?.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, error: NSError?) in
             if let objects = objects {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Total users: " + String(objects.count), style: .Done, target: self, action: #selector(self.nothingToDo))
+//
+                
+                let button =  UIButton(type: .Custom)
+                button.setImage(UIImage(named: "ic_navbar_users"), forState: .Normal)
+                button.addTarget(self, action: #selector(self.nothingToDo), forControlEvents: .TouchUpInside)
+                button.frame = CGRectMake(0, 0, 53, 31)
+                button.imageEdgeInsets = UIEdgeInsetsMake(-10, 12, 1, -32)//move image to the right
+                let label = UILabel(frame: CGRectMake(3, 5, 50, 20))
+                
+                label.text = String(objects.count)
+                label.textAlignment = .Left
+                label.textColor = UIColor.whiteColor()
+                label.backgroundColor =   UIColor.clearColor()
+                button.addSubview(label)
+                let barButton = UIBarButtonItem(customView: button)
+                
+                
+                
+//                let zz = UIBarButtonItem(title: , style: .Done, target: self, action: #selector())
+                
+            self.navigationItem.leftBarButtonItem = barButton
             }
         })
         
         
-        let shadowPath = UIBezierPath(rect: self.tabBarController!.tabBar.bounds)
-        self.tabBarController!.tabBar.layer.masksToBounds = false
-        self.tabBarController!.tabBar.layer.shadowColor = UIColor.blackColor().CGColor
-        self.tabBarController!.tabBar.layer.shadowOffset = CGSizeMake(0.0, 2.0)
-        self.tabBarController!.tabBar.layer.shadowOpacity = 0.5
-        self.tabBarController!.tabBar.layer.shadowPath = shadowPath.CGPath
-        self.tabBarController!.tabBar.layer.cornerRadius = 4.0
-        
-        
+//        let shadowPath = UIBezierPath(rect: self.tabBarController!.tabBar.bounds)
+//        self.tabBarController!.tabBar.layer.masksToBounds = false
+//        self.tabBarController!.tabBar.layer.shadowColor = UIColor.blackColor().CGColor
+//        self.tabBarController!.tabBar.layer.shadowOffset = CGSizeMake(0.0, 2.0)
+//        self.tabBarController!.tabBar.layer.shadowOpacity = 0.5
+//        self.tabBarController!.tabBar.layer.shadowPath = shadowPath.CGPath
+//        self.tabBarController!.tabBar.layer.cornerRadius = 4.0
+//        
+//        
         
         configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
         
         // Title at the Top
-        self.navigationItem.title = "The World"
+        
+        var logoImage:UIImage = UIImage(named: "ic_navbar_world")!
+        navigationItem.titleView = UIImageView(image: logoImage)
         
         // Pull to Refresh
         refresher.addTarget(self, action: #selector(loadPosts), forControlEvents: UIControlEvents.ValueChanged)
@@ -73,14 +120,15 @@ class FeedVC: WDTFeed {
         // Receive Notification from NewPostVC
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedVC.uploaded(_:)), name: "uploaded", object: nil)
     
-        self.tableView.registerClass(FeedFooter.self, forHeaderFooterViewReuseIdentifier: "FeedFooter")
-        self.tableView.registerClass(PostCell.self, forCellReuseIdentifier: "PostCell")
-        self.tableView.backgroundColor = UIColor.whiteColor()
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
-        self.tableView.estimatedRowHeight = 150.0;
-        self.tableView.separatorStyle = .None
+        tableView.registerClass(FeedFooter.self, forHeaderFooterViewReuseIdentifier: "FeedFooter")
+        tableView.registerClass(PostCell.self, forCellReuseIdentifier: "PostCell")
+        tableView.backgroundColor = UIColor.wddSilverColor()
+        tableView.rowHeight = UITableViewAutomaticDimension;
+        tableView.estimatedRowHeight = 150.0;
+        tableView.separatorStyle = .None
+        tableView.contentInset = UIEdgeInsetsMake(-25, 0, 0, 0)
 
-        self.loadPosts()
+        loadPosts()
     }
     
     func newPostButtonTapped() {
@@ -107,13 +155,17 @@ class FeedVC: WDTFeed {
     }
     
     override func loadPosts() {
-        PFGeoPoint.geoPointForCurrentLocationInBackground {
-            (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
-            
-            if error == nil {
-                self.geoPoint = geoPoint
+        if PermissionScope().statusLocationInUse() == .Authorized {
+            PFGeoPoint.geoPointForCurrentLocationInBackground {
+                (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
+                
+                if error == nil {
+                    self.geoPoint = geoPoint
+                }
             }
         }
+        
+        
         
         wdtPost.requestPosts { (success) in
             self.tableView.reloadData()
@@ -179,11 +231,11 @@ class FeedVC: WDTFeed {
         let post = self.wdtPost.collectionOfPosts[section]
         let user = post["user"] as! PFUser
         
-        if PFUser.currentUser()?.username == user.username {
-            return 0
-        } else {
+//        if PFUser.currentUser()?.username == user.username {
+//            return 0
+//        } else {
             return 55
-        }
+//        }
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -193,12 +245,12 @@ class FeedVC: WDTFeed {
         let post = self.wdtPost.collectionOfPosts[section]
         let user = post["user"] as! PFUser
         
-        if PFUser.currentUser()?.username == user.username {
-            return nil
-        } else {
+//        if PFUser.currentUser()?.username == user.username {
+//            return nil
+//        } else {
             footerView.feed = self
             footerView.setDown(user, post: post)
-        }
+//        }
         
         return footerView
     }

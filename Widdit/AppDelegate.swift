@@ -14,6 +14,7 @@ import ParseFacebookUtilsV4
 import XCGLogger
 import IQKeyboardManagerSwift
 import Whisper
+import RAMAnimatedTabBarController
 
 let log = XCGLogger.defaultInstance()
 
@@ -30,37 +31,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         log.debug("A debug message")
         IQKeyboardManager.sharedManager().enable = true
-//        IQKeyboardManager.sharedManager().enableAutoToolbar = false
-//        IQKeyboardManager.sharedManager().
-//        IQKeyboardManager.sharedManager().disabledToolbarClasses.insert("NewPostVC")
         IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(NewPostVC.self)
         IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(ReplyViewController.self)
         
         IQKeyboardManager.sharedManager().disableDistanceHandlingInViewControllerClass(ReplyViewController.self)
 
+    
+        
         //configure push notifications
-        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
-        application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
+//        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
+//        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+//        application.registerUserNotificationSettings(settings)
+//        application.registerForRemoteNotifications()
 
         //app wide navigation bar changes
-        UINavigationBar.appearance().barTintColor = UIColor.WDTGrayBlueColor()
-        UINavigationBar.appearance().tintColor = UIColor.WDTBlueColor()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.WDTBlueColor(), NSFontAttributeName: UIFont.WDTAgoraRegular(16)]
+        UINavigationBar.appearance().barTintColor = UIColor.wddTealColor()
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.wddBodylightinvertcenterFont()]
         UINavigationBar.appearance().translucent = true
         
-
+        
+        let image = UIImage(named: "ic_navbar_back")
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -66), forBarMetrics: .Default)
+        UINavigationBar.appearance().backIndicatorImage = image
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = image
         
         //app wide bar button item changes
         UITabBar.appearance().tintColor = UIColor.WDTBlueColor()
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.WDTBlueColor(), NSFontAttributeName: UIFont.WDTAgoraRegular(16)], forState: .Normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.wddBodylightinvertcenterFont()], forState: .Normal)
         
-//        UITabBar.appearance().barTintColor = UIColor.blueColor()
 
         //app wide status bar changes
-        UINavigationBar.appearance().barStyle = .Default
+        UINavigationBar.appearance().barStyle = .Black
 
+        
         // [Optional] Power your app with Local Datastore. For more info, go to
         // https://parse.com/docs/ios_guide#localdatastore/iOS
         Parse.enableLocalDatastore()
@@ -76,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
         
         // call login function
-        login()
+        
         
         // color of window
         window?.backgroundColor = .whiteColor()
@@ -85,6 +89,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
+        
+        login()
         
         guard let launchOptions = launchOptions else {return true}
         if let userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as? [NSObject: AnyObject] {
@@ -108,6 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            }
         }
         
+
+        
         return true
     }
     
@@ -125,10 +133,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // if loged in
         if let user = PFUser.currentUser() {
             if let signUpFinished = user["signUpFinished"] as? Bool where signUpFinished == true {
-                let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let myTabBar = storyboard.instantiateViewControllerWithIdentifier("TabBar") as! UITabBarController
-                window?.rootViewController = myTabBar
+//                let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//                let myTabBar = storyboard.instantiateViewControllerWithIdentifier("TabBar") as! UITabBarController
+//                window?.rootViewController = myTabBar
+                
+                
+                let tabBarItem1 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_feed_active"), selectedImage: UIImage(named: "ic_tabbar_feed_active"))
+                tabBarItem1.animation = RAMBounceAnimation()
+                let feedNC = UINavigationController(rootViewController: FeedVC(style: .Grouped))
+                feedNC.tabBarItem = tabBarItem1
+                
+                let tabBarItem2 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_activity"), selectedImage: UIImage(named: "ic_tabbar_activity"))
+                tabBarItem2.animation = RAMBounceAnimation()
+                let activityNC = UINavigationController(rootViewController: ActivityVC())
+                activityNC.tabBarItem = tabBarItem2
+                
+                let tabBarItem3 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_profile"), selectedImage: UIImage(named: "ic_tabbar_profile"))
+                tabBarItem3.animation = RAMBounceAnimation()
+                let profileNC = UINavigationController(rootViewController: ProfileVC())
+                profileNC.tabBarItem = tabBarItem3
+                profileNC.navigationBarHidden = true
+
+                let controllers = [feedNC, activityNC, profileNC]
+                window?.rootViewController = RAMAnimatedTabBarController(viewControllers: controllers)
+             
             }
+        } else {
+            let welcomeNC = UINavigationController(rootViewController: WelcomeVC())
+            window?.rootViewController = welcomeNC
         }
     }
 
@@ -341,3 +373,37 @@ extension NSTimer {
         return timer
     }
 }
+
+
+class RAMBounceAnimation : RAMItemAnimation {
+    
+    
+    override func playAnimation(icon: UIImageView, textLabel: UILabel) {
+        playBounceAnimation(icon)
+        textLabel.textColor = textSelectedColor
+    
+    }
+    
+    override func deselectAnimation(icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
+        textLabel.textColor = defaultTextColor
+    
+    }
+    
+    override func selectedState(icon: UIImageView, textLabel: UILabel) {
+        textLabel.textColor = textSelectedColor
+    }
+    
+    func playBounceAnimation(icon : UIImageView) {
+        
+        let bounceAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        bounceAnimation.values = [1.0 ,1.4, 0.9, 1.15, 0.95, 1.02, 1.0]
+        bounceAnimation.duration = NSTimeInterval(duration)
+        bounceAnimation.calculationMode = kCAAnimationCubic
+        
+        icon.layer.addAnimation(bounceAnimation, forKey: "bounceAnimation")
+        
+    }
+    
+}
+
+

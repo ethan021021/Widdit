@@ -10,8 +10,6 @@ import UIKit
 import Parse
 import ALCameraViewController
 import ParseFacebookUtilsV4
-import SimpleAlert
-import MBProgressHUD
 
 enum WDTSituation: Int {
     case School
@@ -486,23 +484,16 @@ class ProfileEditVC: UIViewController, UITextViewDelegate {
     
     
     func doneButtonTapped() {
-        let alert = SimpleAlert.Controller(view: nil, style: .Alert)
-        alert.addAction(SimpleAlert.Action(title: "OK", style: .Cancel))
         
-        // if incorrect email according to regex
         if !emailTxt.text!.validateEmail()  {
-//            alert("Incorrect email", message: "please provide correct email address")
-            alert.title = "Please provide correct email address"
-            presentViewController(alert, animated: true, completion: nil)
+            showAlert("Please provide correct email address")
             return
         }
         
         guard let _ = self.addAvatar1.imageForState(.Normal) else {
-            alert.title = "Please provide at least one profile photo"
-            presentViewController(alert, animated: true, completion: nil)
+            showAlert("Please provide at least one profile photo")
             return
         }
-        
         
         // save filled in information
         let user = PFUser.currentUser()!
@@ -516,13 +507,10 @@ class ProfileEditVC: UIViewController, UITextViewDelegate {
         
         user["gender"] = genderSgmtCtrl.selectedSegmentIndex
 
-        
-        // send filled information to server
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        showHud()
         user.saveInBackgroundWithBlock ({ (success:Bool, error:NSError?) -> Void in
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+            self.hideHud()
             if success{
-                
                 // hide keyboard
                 self.view.endEditing(true)
                 
@@ -541,8 +529,7 @@ class ProfileEditVC: UIViewController, UITextViewDelegate {
                 NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
                 
             } else {
-                alert.title = error!.localizedDescription
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.showAlert(error!.localizedDescription)
             }
         })
     }

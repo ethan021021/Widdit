@@ -2,7 +2,7 @@
 //  WDTHeader.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 04.07.16.
+//  Created by Igor Kuznetsov on 04.07.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 
@@ -67,11 +67,11 @@ class WDTHeader: UIView, UIScrollViewDelegate {
 
         
         addSubview(firstNameLbl)
-        firstNameLbl.font = UIFont.WDTAgoraRegular(16)
+        firstNameLbl.font = UIFont.wddHtwoinvertcenterFont()
         firstNameLbl.textColor = UIColor.whiteColor()
         firstNameLbl.snp_makeConstraints { (make) in
-            make.left.equalTo(20)
-            make.bottom.equalTo(scrollView).offset(-40)
+            make.centerX.equalTo(scrollView)
+            make.bottom.equalTo(scrollView).offset(-13.5.x2)
         }
         
         addSubview(pageControl)
@@ -81,7 +81,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         
         pageControl.snp_makeConstraints { (make) in
             make.centerX.equalTo(scrollView)
-            make.bottom.equalTo(scrollView).offset(-10)
+            make.bottom.equalTo(scrollView)
         }
         // Set the initial page.
         pageControl.currentPage = 0
@@ -97,7 +97,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         
         
         var emailVerifiedImage = UIImage(named: "email")
-        emailVerifiedImage = (emailVerifiedImage!.imageWithRenderingMode(.AlwaysTemplate))
+       // emailVerifiedImage = (emailVerifiedImage!.imageWithRenderingMode(.AlwaysTemplate))
         emailVerified.tintColor = UIColor.darkGrayColor()
         emailVerified.setImage(emailVerifiedImage, forState: .Normal)
         emailVerified.setBackgroundColor(UIColor.WDTBlueColor(), forUIControlState: .Selected)
@@ -116,7 +116,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         
         
         var phoneVerifiedImage = UIImage(named: "cellphone")
-        phoneVerifiedImage = (phoneVerifiedImage!.imageWithRenderingMode(.AlwaysTemplate))
+     //   phoneVerifiedImage = (phoneVerifiedImage!.imageWithRenderingMode(.AlwaysTemplate))
         phoneVerified.tintColor = UIColor.darkGrayColor()
         
         phoneVerified.setImage(phoneVerifiedImage, forState: .Normal)
@@ -135,7 +135,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         
         
         var facebookVerifiedImage = UIImage(named: "facebook")
-        facebookVerifiedImage = (facebookVerifiedImage!.imageWithRenderingMode(.AlwaysTemplate))
+       // facebookVerifiedImage = (facebookVerifiedImage!.imageWithRenderingMode(.AlwaysTemplate))
         facebookVerified.tintColor = UIColor.darkGrayColor()
         
         facebookVerified.setImage(facebookVerifiedImage, forState: .Normal)
@@ -163,7 +163,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         
 
         var schoolSituationImage = UIImage(named: "situation-school")
-        schoolSituationImage = (schoolSituationImage!.imageWithRenderingMode(.AlwaysTemplate))
+       // schoolSituationImage = (schoolSituationImage!.imageWithRenderingMode(.AlwaysTemplate))
         schoolSituation.tintColor = UIColor.darkGrayColor()
         
         schoolSituation.setImage(schoolSituationImage, forState: .Normal)
@@ -182,7 +182,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         }
         
         var workingSituationImage = UIImage(named: "situation-working")
-        workingSituationImage = (workingSituationImage!.imageWithRenderingMode(.AlwaysTemplate))
+       // workingSituationImage = (workingSituationImage!.imageWithRenderingMode(.AlwaysTemplate))
         workingSituation.tintColor = UIColor.darkGrayColor()
         
         workingSituation.setImage(workingSituationImage, forState: .Normal)
@@ -201,7 +201,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         
         
         var opportunitySituationImage = UIImage(named: "situation-opportunity")
-        opportunitySituationImage = (opportunitySituationImage!.imageWithRenderingMode(.AlwaysTemplate))
+      //  opportunitySituationImage = (opportunitySituationImage!.imageWithRenderingMode(.AlwaysTemplate))
         opportunitySituation.tintColor = UIColor.darkGrayColor()
         
         opportunitySituation.setImage(opportunitySituationImage, forState: .Normal)
@@ -333,21 +333,6 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         if scrollView.tag == 1 {
             let currentPage = floor(scrollView.contentOffset.x / UIScreen.mainScreen().bounds.size.width);
             pageControl.currentPage = Int(currentPage)
-        } else {
-            //        containerLayoutConstraint.constant = scrollView.contentInset.top;
-//            containerView.snp_updateConstraints { (make) in
-//                
-//            }
-//            let offsetY = -(scrollView.contentOffset.y + scrollView.contentInset.top);
-            //        self.scrollView.clipsToBounds = offsetY <= 0
-            //        bottomLayoutConstraint.constant = offsetY >= 0 ? 0 : -offsetY / 2
-            //        heightLayoutConstraint.constant = max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top)
-            
-//            containerView.snp_updateConstraints { (make) in
-//                make.height.equalTo(self).offset(max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top))
-//            }
-//            print(max(offsetY + scrollView.contentInset.top, scrollView.contentInset.top))
-//            print("tableView")
         }
     }
 }

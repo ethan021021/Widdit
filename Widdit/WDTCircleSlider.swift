@@ -2,7 +2,7 @@
 //  WDTCircleSlider.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 24.06.16.
+//  Created by Igor Kuznetsov on 24.06.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 

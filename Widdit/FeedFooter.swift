@@ -2,7 +2,7 @@
 //  FeedFooter.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 21.06.16.
+//  Created by Igor Kuznetsov on 21.06.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 
@@ -26,7 +26,7 @@ class WDTFooterCardView: UIView {
             
             shadowLayer = CAShapeLayer()
             shadowLayer!.path = maskPath.CGPath
-            shadowLayer!.fillColor = UIColor.WDTGrayBlueColor().CGColor
+            shadowLayer!.fillColor = UIColor.whiteColor().CGColor
             
             shadowLayer!.shadowColor = UIColor.darkGrayColor().CGColor
             shadowLayer!.shadowPath = shadowLayer!.path
@@ -62,34 +62,45 @@ class FeedFooter: UITableViewHeaderFooterView {
         cardSetup()
         
 
-        replyBtn.backgroundColor = UIColor.WDTGrayBlueColor()
-        replyBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
+        replyBtn.backgroundColor = UIColor.whiteColor()
+        replyBtn.setImage(UIImage(named: "ic_reply"), forState: .Normal)
+        replyBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
         replyBtn.setTitle("Reply", forState: .Normal)
         replyBtn.titleLabel?.font = UIFont.WDTAgoraRegular(14)
         replyBtn.addTarget(self, action: #selector(replyBtnTapped), forControlEvents: .TouchUpInside)
         
-        imDownBtn.backgroundColor = UIColor.WDTGrayBlueColor()
-        imDownBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
+        imDownBtn.backgroundColor = UIColor.whiteColor()
+        imDownBtn.setImage(UIImage(named: "ic_down"), forState: .Normal)
+        imDownBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
         imDownBtn.titleLabel?.font = UIFont.WDTAgoraRegular(14)
         imDownBtn.setTitleColor(UIColor.WDTBlueColor(), forState: .Selected)
         imDownBtn.setTitle("I'm Down", forState: .Normal)
         imDownBtn.addTarget(self, action: #selector(downBtnTapped), forControlEvents: .TouchUpInside)
         
         replyBtn.snp_remakeConstraints { (make) in
-            make.top.equalTo(cardView).offset(10)
-            make.left.equalTo(cardView).offset(10)
+            make.top.equalTo(cardView)
+            make.left.equalTo(cardView)
             make.right.equalTo(cardView.snp_centerX)
-            make.bottom.equalTo(cardView)
+            make.bottom.equalTo(cardView).offset(-5)
         }
         
         imDownBtn.snp_remakeConstraints { (make) in
-            make.top.equalTo(cardView).offset(10)
+            make.top.equalTo(cardView)
             make.left.equalTo(cardView.snp_centerX)
-            make.right.equalTo(cardView).offset(-10)
-            make.bottom.equalTo(cardView)
+            make.right.equalTo(cardView)
+            make.bottom.equalTo(cardView).offset(-3)
             
         }
         
+        
+        let vertLine = UIView()
+        vertLine.backgroundColor = UIColor(r: 216, g: 216, b: 216, a: 1)
+        self.addSubview(vertLine)
+        vertLine.snp_makeConstraints { (make) in
+            make.width.equalTo(0.3.x2)
+            make.height.equalTo(imDownBtn).offset(3)
+            make.centerX.equalTo(self)
+        }
     }
     
     func setDown(user: PFUser, post: PFObject) {
@@ -112,8 +123,8 @@ class FeedFooter: UITableViewHeaderFooterView {
     func cardSetup() {
         cardView.snp_remakeConstraints { (make) in
             make.top.equalTo(self.contentView)
-            make.left.equalTo(self.contentView).offset(10)
-            make.right.equalTo(self.contentView).offset(-10)
+            make.left.equalTo(self.contentView).offset(6.x2)
+            make.right.equalTo(self.contentView).offset(-6.x2)
             make.bottom.equalTo(self.contentView).offset(-10)
         }
         

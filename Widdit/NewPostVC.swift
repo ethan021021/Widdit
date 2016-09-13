@@ -36,9 +36,12 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
         super.viewDidLoad()
         
         postBtn = UIBarButtonItem(title: "Post", style: .Done, target: self, action: #selector(postBtnTapped))
+        postBtn.tintColor = UIColor.whiteColor()
         postBtn.enabled = false
         navigationItem.rightBarButtonItem = postBtn
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Done, target: self, action: #selector(cancelBtnTapped))
+        let cancelBtn = UIBarButtonItem(title: "Cancel", style: .Done, target: self, action: #selector(cancelBtnTapped))
+        cancelBtn.tintColor = UIColor.whiteColor()
+        navigationItem.leftBarButtonItem = cancelBtn
         
 
         view.backgroundColor = UIColor.WDTGrayBlueColor()
@@ -61,34 +64,23 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
             make.right.equalTo(view).offset(-5)
             make.height.equalTo(150)
         }
-        addPhotoButton.setImage(UIImage(named: "AddPhotoButton"), forState: .Normal)
+        addPhotoButton.setImage(UIImage(named: "add_photo"), forState: .Normal)
         addPhotoButton.addTarget(self, action: #selector(addPhotoButtonTapped), forControlEvents: .TouchUpInside)
         addPhotoButton.snp_makeConstraints { (make) in
-            make.right.equalTo(view).offset(-20)
-            make.top.equalTo(postTxt.snp_bottom).offset(20)
-            make.width.equalTo(50)
-            make.height.equalTo(50)
+            make.left.equalTo(view).offset(6.x2)
+            make.top.equalTo(postTxt.snp_bottom).offset(16.5.x2)
+            make.width.equalTo(38.x2)
+            make.height.equalTo(38.x2)
         }
         
         deletePhotoButton.hidden = true
-        deletePhotoButton.setImage(UIImage(named: "DeletePhotoButton"), forState: .Normal)
+        deletePhotoButton.setImage(UIImage(named: "ic_delete"), forState: .Normal)
         deletePhotoButton.addTarget(self, action: #selector(deletePhotoButtonTapped), forControlEvents: .TouchUpInside)
         deletePhotoButton.snp_makeConstraints { (make) in
-            make.right.equalTo(view).offset(-11)
-            make.top.equalTo(postTxt.snp_bottom).offset(11)
-            make.width.equalTo(18)
-            make.height.equalTo(18)
-        }
-        
-        let line = UIView()
-        line.alpha = 0.6
-        self.view.addSubview(line)
-        line.backgroundColor = UIColor.grayColor()
-        line.snp_makeConstraints { (make) in
-            make.top.equalTo(addPhotoButton.snp_bottom).offset(20)
-            make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.9)
-            make.height.equalTo(1)
+            make.centerX.equalTo(addPhotoButton.snp_right)
+            make.centerY.equalTo(addPhotoButton.snp_top)
+            make.width.equalTo(12.x2)
+            make.height.equalTo(12.x2)
         }
 
         
@@ -100,7 +92,8 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
         }
         
         
-        postDurationLabel.font = UIFont.WDTAgoraRegular(16)
+        postDurationLabel.font = UIFont.wddSmallgreycenterFont()
+        postDurationLabel.textColor = UIColor.lightGrayColor()
         postDurationLabel.snp_makeConstraints { (make) in
             make.bottom.equalTo(sliderView.snp_top).offset(-25)
             make.centerX.equalTo(view)
@@ -138,6 +131,7 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
         editPost = post
         postBtn = UIBarButtonItem(title: "Save", style: .Done, target: self, action: #selector(postBtnTapped))
         postBtn.enabled = false
+        postBtn.tintColor = UIColor.whiteColor()
         navigationItem.rightBarButtonItem = postBtn
         
         if let text = post["postText"] as? String {
@@ -200,7 +194,7 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
     
     func deletePhotoButtonTapped(sender: AnyObject) {
         deletePhotoButton.hidden = true
-        addPhotoButton.setImage(UIImage(named: "AddPhotoButton"), forState: .Normal)
+        addPhotoButton.setImage(UIImage(named: "add_photo"), forState: .Normal)
         photoImage = nil
     }
     
@@ -246,14 +240,8 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
         // dismiss keyboard
         view.endEditing(true)
         
-        
-        
-        
-        
-        
         // send data to server to "posts" class in Parse
         var object = PFObject(className: "posts")
-        
         
         if let editPost = editPost {
             object = editPost
@@ -288,17 +276,12 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
             object["photoFile"] = photoFile
 
         }
-        
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        // Save Information
+        showHud()
         object.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+            self.hideHud()
             if error == nil {
-                // send notification with name "uploaded"
                 NSNotificationCenter.defaultCenter().postNotificationName("uploaded", object: nil)
-                // dismiss editVC
                 self.dismissViewControllerAnimated(true, completion: nil)
-                // Reset Everything
                 self.viewDidLoad()
 
             }

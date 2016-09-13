@@ -2,7 +2,7 @@
 //  Extesions.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 18.07.16.
+//  Created by Igor Kuznetsov on 18.07.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 
@@ -20,6 +20,12 @@ extension UIColor {
     class func WDTBlueColor() -> UIColor {
         return UIColor(r: 59, g: 122, b: 218, a: 1)
     }
+    
+    class func WDTTeal() -> UIColor {
+        return UIColor(r: 62, g: 203, b: 204, a: 1)
+    }
+    
+    
 }
 
 
@@ -46,8 +52,6 @@ extension UIImage {
         
         return newImage
     }
-    
-    
 }
 
 extension NSDateFormatter {
@@ -171,8 +175,6 @@ extension UIButton {
         self.layer.cornerRadius = 4
         self.titleLabel?.font = UIFont.WDTAgoraRegular(17)
     }
-    
-    
 }
 
 extension UITextField {
@@ -254,11 +256,3 @@ extension UIViewController {
     
     
 }
-
-
-
-
-
-
-
-

@@ -2,7 +2,7 @@
 //  WDTImageProvider.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 24.06.16.
+//  Created by Igor Kuznetsov on 24.06.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 
@@ -12,7 +12,7 @@ import ImageViewer
 var configuration: ImageViewerConfiguration!
 let imageProvider = WDTImageProvider()
 
-let buttonAssets = CloseButtonAssets(normal: UIImage(named:"DeletePhotoButton")!, highlighted: UIImage(named: "DeletePhotoButton"))
+let buttonAssets = CloseButtonAssets(normal: UIImage(named:"ic_delete")!, highlighted: UIImage(named: "ic_delete"))
 
 class WDTImageProvider: ImageProvider {
     

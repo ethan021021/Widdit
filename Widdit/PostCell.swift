@@ -31,7 +31,7 @@ class WDTCellCardView: UIView {
             self.shadowLayer = WDTCAShapeLayer()
             self.shadowLayer!.tag = 1
             self.shadowLayer!.path = maskPath.CGPath
-            self.shadowLayer!.fillColor = UIColor.WDTGrayBlueColor().CGColor
+            self.shadowLayer!.fillColor = UIColor.whiteColor().CGColor
             
             self.shadowLayer!.shadowColor = UIColor.darkGrayColor().CGColor
             self.shadowLayer!.shadowPath = self.shadowLayer!.path
@@ -96,8 +96,8 @@ class PostCell: UITableViewCell {
     }
 
     func configureSubviews() {
-        backgroundColor = UIColor.whiteColor()
-        cardView.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.wddSilverColor()
+//        cardView.backgroundColor = UIColor.clearColor()
         
         self.contentView.addSubview(cardView)
 
@@ -114,7 +114,7 @@ class PostCell: UITableViewCell {
         cardView.addSubview(distanceLbl)
         
         
-        settings.setImage(UIImage(named: "more"), forState: .Normal)
+        settings.setImage(UIImage(named: "ic_more"), forState: .Normal)
         settings.addTarget(self, action: #selector(settingsButtonTapped), forControlEvents: .TouchUpInside)
         
         vertLineView.backgroundColor = UIColor.grayColor()
@@ -122,14 +122,15 @@ class PostCell: UITableViewCell {
         
         
         postPhoto.contentMode = .ScaleAspectFit
+        postPhoto.layer.cornerRadius = 4
+        postPhoto.clipsToBounds = true
         
-        postText.backgroundColor = UIColor.WDTGrayBlueColor()
-        postText.textColor = UIColor.grayColor()
+        postText.backgroundColor = UIColor.whiteColor()
+        postText.textColor = UIColor.blackColor()
         postText.editable = false
         postText.scrollEnabled = false
         postText.userInteractionEnabled = true;
         postText.dataDetectorTypes = [.Link, .PhoneNumber]
-        
         
         // Rounded Square Image
         avaImage.layer.cornerRadius = 8.0
@@ -139,12 +140,21 @@ class PostCell: UITableViewCell {
         avaImage.addGestureRecognizer(tapGestureRecognizer)
         
         userNameLbl.font = UIFont.WDTAgoraRegular(12)
-        userNameLbl.textColor = UIColor.WDTBlueColor()
+        userNameLbl.textColor = UIColor.blackColor()
         
-        moreBtn.setTitleColor(UIColor.grayColor(), forState: .Normal)
-        moreBtn.titleLabel?.font = UIFont.WDTAgoraRegular(12)
-        moreBtn.setTitleColor(UIColor.WDTBlueColor(), forState: .Normal)
+        moreBtn.setImage(UIImage(named: "ic_more_posts"), forState: .Normal)
+        moreBtn.titleLabel?.font = UIFont.wddSmallgreenFont()
+        moreBtn.setTitleColor(UIColor.wddGreenColor(), forState: .Normal)
         moreBtn.setTitle("More posts...", forState: .Normal)
+        
+        let bottomView = UIView()
+        cardView.addSubview(bottomView)
+        bottomView.snp_makeConstraints { (make) in
+            make.top.equalTo(moreBtn.snp_bottom)
+            make.height.equalTo(6)
+            make.left.equalTo(cardView)
+            make.right.equalTo(cardView)
+        }
         
         
         firstNameLbl.textColor = UIColor.grayColor()
@@ -213,8 +223,8 @@ class PostCell: UITableViewCell {
             } else {
                 make.top.equalTo(avaImage.snp_bottom).offset(10)
             }
-            make.left.equalTo(cardView).offset(10)
-            make.right.equalTo(cardView).offset(-10)
+            make.left.equalTo(cardView).offset(6.x2)
+            make.right.equalTo(cardView).offset(-6.x2)
             make.bottom.equalTo(cardView).offset(-25)
             
         })
@@ -224,38 +234,35 @@ class PostCell: UITableViewCell {
         if isHeightCalculated == false {
             
             postPhoto.snp_remakeConstraints(closure: { (make) in
-                make.top.equalTo(avaImage.snp_bottom).offset(15)
-                make.left.equalTo(cardView).offset(10)
-                make.right.equalTo(cardView).offset(-10)
+                make.top.equalTo(cardView).offset(28.x2)
+                make.left.equalTo(cardView).offset(6.x2)
+                make.right.equalTo(cardView).offset(-6.x2)
                 make.height.equalTo(postPhoto.snp_width)
-
-//                if let img = postPhoto.image {
-//                    let scale = img.size.height / img.size.width
-//                    make.height.equalTo(postPhoto.snp_width).multipliedBy(scale)
-//                } else {
-//                    make.height.equalTo(postPhoto.snp_width).multipliedBy(0.625)
-//                }
-                
             })
 
 
             cardView.snp_remakeConstraints { (make) in
                 make.top.equalTo(contentView).offset(10)
-                make.left.equalTo(contentView).offset(10)
-                make.right.equalTo(contentView).offset(-10)
+                make.left.equalTo(contentView).offset(6.x2)
+                make.right.equalTo(contentView).offset(-6.x2)
                 make.bottom.equalTo(contentView).priority(751)
             }
             
             avaImage.snp_remakeConstraints(closure: { (make) in
-                make.top.equalTo(cardView).offset(10)
-                make.left.equalTo(cardView).offset(10)
-                make.width.equalTo(50)
-                make.height.equalTo(50)
+                make.top.equalTo(cardView).offset(6.x2)
+                make.left.equalTo(cardView).offset(6.x2)
+                make.width.equalTo(16.x2)
+                make.height.equalTo(16.x2)
             })
             
             userNameLbl.snp_remakeConstraints(closure: { (make) in
-                make.left.equalTo(avaImage.snp_right).offset(7)
-                make.top.equalTo(cardView).offset(5)
+                make.left.equalTo(avaImage.snp_right).offset(6.x2)
+                make.top.equalTo(cardView).offset(6.5.x2)
+            })
+            
+            timeLbl.snp_remakeConstraints(closure: { (make) in
+                make.left.equalTo(avaImage.snp_right).offset(6.x2)
+                make.top.equalTo(userNameLbl.snp_bottom).offset(1.5.x2)
             })
         
             firstNameLbl.snp_remakeConstraints(closure: { (make) in
@@ -264,26 +271,23 @@ class PostCell: UITableViewCell {
             })
             
             settings.snp_remakeConstraints(closure: { (make) in
-                make.right.equalTo(cardView).offset(-10)
-                make.top.equalTo(cardView).offset(10)
+                make.right.equalTo(cardView).offset(-6.x2)
+                make.top.equalTo(cardView).offset(2.x2)
                 make.width.equalTo(25)
                 make.height.equalTo(25)
             })
 
-            timeLbl.snp_remakeConstraints(closure: { (make) in
-                make.right.equalTo(cardView).offset(-10)
-                make.top.equalTo(settings.snp_bottom).offset(10)
-            })
+            
         
             distanceLbl.snp_remakeConstraints(closure: { (make) in
-                make.right.equalTo(cardView).offset(-10)
-                make.top.equalTo(timeLbl.snp_bottom).offset(5)
+                make.right.equalTo(cardView).offset(-6.x2)
+                make.top.equalTo(settings.snp_bottom).offset(1.x2)
             })
         
 
             moreBtn.snp_remakeConstraints { (make) in
-                make.top.equalTo(postText.snp_bottom).offset(2)
-                make.right.equalTo(cardView).offset(-10)
+                make.top.equalTo(postText.snp_bottom).offset(5.5)
+                make.left.equalTo(cardView).offset(6.x2)
             }
 
         
