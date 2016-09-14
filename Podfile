@@ -27,6 +27,7 @@ pod 'RAMAnimatedTabBarController'
 pod 'StatefulViewController'
 pod 'PermissionScope'
 pod 'SRKControls'
+pod 'SkyFloatingLabelTextField'
 
 end
 

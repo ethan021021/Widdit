@@ -139,7 +139,7 @@ class WelcomeVC: UIViewController {
         
         let signUpBtn: UIButton = UIButton(type: .Custom)
         signUpBtn.titleLabel?.font = UIFont.WDTAgoraRegular(10.5 * 2)
-        signUpBtn.setTitle("Sign in", forState: .Normal)
+        signUpBtn.setTitle("Sign up", forState: .Normal)
         signUpBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         signUpBtn.addTarget(self, action: #selector(signUpBtnTapped), forControlEvents: .TouchUpInside)
         view.addSubview(signUpBtn)

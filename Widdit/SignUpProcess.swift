@@ -341,13 +341,14 @@ class SignUpPinVerification: SignUp {
 
 import ALCameraViewController
 import SRKControls
+import SkyFloatingLabelTextField
 
 class SignUpMain: SignUp {
-    let usernameTF = UITextField()
-    let nameTF = UITextField()
-    let emailTF = UITextField()
-    let birthdayTF = UITextField()
-//    let passwordTF = UITextField()
+    let usernameTF = SkyFloatingLabelTextField()
+    let nameTF = SkyFloatingLabelTextField()
+    let emailTF = SkyFloatingLabelTextField()
+//    let birthdayTF = UITextField()
+    let passwordTF = SkyFloatingLabelTextField()
 //    let passwordAgainTF = UITextField()
     let avatarBtn: UIButton = UIButton(type: .Custom)
     
@@ -371,10 +372,11 @@ class SignUpMain: SignUp {
         view.addSubview(avatarBtn)
         avatarBtn.snp_makeConstraints { (make) in
             make.top.equalTo(view).offset(6.x2 + 32.x2)
-            make.left.equalTo(view).offset(58.x2)
+            make.centerX.equalTo(view)
             make.width.equalTo(44.x2)
             make.height.equalTo(44.x2)
         }
+        
         
         let addAvatarBtn: UIButton = UIButton(type: .Custom)
         addAvatarBtn.titleLabel?.font = UIFont.wddSmallgreencenterFont()
@@ -391,86 +393,89 @@ class SignUpMain: SignUp {
         usernameTF.autocapitalizationType = .None
         usernameTF.becomeFirstResponder()
         usernameTF.placeholder = "Username"
+        usernameTF.title = "Username"
+        usernameTF.lineHeight = 1
+        usernameTF.selectedLineHeight = 1
+        usernameTF.lineColor = UIColor.wddSilverColor()
+        usernameTF.selectedLineColor = UIColor.wddSilverColor()
         view.addSubview(usernameTF)
         usernameTF.snp_makeConstraints { (make) in
             make.top.equalTo(addAvatarBtn.snp_bottom).offset(19.x2)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
-            make.height.equalTo(11.5.x2)
+            make.height.equalTo(21.5.x2)
         }
         
-        let usernameBottomLine = UIView()
-        usernameBottomLine.backgroundColor = UIColor.wddSilverColor()
-        view.addSubview(usernameBottomLine)
-        usernameBottomLine.snp_makeConstraints { (make) in
-            make.left.equalTo(view).offset(10.x2)
-            make.right.equalTo(view).offset(-10.x2)
-            make.top.equalTo(usernameTF.snp_bottom).offset(4.x2)
-            make.height.equalTo(0.5.x2)
-        }
-        
-        nameTF.placeholder = "Name"
-        nameTF.autocapitalizationType = .None
-        view.addSubview(nameTF)
-        nameTF.snp_makeConstraints { (make) in
+
+        passwordTF.placeholder = "Password"
+        passwordTF.title = "Password"
+        passwordTF.autocapitalizationType = .None
+        passwordTF.secureTextEntry = true
+        view.addSubview(passwordTF)
+        passwordTF.lineHeight = 1
+        passwordTF.selectedLineHeight = 1
+        passwordTF.lineColor = UIColor.wddSilverColor()
+        passwordTF.selectedLineColor = UIColor.wddSilverColor()
+        passwordTF.snp_makeConstraints { (make) in
             make.top.equalTo(usernameTF.snp_bottom).offset(22.x2)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
-            make.height.equalTo(11.5.x2)
+            make.height.equalTo(21.5.x2)
         }
         
-        let nameBottomLine = UIView()
-        nameBottomLine.backgroundColor = UIColor.wddSilverColor()
-        view.addSubview(nameBottomLine)
-        nameBottomLine.snp_makeConstraints { (make) in
+        nameTF.placeholder = "Name"
+        nameTF.title = "Name"
+        nameTF.autocapitalizationType = .None
+        view.addSubview(nameTF)
+        nameTF.lineHeight = 1
+        nameTF.selectedLineHeight = 1
+        nameTF.lineColor = UIColor.wddSilverColor()
+        nameTF.selectedLineColor = UIColor.wddSilverColor()
+        nameTF.snp_makeConstraints { (make) in
+            make.top.equalTo(passwordTF.snp_bottom).offset(22.x2)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
-            make.top.equalTo(nameTF.snp_bottom).offset(4.x2)
-            make.height.equalTo(0.5.x2)
+            make.height.equalTo(21.5.x2)
         }
         
+        
         emailTF.placeholder = "E-mail"
+        emailTF.title = "E-mail"
         emailTF.autocapitalizationType = .None
-        emailTF.secureTextEntry = true
+        emailTF.lineHeight = 1
+        emailTF.selectedLineHeight = 1
+        emailTF.lineColor = UIColor.wddSilverColor()
+        emailTF.selectedLineColor = UIColor.wddSilverColor()
         view.addSubview(emailTF)
         emailTF.snp_makeConstraints { (make) in
             make.top.equalTo(nameTF.snp_bottom).offset(22.x2)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
-            make.height.equalTo(11.5.x2)
+            make.height.equalTo(21.5.x2)
         }
         
-        let emailBottomLine = UIView()
-        emailBottomLine.backgroundColor = UIColor.wddSilverColor()
-        view.addSubview(emailBottomLine)
-        emailBottomLine.snp_makeConstraints { (make) in
-            make.left.equalTo(view).offset(10.x2)
-            make.right.equalTo(view).offset(-10.x2)
-            make.top.equalTo(emailTF.snp_bottom).offset(4.x2)
-            make.height.equalTo(0.5.x2)
-        }
         
-        birthdayTF.placeholder = "Birthday"
-        birthdayTF.autocapitalizationType = .None
-        birthdayTF.secureTextEntry = true
-        
-        view.addSubview(birthdayTF)
-        birthdayTF.snp_makeConstraints { (make) in
-            make.top.equalTo(emailTF.snp_bottom).offset(22.x2)
-            make.left.equalTo(view).offset(10.x2)
-            make.right.equalTo(view).offset(-10.x2)
-            make.height.equalTo(11.5.x2)
-        }
-        
-        let birthdayBottomLine = UIView()
-        birthdayBottomLine.backgroundColor = UIColor.wddSilverColor()
-        view.addSubview(birthdayBottomLine)
-        birthdayBottomLine.snp_makeConstraints { (make) in
-            make.left.equalTo(view).offset(10.x2)
-            make.right.equalTo(view).offset(-10.x2)
-            make.top.equalTo(birthdayTF.snp_bottom).offset(4.x2)
-            make.height.equalTo(0.5.x2)
-        }
+//        birthdayTF.placeholder = "Birthday"
+//        birthdayTF.autocapitalizationType = .None
+//        birthdayTF.secureTextEntry = true
+//        
+//        view.addSubview(birthdayTF)
+//        birthdayTF.snp_makeConstraints { (make) in
+//            make.top.equalTo(em3ailTF.snp_bottom).offset(22.x2)
+//            make.left.equalTo(view).offset(10.x2)
+//            make.right.equalTo(view).offset(-10.x2)
+//            make.height.equalTo(11.5.x2)
+//        }
+//        
+//        let birthdayBottomLine = UIView()
+//        birthdayBottomLine.backgroundColor = UIColor.wddSilverColor()
+//        view.addSubview(birthdayBottomLine)
+//        birthdayBottomLine.snp_makeConstraints { (make) in
+//            make.left.equalTo(view).offset(10.x2)
+//            make.right.equalTo(view).offset(-10.x2)
+//            make.top.equalTo(birthdayTF.snp_bottom).offset(4.x2)
+//            make.height.equalTo(0.5.x2)
+//        }
         
         let registerBtn: UIButton = UIButton(type: .Custom)
         registerBtn.setBackgroundColor(UIColor.wddGreenColor(), forUIControlState: .Normal)
@@ -516,30 +521,41 @@ class SignUpMain: SignUp {
     }
     
     func nextBtnTapped() {
-        showHud()
-        PFUser.logInWithUsernameInBackground("igor", password: "q") { (user: PFUser?, error: NSError?) -> Void in
-            user!["signUpFinished"] = true
-            self.hideHud()
-            if error == nil {
-                print(user)
-                // Remember user or save in App Memory did the user login or not
-                NSUserDefaults.standardUserDefaults().setObject(user!.username?.lowercaseString, forKey: "username")
-                NSUserDefaults.standardUserDefaults().synchronize()
-                
-                // Call Login Function from AppDelegate.swift class
-                let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                appDelegate.login()
-            } else {
-                let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .Alert)
-                let ok = UIAlertAction(title: "Ok", style: .Cancel, handler: nil)
-                alert.addAction(ok)
-                self.presentViewController(alert, animated: true, completion: nil)
-                
-            }
+//        showHud()
+//        PFUser.logInWithUsernameInBackground("igor", password: "q") { (user: PFUser?, error: NSError?) -> Void in
+//            user!["signUpFinished"] = true
+//            self.hideHud()
+//            if error == nil {
+//                print(user)
+//                // Remember user or save in App Memory did the user login or not
+//                NSUserDefaults.standardUserDefaults().setObject(user!.username?.lowercaseString, forKey: "username")
+//                NSUserDefaults.standardUserDefaults().synchronize()
+//                
+//                // Call Login Function from AppDelegate.swift class
+//                let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//                appDelegate.login()
+//            } else {
+//                let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .Alert)
+//                let ok = UIAlertAction(title: "Ok", style: .Cancel, handler: nil)
+//                alert.addAction(ok)
+//                self.presentViewController(alert, animated: true, completion: nil)
+//                
+//            }
+//        }
+        
+        
+        view.endEditing(true)
+        
+        guard let ava = self.user["ava"] else {
+            showAlert("Select avatar")
+            return
         }
         
-        /*
-        view.endEditing(true)
+        guard usernameTF.text?.isEmpty == false else {
+            showAlert("Enter username")
+            return
+        }
+        
         guard emailTF.text!.validateEmail() == true else {
             showAlert("Please provide correct email address")
             return
@@ -550,10 +566,10 @@ class SignUpMain: SignUp {
             return
         }
         
-        guard passwordTF.text == passwordAgainTF.text else {
-            showAlert("Reentered password is wrong")
-            return
-        }
+//        guard passwordTF.text == passwordAgainTF.text else {
+//            showAlert("Reentered password is wrong")
+//            return
+//        }
         
         let userQuery = PFUser.query()
         
@@ -571,14 +587,26 @@ class SignUpMain: SignUp {
             self.user["firstName"] = self.usernameTF.text!
             self.user["email"] = self.emailTF.text!
             self.user.password = self.passwordTF.text!.lowercaseString
+            self.user.username = self.usernameTF.text!.lowercaseString
+            self.user["signUpFinished"] = true
             
-            phoneVerifyVC.user = self.user
-            phoneVerifyVC.facebookMode = self.facebookMode
-            self.navigationController?.pushViewController(phoneVerifyVC, animated: true)
+            let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            NSUserDefaults.standardUserDefaults().setObject(self.user.username, forKey: "username")
             
-            
+            if self.facebookMode {
+                self.user["facebookVerified"] = true
+                self.user.saveInBackgroundWithBlock({ (success, error) in
+                    appDelegate.login()
+                })
+            } else {
+                self.user.signUpInBackgroundWithBlock { (success, error) in
+                    if error == nil {
+                        appDelegate.login()
+                    }
+                }
+            }
         })
- */
+ 
     }
     
 

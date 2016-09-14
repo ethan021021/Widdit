@@ -9,7 +9,6 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.7.0)
   - CircleSlider (0.2.0)
-  - DZNEmptyDataSet (1.8.1)
   - FBSDKCoreKit (4.11.0):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.11.0):
@@ -31,6 +30,7 @@ PODS:
   - RAMAnimatedTabBarController (1.5.3)
   - SimpleAlert (1.3.1)
   - SinchVerification-Swift (1.4.4)
+  - SkyFloatingLabelTextField (1.2.1)
   - SlackTextViewController (1.9.3)
   - SnapKit (0.21.0)
   - SRKControls (3.0.6):
@@ -47,7 +47,6 @@ DEPENDENCIES:
   - AsyncSwift
   - Bolts
   - CircleSlider
-  - DZNEmptyDataSet
   - ImageViewer
   - IQKeyboardManagerSwift
   - Kingfisher (~> 2.4)
@@ -58,6 +57,7 @@ DEPENDENCIES:
   - RAMAnimatedTabBarController
   - SimpleAlert
   - SinchVerification-Swift
+  - SkyFloatingLabelTextField
   - SlackTextViewController
   - SnapKit
   - SRKControls
@@ -72,7 +72,6 @@ SPEC CHECKSUMS:
   AsyncSwift: 46a78bceb11f0e5bb52747f740d9692ec78d2d7c
   Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
   CircleSlider: 66e5bf0059f5feffc954e5666f5286f4a331ebe3
-  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
   FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
   ImageViewer: 00eae024d0cb2eebb4b228f4669b6c4872afadb9
@@ -86,6 +85,7 @@ SPEC CHECKSUMS:
   RAMAnimatedTabBarController: 04b624cf8958a0032bf7fa9c0f2c515f59d30b9c
   SimpleAlert: 05215ee656e1da1428998e76a76bb153a16c7a21
   SinchVerification-Swift: b62b0472825ce2be237d84c9ccc323eeccb4e0b6
+  SkyFloatingLabelTextField: 3f6610aded18e778df5cfab3b9e12a11b3e014e9
   SlackTextViewController: bd2a34c188d4f7dec93cf42388f38551263fac82
   SnapKit: 2756fe24b706367af224c9c508d2f9166d03354c
   SRKControls: 1b3c78d73436cf53bf087d5147ee6fc90700e7c5
@@ -94,6 +94,6 @@ SPEC CHECKSUMS:
   Whisper: 42a3ee7c2936f861b23d41bd6cd7dfd22f102405
   XCGLogger: d6e196e78940ff6daab17d6917107876f973fa31
 
-PODFILE CHECKSUM: 45564a4517077e73394e6ef10e72a1c222044734
+PODFILE CHECKSUM: 3b4e38a0aa79e7e70ad2694bc534a2e79bef7bf8
 
 COCOAPODS: 1.0.0
