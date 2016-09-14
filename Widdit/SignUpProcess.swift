@@ -11,7 +11,7 @@ import Parse
 import SinchVerification
 import ParseFacebookUtilsV4
 import libPhoneNumber_iOS
-import SwiftDate
+//import SwiftDate
 
 class SignUp: UIViewController {
     var user: PFUser! = nil
@@ -811,12 +811,12 @@ class SignUpSituation: SignUp {
             formatter.timeStyle = .NoStyle
             
             self.ageBtn.setTitle("\(formatter.stringFromDate(date))", forState: .Normal)
-            let newDate = date.add(18, months: 0, days: 0, hours: 0)
-            if newDate < NSDate() {
-                self.ageValidate = true
-            } else {
-                self.ageValidate = false
-            }
+//            let newDate = date.add(18, months: 0, days: 0, hours: 0)
+//            if newDate < NSDate() {
+//                self.ageValidate = true
+//            } else {
+//                self.ageValidate = false
+//            }
             
         }
     }

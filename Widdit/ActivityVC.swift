@@ -8,9 +8,9 @@
 
 import UIKit
 import Parse
-import StatefulViewController
+//import StatefulViewController
 
-class ActivityVC: UITableViewController, StatefulViewController {
+class ActivityVC: UITableViewController/*, StatefulViewController*/ {
     
     let activity = WDTActivity()
     var chatsAndDowns: [PFObject] = []
@@ -18,7 +18,7 @@ class ActivityVC: UITableViewController, StatefulViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        setupInitialViewState()
+//        setupInitialViewState()
     }
 
     override func viewDidLoad() {
@@ -31,32 +31,32 @@ class ActivityVC: UITableViewController, StatefulViewController {
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 60;
         
-        let activityEmptyView = UIView(frame: view.frame)
-        
-        let emptyImage = UIImageView(image: UIImage(named: "empty_feed"))
-        activityEmptyView.addSubview(emptyImage)
-        emptyImage.center = CGPointMake(activityEmptyView.frame.size.width / 2 , UIScreen.mainScreen().bounds.size.height / 2 * 0.8)
-        
-        let noActivityYetLbl = UILabel()
-        noActivityYetLbl.text = "No activity yet"
-        noActivityYetLbl.textColor = UIColor.wddTealColor()
-        noActivityYetLbl.font = UIFont.wddMiniteal10centerFont()
-        activityEmptyView.addSubview(noActivityYetLbl)
-        noActivityYetLbl.snp_makeConstraints { (make) in
-            make.centerX.equalTo(emptyImage)
-            make.top.equalTo(emptyImage.snp_bottom)
-        }
-        
-        emptyView = activityEmptyView
-        
+//        let activityEmptyView = UIView(frame: view.frame)
+//        
+//        let emptyImage = UIImageView(image: UIImage(named: "empty_feed"))
+//        activityEmptyView.addSubview(emptyImage)
+//        emptyImage.center = CGPointMake(activityEmptyView.frame.size.width / 2 , UIScreen.mainScreen().bounds.size.height / 2 * 0.8)
+//        
+//        let noActivityYetLbl = UILabel()
+//        noActivityYetLbl.text = "No activity yet"
+//        noActivityYetLbl.textColor = UIColor.wddTealColor()
+//        noActivityYetLbl.font = UIFont.wddMiniteal10centerFont()
+//        activityEmptyView.addSubview(noActivityYetLbl)
+//        noActivityYetLbl.snp_makeConstraints { (make) in
+//            make.centerX.equalTo(emptyImage)
+//            make.top.equalTo(emptyImage.snp_bottom)
+//        }
+//        
+//        emptyView = activityEmptyView
+//        
         
         
     }
     
-    func hasContent() -> Bool {
-        return chatsAndDowns.count > 0
-    }
-    
+//    func hasContent() -> Bool {
+//        return chatsAndDowns.count > 0
+//    }
+//    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         activity.requestDowns { (success) in
