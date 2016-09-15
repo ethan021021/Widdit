@@ -66,7 +66,7 @@ class PostCell: UITableViewCell {
     var postText: UITextView = UITextView()
     var moreBtn: UIButton = UIButton(type: .Custom)
     var timeLbl: UILabel = UILabel()
-    var firstNameLbl: UILabel = UILabel()
+//    var firstNameLbl: UILabel = UILabel()
     var userNameLbl: UILabel = UILabel()
     var settings: UIButton = UIButton()
     var cardView: WDTCellCardView = WDTCellCardView()
@@ -97,7 +97,7 @@ class PostCell: UITableViewCell {
 
     func configureSubviews() {
         backgroundColor = UIColor.wddSilverColor()
-//        cardView.backgroundColor = UIColor.clearColor()
+        cardView.backgroundColor = UIColor.whiteColor()
         
         self.contentView.addSubview(cardView)
 
@@ -105,7 +105,7 @@ class PostCell: UITableViewCell {
         cardView.addSubview(postPhoto)
         cardView.addSubview(postText)
         cardView.addSubview(timeLbl)
-        cardView.addSubview(firstNameLbl)
+//        cardView.addSubview(firstNameLbl)
         cardView.addSubview(userNameLbl)
         cardView.addSubview(moreBtn)
         cardView.addSubview(settings)
@@ -157,8 +157,8 @@ class PostCell: UITableViewCell {
         }
         
         
-        firstNameLbl.textColor = UIColor.grayColor()
-        firstNameLbl.font = UIFont.WDTAgoraRegular(12)
+//        firstNameLbl.textColor = UIColor.grayColor()
+//        firstNameLbl.font = UIFont.WDTAgoraRegular(12)
         
         timeLbl.textColor = UIColor.grayColor()
         timeLbl.font = UIFont.WDTAgoraRegular(12)
@@ -265,10 +265,10 @@ class PostCell: UITableViewCell {
                 make.top.equalTo(userNameLbl.snp_bottom).offset(1.5.x2)
             })
         
-            firstNameLbl.snp_remakeConstraints(closure: { (make) in
-                make.left.equalTo(avaImage.snp_right).offset(7)
-                make.top.equalTo(userNameLbl.snp_bottom).offset(3)
-            })
+//            firstNameLbl.snp_remakeConstraints(closure: { (make) in
+//                make.left.equalTo(avaImage.snp_right).offset(7)
+//                make.top.equalTo(userNameLbl.snp_bottom).offset(3)
+//            })
             
             settings.snp_remakeConstraints(closure: { (make) in
                 make.right.equalTo(cardView).offset(-6.x2)
@@ -310,7 +310,7 @@ class PostCell: UITableViewCell {
         self.user = user
         
         postText.text = post["postText"] as! String
-        firstNameLbl.text = user["firstName"] as? String
+//        firstNameLbl.text = user["firstName"] as? String
         userNameLbl.hidden = false
         moreBtn.hidden = false
         

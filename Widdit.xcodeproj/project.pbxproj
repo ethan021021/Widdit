@@ -43,6 +43,7 @@
 		A62E342E1D37E3A7001762F9 /* SignUpProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62E342D1D37E3A7001762F9 /* SignUpProcess.swift */; };
 		A638AC6E1D2A617400AC5781 /* WDTHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A638AC6D1D2A617400AC5781 /* WDTHeader.swift */; };
 		A66019011D3832ED00FC9F9B /* DatePickerDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66019001D3832ED00FC9F9B /* DatePickerDialog.swift */; };
+		A66B82181D8AC63B000D940D /* AboutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B82171D8AC63B000D940D /* AboutCell.swift */; };
 		A67240FB1D1808440060FAC0 /* WDTPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67240FA1D1808440060FAC0 /* WDTPush.swift */; };
 		A67241011D1812D60060FAC0 /* AgoraSansProItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A67240FC1D1812D60060FAC0 /* AgoraSansProItalic.ttf */; };
 		A67241021D1812D60060FAC0 /* AgoraSansProLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A67240FD1D1812D60060FAC0 /* AgoraSansProLight.ttf */; };
@@ -106,6 +107,8 @@
 		A62E342D1D37E3A7001762F9 /* SignUpProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpProcess.swift; sourceTree = "<group>"; };
 		A638AC6D1D2A617400AC5781 /* WDTHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTHeader.swift; sourceTree = "<group>"; };
 		A66019001D3832ED00FC9F9B /* DatePickerDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDialog.swift; sourceTree = "<group>"; };
+		A66B82171D8AC63B000D940D /* AboutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutCell.swift; sourceTree = "<group>"; };
+		A66B82191D8AEE9C000D940D /* Widdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widdit.entitlements; sourceTree = "<group>"; };
 		A67240FA1D1808440060FAC0 /* WDTPush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPush.swift; sourceTree = "<group>"; };
 		A67240FC1D1812D60060FAC0 /* AgoraSansProItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProItalic.ttf; sourceTree = "<group>"; };
 		A67240FD1D1812D60060FAC0 /* AgoraSansProLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = AgoraSansProLight.ttf; sourceTree = "<group>"; };
@@ -171,6 +174,7 @@
 		31F12E891C9E115B00E63A2E /* Widdit */ = {
 			isa = PBXGroup;
 			children = (
+				A66B82191D8AEE9C000D940D /* Widdit.entitlements */,
 				31F12E8A1C9E115B00E63A2E /* AppDelegate.swift */,
 				311147651CAB42AE00150ECD /* Main.storyboard */,
 				A67240F91D1808220060FAC0 /* WDTUtils */,
@@ -282,6 +286,7 @@
 				31F12ED91C9E6A5700E63A2E /* ActivityCell.swift */,
 				79B4D4831CC80D150073B65D /* MessageTableViewCell.swift */,
 				A67241181D19326F0060FAC0 /* FeedFooter.swift */,
+				A66B82171D8AC63B000D940D /* AboutCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -362,6 +367,9 @@
 							};
 							com.apple.InAppPurchase = {
 								enabled = 0;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
 							};
 							com.apple.Push = {
 								enabled = 1;
@@ -465,6 +473,7 @@
 				A6B893661D3D43870013234E /* Extension.swift in Sources */,
 				A6B9D0051D1D87640099F907 /* WDTImageProvider.swift in Sources */,
 				A67241081D18177D0060FAC0 /* WDTActivity.swift in Sources */,
+				A66B82181D8AC63B000D940D /* AboutCell.swift in Sources */,
 				31F12E8B1C9E115B00E63A2E /* AppDelegate.swift in Sources */,
 				79B4D4841CC80D150073B65D /* MessageTableViewCell.swift in Sources */,
 				31F12ECC1C9E185600E63A2E /* MorePostsVC.swift in Sources */,
@@ -610,6 +619,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Widdit/Widdit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: John McCants (VJDF2B67L9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: John McCants (VJDF2B67L9)";
 				ENABLE_BITCODE = NO;
@@ -638,6 +648,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Widdit/Widdit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: John McCants (7HTV4A5W6Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: John McCants (7HTV4A5W6Y)";
 				ENABLE_BITCODE = NO;

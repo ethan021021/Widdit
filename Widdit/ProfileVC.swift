@@ -16,7 +16,7 @@ import Whisper
 class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
 
     
-    var tableView: UITableView = UITableView(frame: CGRectZero, style: .Plain)
+    var tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
     var configuration: ImageViewerConfiguration!
     let imageProvider = WDTImageProvider()
     // Page Size
@@ -30,6 +30,7 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
     var headerView: UIView!
     
     var avatars: [PFFile] = []
+    var infoSelected = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +41,10 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         
         tableView.registerClass(FeedFooter.self, forHeaderFooterViewReuseIdentifier: "FeedFooter")
         tableView.registerClass(PostCell.self, forCellReuseIdentifier: "PostCell")
-        tableView.backgroundColor = UIColor.whiteColor()
+        tableView.registerClass(AboutCell.self, forCellReuseIdentifier: "AboutCell")
+        tableView.registerClass(ProfileCell.self, forCellReuseIdentifier: "ProfileCell")
+        
+        tableView.backgroundColor = UIColor.wddSilverColor()
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 150.0;
         tableView.separatorStyle = .None
@@ -65,11 +69,12 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         scrollView.showsHorizontalScrollIndicator = false
         
         
-        let wdtHeader = WDTHeader(frame: CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds) + 100));
+        let wdtHeader = WDTHeader(frame: CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds) + 50))
         
-        print(user["firstName"] as? String)
-//        wdtHeader.setName(user["firstName"] as? String)
-        wdtHeader.setName("John Smith")
+        wdtHeader.segmentedControl.addTarget(self, action: #selector(wdtHeaderSegmentedControlTapped), forControlEvents: .ValueChanged)
+        wdtHeader.segmentedControl.selectedSegmentIndex = 0
+        
+        wdtHeader.setName(PFUser.currentUser()!["firstName"] as? String)
         
         WDTAvatar.countAvatars(user) { (num) in
             scrollView.contentSize = CGSizeMake(self.view.frame.width * CGFloat(num), self.headerHeight)
@@ -93,59 +98,20 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         }
         wdtHeader.setImages(avatars)
         
-        
-        if let _ = user["phoneNumber"] {
-            wdtHeader.phoneVerified.tintColor = UIColor.whiteColor()
-            wdtHeader.phoneVerified.selected = true
-            
-        }
-        
-        if let _ = user["email"] {
-            wdtHeader.emailVerified.tintColor = UIColor.whiteColor()
-            wdtHeader.emailVerified.selected = true
-        }
-        
-        if let facebookVerified = user["facebookVerified"] as? Bool where facebookVerified == true {
-            wdtHeader.facebookVerified.tintColor = UIColor.whiteColor()
-            wdtHeader.facebookVerified.selected = true
-        }
-        
-        if let about = user["about"] as? String {
-            if about.characters.count > 0 {
-                wdtHeader.setAbout(about)
-                wdtHeader.frame.size.height += 60
-            }
-        }
-        
-        if let situation = user["situationSchool"] as? Bool {
-            wdtHeader.schoolSituation.tintColor = UIColor.whiteColor()
-            wdtHeader.schoolSituation.selected = situation
-        }
-        
-        if let situation = user["situationWork"] as? Bool {
-            wdtHeader.workingSituation.tintColor = UIColor.whiteColor()
-            wdtHeader.workingSituation.selected = situation
-        }
-        
-        if let situation = user["situationOpportunity"] as? Bool {
-            wdtHeader.opportunitySituation.tintColor = UIColor.whiteColor()
-            wdtHeader.opportunitySituation.selected = situation
-        }
-        
+
         tableView.tableHeaderView = wdtHeader
         self.loadPosts()
         
-        if user.username == PFUser.currentUser()?.username {
-            
-            let settingsBtn = UIButton()
-            settingsBtn.setImage(UIImage(named: "ic_settings"), forState: .Normal)
-            settingsBtn.addTarget(self, action: #selector(editButtonTapped), forControlEvents: .TouchUpInside)
-            view.addSubview(settingsBtn)
-            settingsBtn.snp_makeConstraints(closure: { (make) in
-                make.top.equalTo(view).offset(16.x2)
-                make.right.equalTo(view).offset(-6.x2)
-            })
-        }
+        let settingsBtn = UIButton()
+        settingsBtn.setImage(UIImage(named: "ic_settings"), forState: .Normal)
+        settingsBtn.addTarget(self, action: #selector(editButtonTapped), forControlEvents: .TouchUpInside)
+        view.addSubview(settingsBtn)
+        settingsBtn.snp_makeConstraints(closure: { (make) in
+            make.top.equalTo(view).offset(16.x2)
+            make.right.equalTo(view).offset(-6.x2)
+        })
+        settingsBtn.hidden = user.username != PFUser.currentUser()?.username
+
     }
     
     
@@ -157,25 +123,33 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
     
     func editButtonTapped() {
         
-//        showAlert("Edit")
-//        let alert = SimpleAlert.Controller(view: nil, style: .ActionSheet)
-//        alert.addAction(SimpleAlert.Action(title: "Edit", style: .Default) { action in
+        
+        let alert = SimpleAlert.Controller(view: nil, style: .ActionSheet)
+        alert.addAction(SimpleAlert.Action(title: "Edit", style: .Default) { action in
             let destVC = ProfileEditVC()
             destVC.view.backgroundColor = UIColor.whiteColor()
             let nc = UINavigationController(rootViewController: destVC)
             self.presentViewController(nc, animated: true, completion: nil)
-//        })
+        })
         
-//        alert.addAction(SimpleAlert.Action(title: "Logout", style: .Destructive) { action in
-//            self.logout()
-//        })
-//        
-//        alert.addAction(SimpleAlert.Action(title: "Cancel", style: .Cancel))
-//        
-//        presentViewController(alert, animated: true, completion: nil)
+        alert.addAction(SimpleAlert.Action(title: "Logout", style: .Destructive) { action in
+            self.logout()
+        })
+
+        alert.addAction(SimpleAlert.Action(title: "Cancel", style: .Cancel))
+
+        presentViewController(alert, animated: true, completion: nil)
         
     }
     
+    func wdtHeaderSegmentedControlTapped(sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            infoSelected = false
+        } else {
+            infoSelected = true
+        }
+        tableView.reloadData()
+    }
 
     override func loadPosts() {
         PFGeoPoint.geoPointForCurrentLocationInBackground {
@@ -191,92 +165,164 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        
-    }
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-//        UIApplication.sharedApplication().keyWindow?.backgroundColor = UIColor.clearColor()
-//        UINavigationBar.appearance().clipsToBounds = true
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-//        UIApplication.sharedApplication().keyWindow?.backgroundColor = UIColor.wddTealColor()
-//        UINavigationBar.appearance().clipsToBounds = true
-    }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if infoSelected == true {
+            if section == 0 {
+                return 1
+            } else {
+                return 3
+            }
+        }
         return 1
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.wdtPost.collectionOfAllPosts.count
+        if infoSelected == true {
+            return 3
+        } else {
+            return self.wdtPost.collectionOfAllPosts.count
+        }
     }
-    
     
     // Create table view rows
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)
         -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCellWithIdentifier("PostCell", forIndexPath: indexPath) as! PostCell
-        let post = wdtPost.collectionOfAllPosts[indexPath.section]
-//        cell.feed = self
-        cell.moreBtn.tag = indexPath.section
-        cell.moreBtn.addTarget(self, action: #selector(moreBtnTapped), forControlEvents: .TouchUpInside)
-        cell.geoPoint = self.geoPoint
-        cell.fillCell(post)
-        cell.moreBtn.hidden = true
-        
-        cell.setNeedsUpdateConstraints()
-        cell.updateConstraintsIfNeeded()
+        if infoSelected == true {
+            if indexPath.section == 0 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("AboutCell", forIndexPath: indexPath) as! AboutCell
+                if let about = user["about"] as? String {
+                    cell.fillCell(about)
+                }
+                
+                return cell
 
-        return cell
+            } else if indexPath.section == 1 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("ProfileCell", forIndexPath: indexPath) as! ProfileCell
+                cell.tag = indexPath.row
+                if indexPath.row == 0 {
+                    cell.fillCellSituation(.School, user: user)
+                } else if indexPath.row == 1 {
+                    cell.fillCellSituation(.Working, user: user)
+                } else if indexPath.row == 2 {
+                    cell.fillCellSituation(.Opportunity, user: user)
+                }
+                
+                return cell
+                
+            } else if indexPath.section == 2 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("ProfileCell", forIndexPath: indexPath) as! ProfileCell
+                cell.tag = indexPath.row
+                if indexPath.row == 0 {
+                    cell.fillCellVerification(.Phone, user: user)
+                } else if indexPath.row == 1 {
+                    cell.fillCellVerification(.Email, user: user)
+                } else if indexPath.row == 2 {
+                    cell.fillCellVerification(.Facebook, user: user)
+                }
+                
+                return cell
+                
+            }
+
+            return UITableViewCell()
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("PostCell", forIndexPath: indexPath) as! PostCell
+            let post = wdtPost.collectionOfAllPosts[indexPath.section]
+            cell.moreBtn.tag = indexPath.section
+            cell.moreBtn.addTarget(self, action: #selector(moreBtnTapped), forControlEvents: .TouchUpInside)
+            cell.geoPoint = self.geoPoint
+            cell.fillCell(post)
+            cell.moreBtn.hidden = true
+            
+            cell.setNeedsUpdateConstraints()
+            cell.updateConstraintsIfNeeded()
+            
+            return cell
+        }
+        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as! PostCell
+        if infoSelected == false {
         
-        if let img = currentCell.postPhoto.image {
+            let indexPath = tableView.indexPathForSelectedRow
+            let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as! PostCell
             
-            imageProvider.image = img
-            let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: currentCell.postPhoto)
-            
-            presentImageViewer(imageViewer)
+            if let img = currentCell.postPhoto.image {
+                
+                imageProvider.image = img
+                let imageViewer = ImageViewer(imageProvider: imageProvider, configuration: configuration, displacedView: currentCell.postPhoto)
+                
+                presentImageViewer(imageViewer)
+            }
         }
+        
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let post = self.wdtPost.collectionOfAllPosts[section]
-        let user = post["user"] as! PFUser
-        
-        if PFUser.currentUser()?.username == user.username {
+        if infoSelected == true {
             return 0
         } else {
-            return 55
+            let post = self.wdtPost.collectionOfAllPosts[section]
+            let user = post["user"] as! PFUser
+            
+            if PFUser.currentUser()?.username == user.username {
+                return 0
+            } else {
+                return 55
+            }
         }
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        let footer = self.tableView.dequeueReusableHeaderFooterViewWithIdentifier("FeedFooter")
-        let footerView = footer as! FeedFooter
-        let post = self.wdtPost.collectionOfAllPosts[section]
-        let user = post["user"] as! PFUser
-        
-        if PFUser.currentUser()?.username == user.username {
+        if infoSelected == true {
             return nil
         } else {
-//            footerView.feed = self
-            footerView.setDown(user, post: post)
+            let footer = self.tableView.dequeueReusableHeaderFooterViewWithIdentifier("FeedFooter")
+            let footerView = footer as! FeedFooter
+            let post = self.wdtPost.collectionOfAllPosts[section]
+            let user = post["user"] as! PFUser
+            
+            if PFUser.currentUser()?.username == user.username {
+                return nil
+            } else {
+                //            footerView.feed = self
+                footerView.setDown(user, post: post)
+            }
+            
+            return footerView
         }
         
-        return footerView
         
+    }
+    
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        if infoSelected == true {
+            let headerView = UIView()
+            let headerLbl = UILabel()
+            headerView.addSubview(headerLbl)
+            headerLbl.font = UIFont.wddMicrotealFont()
+            headerLbl.textColor = UIColor.wddTealColor()
+            headerLbl.snp_makeConstraints { (make) in
+                make.left.equalTo(headerView).offset(6.x2)
+                make.bottom.equalTo(headerView).offset(-6.x2)
+            }
+            
+            if section == 0 {
+                headerLbl.text = "ABOUT"
+            } else if section == 1 {
+                headerLbl.text = "SITUATION"
+            } else if section == 2 {
+                headerLbl.text = "VERIFICATION"
+            }
+            
+            return headerView
+        }
+        
+        return nil
     }
 
     func moreBtnTapped(sender: AnyObject) {

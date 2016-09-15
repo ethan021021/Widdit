@@ -60,7 +60,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = UIColor.WDTBlueColor()
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.wddBodylightinvertcenterFont()], forState: .Normal)
         
-
+        UITabBar.appearance().tintColor = UIColor.redColor()
+        // Sets the default color of the background of the UITabBar
+        UITabBar.appearance().barTintColor = UIColor.whiteColor()
+        
         //app wide status bar changes
         UINavigationBar.appearance().barStyle = .Black
 
@@ -155,7 +158,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 profileNC.navigationBarHidden = true
 
                 let controllers = [feedNC, activityNC, profileNC]
-                window?.rootViewController = RAMAnimatedTabBarController(viewControllers: controllers)
+                let tabBar = RAMAnimatedTabBarController(viewControllers: controllers)
+                window?.rootViewController = tabBar
              
             }
         } else {
