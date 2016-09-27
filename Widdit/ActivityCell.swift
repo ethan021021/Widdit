@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import Presentr
 
 class ActivityCell: UITableViewCell {
     var avaImg: UIImageView = UIImageView()
@@ -21,6 +22,8 @@ class ActivityCell: UITableViewCell {
     var byUser: PFUser!
     var whoRepliedLast: PFUser!
     var post: PFObject!
+    
+    
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,7 +51,8 @@ class ActivityCell: UITableViewCell {
 
         
         contentView.addSubview(title)
-        title.font = UIFont.WDTAgoraRegular(16)
+        title.font = UIFont.wddMicrogreyFont()
+        title.textColor = UIColor.lightGrayColor()
 
         contentView.addSubview(postText)
         postText.numberOfLines = 2
@@ -58,13 +62,15 @@ class ActivityCell: UITableViewCell {
         
         contentView.addSubview(replyButton)
         replyButton.setTitle("Reply", forState: .Normal)
-        replyButton.setTitleColor(UIColor.WDTBlueColor(), forState: .Normal)
-        replyButton.titleLabel?.font = UIFont.WDTAgoraRegular(16)
+        replyButton.setImage(UIImage(named: "ic_reply"), forState: .Normal)
+        replyButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        replyButton.titleLabel?.font = UIFont.wddSmallFont()
         replyButton.selected = true
         replyButton.addTarget(self, action: #selector(replyButtonTapped), forControlEvents: .TouchUpInside)
     }
     
     func fillCell(activityObject: PFObject) {
+        print(activityObject)
         let postText = activityObject["postText"] as! String
         byUser = activityObject["by"] as! PFUser
         toUser = activityObject["to"] as! PFUser
@@ -173,7 +179,9 @@ class ActivityCell: UITableViewCell {
         
         destVC.usersPost = post
         destVC.comeFromTheFeed = false
-        activityVC.navigationController?.pushViewController(destVC, animated: true)
+
+        activityVC.customPresentViewController(presenter, viewController: destVC, animated: true, completion: nil)
+        
     }
     
     func avaImgTapped(sender: AnyObject) {

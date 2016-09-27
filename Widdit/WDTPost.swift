@@ -24,12 +24,28 @@ class WDTPost {
         }
     }
     
-    func requestPosts(completion: (success: Bool) -> Void) {
+    func requestPosts(geoPoint: PFGeoPoint?, world: Bool?, completion: (success: Bool) -> Void) {
         let query = PFQuery(className: "posts")
         query.limit = 10
         query.addDescendingOrder("createdAt")
         query.includeKey("user")
         query.whereKeyExists("user")
+        
+        if let geoPoint = geoPoint, world = world {
+            if world == true {
+                let excludeQuery = PFQuery(className: "posts")
+                excludeQuery.limit = 10
+                excludeQuery.addDescendingOrder("createdAt")
+                excludeQuery.includeKey("user")
+                excludeQuery.whereKeyExists("user")
+                excludeQuery.whereKey("geoPoint", nearGeoPoint: geoPoint, withinMiles: 25)
+                
+                
+                query.whereKey("objectId", doesNotMatchKey: "objectId", inQuery: excludeQuery)
+            } else {
+                query.whereKey("geoPoint", nearGeoPoint: geoPoint, withinMiles: 25)
+            }
+        }
         
         
         

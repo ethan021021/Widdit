@@ -16,6 +16,7 @@ import IQKeyboardManagerSwift
 import Whisper
 import RAMAnimatedTabBarController
 
+import Instabug
 let log = XCGLogger.defaultInstance()
 
 @UIApplicationMain
@@ -33,9 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(NewPostVC.self)
         IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(ReplyViewController.self)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(SignUpPhone.self)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(SignUpPinVerification.self)
         
         IQKeyboardManager.sharedManager().disableDistanceHandlingInViewControllerClass(ReplyViewController.self)
-
+        Instabug.startWithToken("af9c74a8cc68cae2f2be3771fa9910a5", invocationEvent: IBGInvocationEvent.Shake)
     
         
         //configure push notifications
@@ -136,23 +139,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // if loged in
         if let user = PFUser.currentUser() {
             if let signUpFinished = user["signUpFinished"] as? Bool where signUpFinished == true {
-//                let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//                let myTabBar = storyboard.instantiateViewControllerWithIdentifier("TabBar") as! UITabBarController
-//                window?.rootViewController = myTabBar
                 
-                
-                let tabBarItem1 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_feed_active"), selectedImage: UIImage(named: "ic_tabbar_feed_active"))
-                tabBarItem1.animation = RAMBounceAnimation()
+                let tabBarItem1 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_feed"), selectedImage: UIImage(named: "ic_tabbar_feed_active"))
+                tabBarItem1.animation = RAMBounceAnimation(tag: 0)
                 let feedNC = UINavigationController(rootViewController: FeedVC(style: .Grouped))
                 feedNC.tabBarItem = tabBarItem1
                 
-                let tabBarItem2 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_activity"), selectedImage: UIImage(named: "ic_tabbar_activity"))
-                tabBarItem2.animation = RAMBounceAnimation()
+                
+                let tabBarItem2 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_activity"), selectedImage: UIImage(named: "ic_tabbar_activity_active"))
+                tabBarItem2.animation = RAMBounceAnimation(tag: 1)
                 let activityNC = UINavigationController(rootViewController: ActivityVC())
                 activityNC.tabBarItem = tabBarItem2
                 
-                let tabBarItem3 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_profile"), selectedImage: UIImage(named: "ic_tabbar_profile"))
-                tabBarItem3.animation = RAMBounceAnimation()
+                let tabBarItem3 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_profile"), selectedImage: UIImage(named: "ic_tabbar_profile_active"))
+                tabBarItem3.animation = RAMBounceAnimation(tag: 2)
                 let profileNC = UINavigationController(rootViewController: ProfileVC())
                 profileNC.tabBarItem = tabBarItem3
                 profileNC.navigationBarHidden = true
@@ -160,7 +160,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let controllers = [feedNC, activityNC, profileNC]
                 let tabBar = RAMAnimatedTabBarController(viewControllers: controllers)
                 window?.rootViewController = tabBar
-             
+                tabBarItem1.playAnimation()
             }
         } else {
             let welcomeNC = UINavigationController(rootViewController: WelcomeVC())
@@ -382,14 +382,44 @@ extension NSTimer {
 class RAMBounceAnimation : RAMItemAnimation {
     
     
+    var tag: Int = 0
+    
+    init(tag: Int) {
+        self.tag = tag
+    }
+    
+    
+    
+    
+    
     override func playAnimation(icon: UIImageView, textLabel: UILabel) {
         playBounceAnimation(icon)
         textLabel.textColor = textSelectedColor
+        switch tag {
+        case 0:
+            icon.image = UIImage(named: "ic_tabbar_feed_active")
+        case 1:
+            icon.image = UIImage(named: "ic_tabbar_activity_active")
+        case 2:
+            icon.image = UIImage(named: "ic_tabbar_profile_active")
+        default:
+            break
+        }
     
     }
     
     override func deselectAnimation(icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
         textLabel.textColor = defaultTextColor
+        switch tag {
+        case 0:
+            icon.image = UIImage(named: "ic_tabbar_feed")
+        case 1:
+            icon.image = UIImage(named: "ic_tabbar_activity")
+        case 2:
+            icon.image = UIImage(named: "ic_tabbar_profile")
+        default:
+            break
+        }
     
     }
     

@@ -12,7 +12,7 @@ import Parse
 
 import MBProgressHUD
 import CircleSlider
-
+//import ImagePicker
 import ALCameraViewController
 
 
@@ -56,7 +56,7 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
         
         
         postTxt.font = UIFont.WDTAgoraRegular(18)
-        postTxt.placeholder = "What do you feel like doing?"
+        postTxt.placeholder = " What do you feel like doing?"
         postTxt.backgroundColor = UIColor.WDTGrayBlueColor()
         postTxt.snp_makeConstraints { (make) in
             make.top.equalTo(view).offset(5)
@@ -148,9 +148,20 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
 
     func buildCircleSlider() {
         wdtSlider.addTarget(self, action: #selector(NewPostVC.valueChange(_:)), forControlEvents: .ValueChanged)
-        sliderView.addSubview(self.wdtSlider)
+        let bgImg = UIImageView(image: UIImage(named: "knob"))
+        sliderView.addSubview(bgImg)
+        sliderView.addSubview(wdtSlider)
+        
+        
         wdtSlider.snp_makeConstraints { (make) in
             make.edges.equalTo(self.sliderView)
+        }
+        
+        bgImg.snp_makeConstraints { (make) in
+            make.top.equalTo(wdtSlider).offset(26)
+            make.left.equalTo(wdtSlider).offset(23)
+            make.right.equalTo(wdtSlider).offset(-25)
+            make.bottom.equalTo(wdtSlider).offset(-23)
         }
 
         
@@ -179,15 +190,18 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
     
     func addPhotoButtonTapped(sender: AnyObject) {
         let croppingEnabled = true
-        let cameraViewController = CameraViewController(croppingEnabled: croppingEnabled) { image in
-            if let image = image.0 {
-                let resizedImage = UIImage.resizeImage(image, newWidth: 1080)
-                self.addPhotoButton.setImage(resizedImage, forState: .Normal)
-                self.photoImage = resizedImage
-            }
-            self.dismissViewControllerAnimated(true, completion: nil)
-            self.deletePhotoButton.hidden = false
+        let cameraViewController = CameraViewController(croppingEnabled: true, allowsLibraryAccess: true) { (img, ing2) in
+            print("!!!!!")
         }
+//        let cameraViewController = CameraViewController(croppingEnabled: croppingEnabled) { image in
+//            if let image = image.0 {
+//                let resizedImage = UIImage.resizeImage(image, newWidth: 1080)
+//                self.addPhotoButton.setImage(resizedImage, forState: .Normal)
+//                self.photoImage = resizedImage
+//            }
+//            self.dismissViewControllerAnimated(true, completion: nil)
+//            self.deletePhotoButton.hidden = false
+//        }
         
         presentViewController(cameraViewController, animated: true, completion: nil)
     }

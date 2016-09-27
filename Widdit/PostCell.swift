@@ -14,46 +14,46 @@ class WDTCAShapeLayer: CAShapeLayer {
     var tag: Int?
 }
 
-class WDTCellCardView: UIView {
-    
-    var shadowLayer:WDTCAShapeLayer? = nil
-    
-    override func layoutSubviews()
-    {
-        super.layoutSubviews()
-        
-        
-        if self.shadowLayer == nil {
-            let maskPath = UIBezierPath(roundedRect: bounds,
-                                        byRoundingCorners: [.TopLeft, .TopRight],
-                                        cornerRadii: CGSize(width: 4.0, height: 4.0))
-            
-            self.shadowLayer = WDTCAShapeLayer()
-            self.shadowLayer!.tag = 1
-            self.shadowLayer!.path = maskPath.CGPath
-            self.shadowLayer!.fillColor = UIColor.whiteColor().CGColor
-            
-            self.shadowLayer!.shadowColor = UIColor.darkGrayColor().CGColor
-            self.shadowLayer!.shadowPath = self.shadowLayer!.path
-            self.shadowLayer!.shadowOffset = CGSize(width: 0.0, height: 2.0)
-            self.shadowLayer!.shadowOpacity = 0.5
-            self.shadowLayer!.shadowRadius = 2
-            
-            layer.insertSublayer(self.shadowLayer!, atIndex: 0)
-        }
-    }
-    
-    func updateLayer() {
-        layer.sublayers?.forEach {
-            if let layer = $0 as? WDTCAShapeLayer {
-                if layer.tag == 1 {
-                    layer.removeFromSuperlayer()
-                    self.shadowLayer = nil
-                }
-            }
-        }
-    }
-}
+//class WDTCellCardView: UIView {
+//    
+//    var shadowLayer:WDTCAShapeLayer? = nil
+//    
+//    override func layoutSubviews()
+//    {
+//        super.layoutSubviews()
+//        
+//        
+//        if self.shadowLayer == nil {
+//            let maskPath = UIBezierPath(roundedRect: bounds,
+//                                        byRoundingCorners: [.TopLeft, .TopRight, .BottomLeft, .BottomRight],
+//                                        cornerRadii: CGSize(width: 4.0, height: 4.0))
+//            
+//            self.shadowLayer = WDTCAShapeLayer()
+//            self.shadowLayer!.tag = 1
+//            self.shadowLayer!.path = maskPath.CGPath
+//            self.shadowLayer!.fillColor = UIColor.whiteColor().CGColor
+//            
+//            self.shadowLayer!.shadowColor = UIColor.darkGrayColor().CGColor
+//            self.shadowLayer!.shadowPath = self.shadowLayer!.path
+//            self.shadowLayer!.shadowOffset = CGSize(width: 0.0, height: 2.0)
+//            self.shadowLayer!.shadowOpacity = 0.5
+//            self.shadowLayer!.shadowRadius = 2
+//            
+//            layer.insertSublayer(self.shadowLayer!, atIndex: 0)
+//        }
+//    }
+//    
+//    func updateLayer() {
+//        layer.sublayers?.forEach {
+//            if let layer = $0 as? WDTCAShapeLayer {
+//                if layer.tag == 1 {
+//                    layer.removeFromSuperlayer()
+//                    self.shadowLayer = nil
+//                }
+//            }
+//        }
+//    }
+//}
 
 import Kingfisher
 import AFImageHelper
@@ -69,8 +69,8 @@ class PostCell: UITableViewCell {
 //    var firstNameLbl: UILabel = UILabel()
     var userNameLbl: UILabel = UILabel()
     var settings: UIButton = UIButton()
-    var cardView: WDTCellCardView = WDTCellCardView()
-    
+//    var cardView: WDTCellCardView = WDTCellCardView()
+    var cardView: UIView = UIView()
     var morePostsButton: UIButton = UIButton(type: .Custom)
     var distanceLbl: UILabel = UILabel()
     
@@ -80,9 +80,10 @@ class PostCell: UITableViewCell {
     var user: PFUser!
     var post: PFObject!
     
-    var feed: WDTFeed!
+    var vc: UIViewController!
+    var wdtFeed: WDTLoad!
     var tableView: UITableView!
-    
+    let bottomView = UIView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -122,8 +123,8 @@ class PostCell: UITableViewCell {
         
         
         postPhoto.contentMode = .ScaleAspectFit
-        postPhoto.layer.cornerRadius = 4
-        postPhoto.clipsToBounds = true
+//        postPhoto.layer.cornerRadius = 4
+//        postPhoto.clipsToBounds = true
         
         postText.backgroundColor = UIColor.whiteColor()
         postText.textColor = UIColor.blackColor()
@@ -147,14 +148,9 @@ class PostCell: UITableViewCell {
         moreBtn.setTitleColor(UIColor.wddGreenColor(), forState: .Normal)
         moreBtn.setTitle("More posts...", forState: .Normal)
         
-        let bottomView = UIView()
+        
         cardView.addSubview(bottomView)
-        bottomView.snp_makeConstraints { (make) in
-            make.top.equalTo(moreBtn.snp_bottom)
-            make.height.equalTo(6)
-            make.left.equalTo(cardView)
-            make.right.equalTo(cardView)
-        }
+        
         
         
 //        firstNameLbl.textColor = UIColor.grayColor()
@@ -172,13 +168,17 @@ class PostCell: UITableViewCell {
         //let alert = SimpleAlert.Controller(title: "", message: "", style: .ActionSheet)
         let alert = SimpleAlert.Controller(view: nil, style: .ActionSheet)
         
+        
+        
+        
         if user.username == PFUser.currentUser()?.username {
             alert.addAction(SimpleAlert.Action(title: "Edit", style: .Default) { action in
                 
                 let newPostVC = NewPostVC()
                 
                 let nc = UINavigationController(rootViewController: newPostVC)
-                self.feed.presentViewController(nc, animated: true, completion:  {
+                
+                self.vc.presentViewController(nc, animated: true, completion:  {
                     newPostVC.editMode(self.post, postPhoto: self.postPhoto.image)    
                 })
             
@@ -186,15 +186,15 @@ class PostCell: UITableViewCell {
             
             alert.addAction(SimpleAlert.Action(title: "Delete", style: .Destructive) { action in
                 WDTPost.deletePost(self.post, completion: { (success) in
-                    self.feed.loadPosts()
+                    self.wdtFeed.loadPosts()
                 })
             })
             
         } else {
             alert.addAction(SimpleAlert.Action(title: "Report", style: .Default) { action in
-                let reportAlert = SimpleAlert.Controller(title: "Report", message: "[message]", style: .Alert)
+                let reportAlert = SimpleAlert.Controller(title: "Report", message: "Successfully reported", style: .Alert)
                 reportAlert.addAction(SimpleAlert.Action(title: "OK", style: .OK))
-                self.feed.presentViewController(reportAlert, animated: true, completion: nil)
+                self.vc.presentViewController(reportAlert, animated: true, completion: nil)
             })
         }
         
@@ -202,7 +202,7 @@ class PostCell: UITableViewCell {
         
         alert.addAction(SimpleAlert.Action(title: "Cancel", style: .Cancel))
         
-        feed.presentViewController(alert, animated: true, completion: nil)
+        vc.presentViewController(alert, animated: true, completion: nil)
         
 
     }
@@ -225,14 +225,14 @@ class PostCell: UITableViewCell {
             }
             make.left.equalTo(cardView).offset(6.x2)
             make.right.equalTo(cardView).offset(-6.x2)
-            make.bottom.equalTo(cardView).offset(-25)
+            make.bottom.equalTo(cardView).offset(-30)
             
         })
 
 
 
-        if isHeightCalculated == false {
-            
+//        if isHeightCalculated == false {
+        
             postPhoto.snp_remakeConstraints(closure: { (make) in
                 make.top.equalTo(cardView).offset(28.x2)
                 make.left.equalTo(cardView).offset(6.x2)
@@ -288,10 +288,12 @@ class PostCell: UITableViewCell {
             moreBtn.snp_remakeConstraints { (make) in
                 make.top.equalTo(postText.snp_bottom).offset(5.5)
                 make.left.equalTo(cardView).offset(6.x2)
+                make.height.equalTo(12.x2)
             }
 
         
-        }
+
+//        }
             isHeightCalculated = true
         
         
@@ -322,22 +324,26 @@ class PostCell: UITableViewCell {
         if let photoFile = post["photoFile"] as? PFFile  {
             
             let placeholderImage = UIImage(color: UIColor.WDTGrayBlueColor(), size: CGSizeMake(CGFloat(320), CGFloat(320)))
-            
             postPhoto.kf_setImageWithURL(NSURL(string: photoFile.url!)!, placeholderImage: placeholderImage, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
             })
         } else {
             postPhoto.image = nil
         }
         self.updateConstraints()
-        self.cardView.updateLayer()
-        
+
         let hoursexpired = post["hoursexpired"] as! NSDate
         let timeLeft = hoursexpired.timeIntervalSince1970 - NSDate().timeIntervalSince1970
         
         timeLbl.text = NSDateComponentsFormatter.wdtLeftTime(Int(timeLeft)) + " left"
         
         if let postGeoPoint = post["geoPoint"] {
-            distanceLbl.text = String(format: "%.1f mi", postGeoPoint.distanceInMilesTo(geoPoint))
+            let distance = postGeoPoint.distanceInMilesTo(geoPoint)
+            if distance >= 25 {
+                distanceLbl.text = String(format: "Greater than 25 miles ")
+            } else {
+                distanceLbl.text = String(format: "%.1f mi", distance)
+            }
+            
         } else {
             distanceLbl.text = ""
         }
@@ -346,7 +352,7 @@ class PostCell: UITableViewCell {
     func avaImageTapped(sender: AnyObject) {
         let destVC = ProfileVC()
         destVC.user = user
-        feed.navigationController?.pushViewController(destVC, animated: true)
+        vc.navigationController?.pushViewController(destVC, animated: true)
     }
     
     

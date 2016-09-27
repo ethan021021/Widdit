@@ -11,20 +11,13 @@ import Parse
 import ImageViewer
 import XCGLogger
 import PermissionScope
+import BTNavigationDropdownMenu
 
 protocol WDTLoad {
     func loadPosts()
 }
 
-class WDTFeed: UITableViewController, WDTLoad {
-    func loadPosts() {}
-}
-
-class WDTFeedVC: UIViewController, WDTLoad {
-    func loadPosts() {}
-}
-
-class FeedVC: WDTFeed {
+class FeedVC: UITableViewController, WDTLoad {
     
     // UI Objects
     @IBOutlet weak var ivarcator: UIActivityIndicatorView!
@@ -33,15 +26,14 @@ class FeedVC: WDTFeed {
     // Page Size
     var page : Int = 10
     
+    
     var geoPoint: PFGeoPoint?
     let wdtPost = WDTPost()
     let pscope = PermissionScope()
+    var worldSelected = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
         
         pscope.addPermission(NotificationsPermission(notificationCategories: nil),
                              message: "We use this to send you\r\nspam and love notes")
@@ -59,56 +51,12 @@ class FeedVC: WDTFeed {
         
         
         
-        self.navigationController?.navigationBar.setBottomBorderColor()
-        
-        let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_navbar_add"), style: .Done, target: self, action: #selector(newPostButtonTapped))
-        rightBarButtonItem.tintColor = UIColor.whiteColor()
-        navigationItem.rightBarButtonItem = rightBarButtonItem
-        
-        let queryOfAllUsers = PFUser.query()
-        queryOfAllUsers?.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, error: NSError?) in
-            if let objects = objects {
-//
-                
-                let button =  UIButton(type: .Custom)
-                button.setImage(UIImage(named: "ic_navbar_users"), forState: .Normal)
-                button.addTarget(self, action: #selector(self.nothingToDo), forControlEvents: .TouchUpInside)
-                button.frame = CGRectMake(0, 0, 53, 31)
-                button.imageEdgeInsets = UIEdgeInsetsMake(-10, 12, 1, -32)//move image to the right
-                let label = UILabel(frame: CGRectMake(3, 5, 50, 20))
-                
-                label.text = String(objects.count)
-                label.textAlignment = .Left
-                label.textColor = UIColor.whiteColor()
-                label.backgroundColor =   UIColor.clearColor()
-                button.addSubview(label)
-                let barButton = UIBarButtonItem(customView: button)
-                
-                
-                
-//                let zz = UIBarButtonItem(title: , style: .Done, target: self, action: #selector())
-                
-            self.navigationItem.leftBarButtonItem = barButton
-            }
-        })
-        
-        
-//        let shadowPath = UIBezierPath(rect: self.tabBarController!.tabBar.bounds)
-//        self.tabBarController!.tabBar.layer.masksToBounds = false
-//        self.tabBarController!.tabBar.layer.shadowColor = UIColor.blackColor().CGColor
-//        self.tabBarController!.tabBar.layer.shadowOffset = CGSizeMake(0.0, 2.0)
-//        self.tabBarController!.tabBar.layer.shadowOpacity = 0.5
-//        self.tabBarController!.tabBar.layer.shadowPath = shadowPath.CGPath
-//        self.tabBarController!.tabBar.layer.cornerRadius = 4.0
-//        
-//        
+        navigationController?.navigationBar.setBottomBorderColor()
+        countUsers()
+
         
         configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
         
-        // Title at the Top
-        
-        var logoImage:UIImage = UIImage(named: "ic_navbar_world")!
-        navigationItem.titleView = UIImageView(image: logoImage)
         
         // Pull to Refresh
         refresher.addTarget(self, action: #selector(loadPosts), forControlEvents: UIControlEvents.ValueChanged)
@@ -129,6 +77,75 @@ class FeedVC: WDTFeed {
         tableView.contentInset = UIEdgeInsetsMake(-25, 0, 0, 0)
 
         loadPosts()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        let NCbtn = UIButton()
+        NCbtn.addTarget(self, action: #selector(NCbtnTapped), forControlEvents: .TouchUpInside)
+        NCbtn.setImage(UIImage(named: "ic_navbar_world"), forState: .Normal)
+        NCbtn.setImage(UIImage(named: "ic_navbar_local"), forState: .Selected)
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        NCbtn.frame = titleView.bounds
+        titleView.addSubview(NCbtn)
+        
+        self.navigationItem.titleView = titleView
+    }
+    
+    func NCbtnTapped(sender: UIButton) {
+        if sender.selected == true {
+            sender.selected = false
+        } else {
+            sender.selected = true
+        }
+        self.worldSelected = !sender.selected
+        self.loadPosts()
+        self.countUsers()
+    }
+    
+    func countUsers() {
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_navbar_add"), style: .Done, target: self, action: #selector(newPostButtonTapped))
+        rightBarButtonItem.tintColor = UIColor.whiteColor()
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+        let queryOfAllUsers = PFUser.query()
+        
+        if worldSelected == true {
+            if let geoPoint = PFUser.currentUser()!["geoPoint"] as? PFGeoPoint {
+                let excludeQuery = PFUser.query()
+                excludeQuery!.whereKey("geoPoint", nearGeoPoint: geoPoint, withinMiles: 25)
+                queryOfAllUsers!.whereKey("objectId", doesNotMatchKey: "objectId", inQuery: excludeQuery!)
+            }
+        } else {
+            if let geoPoint = PFUser.currentUser()!["geoPoint"] as? PFGeoPoint {
+                queryOfAllUsers!.whereKey("geoPoint", nearGeoPoint: geoPoint, withinMiles: 25)
+            }
+        }
+        
+        queryOfAllUsers?.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, error: NSError?) in
+            if let objects = objects {
+                //
+                
+                let button =  UIButton(type: .Custom)
+                button.setImage(UIImage(named: "ic_navbar_users"), forState: .Normal)
+                button.addTarget(self, action: #selector(self.nothingToDo), forControlEvents: .TouchUpInside)
+                button.frame = CGRectMake(0, 0, 53, 31)
+                button.imageEdgeInsets = UIEdgeInsetsMake(-10, 12, 1, -32)//move image to the right
+                let label = UILabel(frame: CGRectMake(3, 5, 50, 20))
+                
+                label.text = String(objects.count)
+                label.textAlignment = .Left
+                label.textColor = UIColor.whiteColor()
+                label.backgroundColor =   UIColor.clearColor()
+                button.addSubview(label)
+                let barButton = UIBarButtonItem(customView: button)
+                
+                
+                
+                //                let zz = UIBarButtonItem(title: , style: .Done, target: self, action: #selector())
+                
+                self.navigationItem.leftBarButtonItem = barButton
+            }
+        })
     }
     
     func newPostButtonTapped() {
@@ -154,20 +171,20 @@ class FeedVC: WDTFeed {
         loadPosts()
     }
     
-    override func loadPosts() {
+    func loadPosts() {
         if PermissionScope().statusLocationInUse() == .Authorized {
             PFGeoPoint.geoPointForCurrentLocationInBackground {
                 (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
                 
                 if error == nil {
                     self.geoPoint = geoPoint
+                    PFUser.currentUser()!["geoPoint"] = self.geoPoint
+                    PFUser.currentUser()!.saveInBackground()
                 }
             }
         }
         
-        
-        
-        wdtPost.requestPosts { (success) in
+        wdtPost.requestPosts(geoPoint, world: worldSelected) { (success) in
             self.tableView.reloadData()
             self.refresher.endRefreshing()
         }
@@ -196,7 +213,8 @@ class FeedVC: WDTFeed {
         cell.moreBtn.tag = indexPath.section
         cell.moreBtn.addTarget(self, action: #selector(moreBtnTapped), forControlEvents: .TouchUpInside)
         cell.geoPoint = self.geoPoint
-        cell.feed = self
+        cell.vc = self
+        cell.wdtFeed = self
         cell.fillCell(post)
         
         let postsCount = self.wdtPost.collectionOfAllPosts.filter({
@@ -227,15 +245,16 @@ class FeedVC: WDTFeed {
         }
     }
     
+    
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let post = self.wdtPost.collectionOfPosts[section]
         let user = post["user"] as! PFUser
         
-//        if PFUser.currentUser()?.username == user.username {
-//            return 0
-//        } else {
+        if PFUser.currentUser()?.username == user.username {
+            return 0
+        } else {
             return 55
-//        }
+        }
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -245,12 +264,12 @@ class FeedVC: WDTFeed {
         let post = self.wdtPost.collectionOfPosts[section]
         let user = post["user"] as! PFUser
         
-//        if PFUser.currentUser()?.username == user.username {
-//            return nil
-//        } else {
-            footerView.feed = self
+        if PFUser.currentUser()?.username == user.username {
+            return nil
+        } else {
+            footerView.vc = self
             footerView.setDown(user, post: post)
-//        }
+        }
         
         return footerView
     }

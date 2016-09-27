@@ -15,53 +15,71 @@ enum VerificationMode {
     case SignIn
     case SignUp
 }
-
+import SkyFloatingLabelTextField
 class SignInVC: UIViewController {
-    let usernameTF = UITextField()
-    let passwordTF = UITextField()
+    let usernameTF = SkyFloatingLabelTextField()
+    let passwordTF = SkyFloatingLabelTextField()
    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addBackButton()
+        
         view.backgroundColor = UIColor.wddTealColor()
         
-        
-        usernameTF.font = UIFont.wddHtwoinvertcenterFont()
+//        usernameTF.font = UIFont.wddHtwoinvertcenterFont()
         usernameTF.textColor = UIColor.whiteColor()
         usernameTF.placeholder = "Enter Username"
+        usernameTF.title = "Username"
         usernameTF.becomeFirstResponder()
         usernameTF.autocapitalizationType = .None
-        usernameTF.textAlignment = .Center
+        usernameTF.textAlignment = .Left
         usernameTF.autocapitalizationType = .None
+        usernameTF.lineHeight = 1
+        usernameTF.selectedLineHeight = 1
+        usernameTF.placeholderColor = UIColor.whiteColor()
+        usernameTF.lineColor = UIColor.whiteColor()
+        usernameTF.selectedLineColor = UIColor.whiteColor()
+        usernameTF.selectedTitleColor = UIColor.whiteColor()
+//        usernameTF.tintColor = UIColor.greenColor()
         
         view.addSubview(usernameTF)
         usernameTF.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(100.5.x2)
+            make.top.equalTo(view).offset(35.5.x2)
             make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
+            make.width.equalTo(view).multipliedBy(0.9)
         }
         
-        
-        passwordTF.font = UIFont.wddHtwoinvertcenterFont()
+
+//        passwordTF.font = UIFont.wddHtwoinvertcenterFont()
         passwordTF.textColor = UIColor.whiteColor()
-        passwordTF.textAlignment = .Center
+        passwordTF.textAlignment = .Left
         passwordTF.placeholder = "Enter Password"
+        passwordTF.title = "Password"
         passwordTF.autocapitalizationType = .None
         passwordTF.secureTextEntry = true
+        passwordTF.lineHeight = 1
+        passwordTF.selectedLineHeight = 1
+        passwordTF.placeholderColor = UIColor.whiteColor()
+        passwordTF.lineColor = UIColor.whiteColor()
+        passwordTF.selectedLineColor = UIColor.whiteColor()
+        passwordTF.selectedTitleColor = UIColor.whiteColor()
+//        passwordTF.tintColor = UIColor.greenColor()
         view.addSubview(passwordTF)
         passwordTF.snp_makeConstraints { (make) in
             make.top.equalTo(usernameTF.snp_bottom).offset(12.x2)
             make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
+            make.width.equalTo(view).multipliedBy(0.9)
         }
         
-        let signUpBtn: UIButton = UIButton(type: .Custom)
-        signUpBtn.titleLabel?.font = UIFont.WDTAgoraRegular(10.5 * 2)
-        signUpBtn.setTitle("Sign up", forState: .Normal)
-        signUpBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        signUpBtn.addTarget(self, action: #selector(signInBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(signUpBtn)
-        signUpBtn.snp_makeConstraints { (make) in
+        let signInBtn: UIButton = UIButton(type: .Custom)
+        signInBtn.titleLabel?.font = UIFont.WDTAgoraRegular(10.5 * 2)
+        signInBtn.setTitle("Sign in", forState: .Normal)
+        signInBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        signInBtn.addTarget(self, action: #selector(signInBtnTapped), forControlEvents: .TouchUpInside)
+        view.addSubview(signInBtn)
+        signInBtn.snp_makeConstraints { (make) in
             make.top.equalTo(passwordTF.snp_bottom).offset(12.x2 * 2)
             make.centerX.equalTo(view)
         }

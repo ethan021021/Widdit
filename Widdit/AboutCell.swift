@@ -10,7 +10,7 @@ import UIKit
 
 class AboutCell: UITableViewCell {
 
-    let aboutLbl = UILabel()
+    let aboutTxt = UITextView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,9 +23,12 @@ class AboutCell: UITableViewCell {
     }
     
     func configureSubviews() {
-        contentView.addSubview(aboutLbl)
-        aboutLbl.numberOfLines = 0
-        aboutLbl.snp_makeConstraints { (make) in
+        contentView.addSubview(aboutTxt)
+        aboutTxt.editable = false
+        aboutTxt.scrollEnabled = false
+        aboutTxt.userInteractionEnabled = true;
+        aboutTxt.dataDetectorTypes = [.Link, .PhoneNumber]
+        aboutTxt.snp_makeConstraints { (make) in
             make.left.equalTo(contentView).offset(6.x2)
             make.right.equalTo(contentView).offset(-6.x2)
             make.top.equalTo(contentView).offset(4.5.x2)
@@ -36,7 +39,7 @@ class AboutCell: UITableViewCell {
     
 
     func fillCell(aboutText: String) {
-        aboutLbl.text = aboutText
+        aboutTxt.text = aboutText
         
     }
 
@@ -265,6 +268,7 @@ class ProfileCell: UITableViewCell {
 
 import SimpleAlert
 import ALCameraViewController
+//import ImagePicker
 
 class ProfileSettingAvatarsCell: UITableViewCell {
     
@@ -307,7 +311,7 @@ class ProfileSettingAvatarsCell: UITableViewCell {
         
         addAvatar2.layer.cornerRadius = 10
         addAvatar2.setImage(UIImage(named: "add_photo"), forState: .Normal)
-        addAvatar2.tag = 1
+        addAvatar2.tag = 2
         addAvatar2.addTarget(self, action: #selector(addAvatarButtonTapped), forControlEvents: .TouchUpInside)
         addAvatar2.snp_makeConstraints { (make) in
             make.left.equalTo(addAvatar1.snp_right).offset(8.x2)
@@ -331,7 +335,7 @@ class ProfileSettingAvatarsCell: UITableViewCell {
         
         addAvatar3.layer.cornerRadius = 10
         addAvatar3.setImage(UIImage(named: "add_photo"), forState: .Normal)
-        addAvatar3.tag = 1
+        addAvatar3.tag = 3
         addAvatar3.addTarget(self, action: #selector(addAvatarButtonTapped), forControlEvents: .TouchUpInside)
         addAvatar3.snp_makeConstraints { (make) in
             make.left.equalTo(addAvatar2.snp_right).offset(8.x2)
@@ -342,7 +346,7 @@ class ProfileSettingAvatarsCell: UITableViewCell {
         
         addAvatar3.addSubview(deleteAvatar3)
         deleteAvatar3.hidden = true
-        deleteAvatar3.tag = 2
+        deleteAvatar3.tag = 3
         deleteAvatar3.setImage(UIImage(named: "DeletePhotoButton"), forState: .Normal)
         deleteAvatar3.addTarget(self, action: #selector(deletePhotoButtonTapped), forControlEvents: .TouchUpInside)
         deleteAvatar3.snp_makeConstraints { (make) in
@@ -450,11 +454,13 @@ class ProfileSettingAvatarsCell: UITableViewCell {
     
 }
 
+import SevenSwitch
+
 class ProfileSettingsCell: UITableViewCell, UITextFieldDelegate {
     
     let titleLbl = UILabel()
     let textField = UITextField()
-    let uiswitch = UISwitch()
+    let uiswitch = SevenSwitch()
     var settingsCell: WDTSettings?
     var vc: UIViewController!
     
@@ -491,8 +497,15 @@ class ProfileSettingsCell: UITableViewCell, UITextFieldDelegate {
         }
         
         contentView.addSubview(uiswitch)
+        
+        uiswitch.thumbTintColor = UIColor.whiteColor()
+        uiswitch.onThumbTintColor = UIColor.wddTealColor()
+        uiswitch.borderColor = UIColor.wddSilverColor()
+        uiswitch.activeColor =  UIColor.wddSilverColor()
+        uiswitch.inactiveColor = UIColor.wddSilverColor()
+        uiswitch.onTintColor = UIColor.wddSilverColor()
+        
         uiswitch.hidden = true
-        uiswitch.tintColor = UIColor.wddTealColor()
         uiswitch.addTarget(self, action: #selector(uiswitchTapped), forControlEvents: .ValueChanged)
         uiswitch.snp_makeConstraints { (make) in
             make.right.equalTo(contentView).offset(-4.x2)
@@ -508,14 +521,24 @@ class ProfileSettingsCell: UITableViewCell, UITextFieldDelegate {
         textField.hidden = false
     }
     
+    func deactivateTextField() {
+        textField.hidden = true
+    }
+    
     func activateSwitch() {
         uiswitch.hidden = false
+    }
+    
+    func deactivateSwitch() {
+        uiswitch.hidden = true
     }
     
     
     func fillSettings(settings: WDTSettings) {
         settingsCell = settings
         titleLbl.text = settings.getDescription()
+        deactivateSwitch()
+        deactivateTextField()
         
         switch settings {
         case .Username(let value):
@@ -547,7 +570,13 @@ class ProfileSettingsCell: UITableViewCell, UITextFieldDelegate {
                 textField.text = "Female"
             } else if value == 2 {
                 textField.text = "Other"
+            } else if value == -1 {
+                textField.text = "Unknown"
             }
+        case .About(let value):
+            activateTextField()
+            textField.enabled = false
+            textField.text = value
             
         default:
             break

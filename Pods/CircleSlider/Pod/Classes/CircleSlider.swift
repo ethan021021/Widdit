@@ -11,14 +11,19 @@ public enum CircleSliderOption {
   case BarColor(UIColor)
   case TrackingColor(UIColor)
   case ThumbColor(UIColor)
+  case ThumbImage(UIImage)
   case BarWidth(CGFloat)
   case ThumbWidth(CGFloat)
   case MaxValue(Float)
   case MinValue(Float)
   case SliderEnabled(Bool)
+  case ViewInset(CGFloat)
+  case MinMaxSwitchTreshold(Float)
+  case ThumbOffset(CGFloat)
 }
 
 public class CircleSlider: UIControl {
+  private let minThumbTouchAreaWidth:CGFloat = 44
   private var latestDegree: Double = 0
   private var _value: Float = 0
   public var value: Float {
@@ -26,9 +31,31 @@ public class CircleSlider: UIControl {
       return self._value
     }
     set {
-      self._value = newValue
+      var value = newValue
+      let significantChange = (self.maxValue - self.minValue) * (1.0 - self.minMaxSwitchTreshold)
+      let isSignificantChangeOccured = fabs(newValue - self._value) > significantChange
+        
+      if (isSignificantChangeOccured) {
+        if (self._value < newValue) {
+          value = self.minValue
+        } else {
+          value = self.maxValue
+        }
+      } else {
+        value = newValue
+      }
+        
+      self._value = value
       self.sendActionsForControlEvents(.ValueChanged)
-      let degree = Math.degreeFromValue(self.startAngle, value: self.value, maxValue: self.maxValue, minValue: self.minValue)
+      var degree = Math.degreeFromValue(self.startAngle, value: self.value, maxValue: self.maxValue, minValue: self.minValue)
+        
+      // fix rendering issue near max value
+      // substract 1/100 of one degree from the current degree to fix a very little overflow
+      // which otherwise cause to display a layer as it is on a min value
+      if (self._value == self.maxValue) {
+         degree = degree - degree / (360 * 100)
+      }
+        
       self.layout(degree)
     }
   }
@@ -43,36 +70,32 @@ public class CircleSlider: UIControl {
         self.thumbView.backgroundColor = self.thumbColor
         self.thumbView.center = self.thumbCenter(self.startAngle)
         self.thumbView.layer.cornerRadius = self.thumbView!.bounds.size.width * 0.5
-        let maskPath = UIBezierPath(roundedRect: self.thumbView.bounds, cornerRadius: self.thumbView.layer.cornerRadius)
-        
-        let shadowLayer = CAShapeLayer()
-        shadowLayer.path = maskPath.CGPath
-        shadowLayer.fillColor = UIColor.whiteColor().CGColor
-        
-        shadowLayer.shadowColor = UIColor.darkGrayColor().CGColor
-        shadowLayer.shadowPath = shadowLayer.path
-        shadowLayer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        shadowLayer.shadowOpacity = 0.5
-        shadowLayer.shadowRadius = 2
-        
-        self.thumbView.layer.insertSublayer(shadowLayer, atIndex: 0)
-        
         self.addSubview(self.thumbView)
+        if let thumbImage = self.thumbImage {
+          let thumbImageView = UIImageView(frame: self.thumbView.bounds)
+          thumbImageView.image = thumbImage
+          self.thumbView.addSubview(thumbImageView)
+          self.thumbView.backgroundColor = UIColor.clearColor()
+        }
       } else {
         self.thumbView.hidden = true
       }
     }
   }
   // Options
-  private var startAngle: Double = -90
-  private var barColor           = UIColor.lightGrayColor()
-  private var trackingColor      = UIColor.blueColor()
-  private var thumbColor         = UIColor.blackColor()
-  private var barWidth: CGFloat  = 20
-  private var maxValue: Float    = 100
-  private var minValue: Float    = 0
-  private var sliderEnabled      = true
+  private var startAngle: Double         = -90
+  private var barColor                   = UIColor.lightGrayColor()
+  private var trackingColor              = UIColor.blueColor()
+  private var thumbColor                 = UIColor.blackColor()
+  private var barWidth: CGFloat          = 20
+  private var maxValue: Float            = 100
+  private var minValue: Float            = 0
+  private var sliderEnabled              = true
+  private var viewInset:CGFloat          = 20
+  private var minMaxSwitchTreshold:Float = 0.0 // from 0.0 to 1.0
+  private var thumbImage: UIImage?
   private var _thumbWidth: CGFloat?
+  private var thumbOffset: CGFloat       = 0
   private var thumbWidth: CGFloat {
     get {
       if let retValue = self._thumbWidth {
@@ -87,11 +110,12 @@ public class CircleSlider: UIControl {
   
   override public func awakeFromNib() {
     super.awakeFromNib()
-    self.backgroundColor = UIColor.clearColor()
+    self.backgroundColor = UIColor.redColor()
   }
   
   public init(frame: CGRect, options: [CircleSliderOption]?) {
     super.init(frame: frame)
+    
     if let options = options {
       self.build(options)
     }
@@ -103,7 +127,7 @@ public class CircleSlider: UIControl {
   
   override public func layoutSublayersOfLayer(layer: CALayer) {
     if self.trackLayer == nil {
-      self.trackLayer = TrackLayer(bounds: self.bounds, setting: self.createLayerSetting())
+      self.trackLayer = TrackLayer(bounds: CGRectInset(self.bounds, viewInset, viewInset), setting: self.createLayerSetting())
     }
     if self.thumbView == nil {
       self.thumbView = UIView(frame: CGRect(x: 0, y: 0, width: self.thumbWidth, height: self.thumbWidth))
@@ -111,6 +135,9 @@ public class CircleSlider: UIControl {
   }
 
   override public func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    if !self.sliderEnabled {
+      return nil
+    }
     let rect = self.trackLayer.hollowRect
     let hollowPath = UIBezierPath(roundedRect: rect, cornerRadius: self.trackLayer.hollowRadius)
     if !(CGRectContainsPoint(self.bounds, point) || hollowPath.containsPoint(point)) ||
@@ -135,9 +162,14 @@ public class CircleSlider: UIControl {
   }
   
   private func redraw() {
-    self.trackLayer.removeFromSuperlayer()
-    self.trackLayer = TrackLayer(bounds: self.bounds, setting: self.createLayerSetting())
-    self.thumbView.removeFromSuperview()
+    
+    if (self.trackLayer != nil) {
+      self.trackLayer.removeFromSuperlayer()
+    }
+    self.trackLayer = TrackLayer(bounds: CGRectInset(self.bounds, viewInset, viewInset), setting: self.createLayerSetting())
+    if (self.thumbView != nil) {
+      self.thumbView.removeFromSuperview()
+    }
     self.thumbView = UIView(frame: CGRect(x: 0, y: 0, width: self.thumbWidth, height: self.thumbWidth))
     self.layout(self.latestDegree)
   }
@@ -165,10 +197,17 @@ public class CircleSlider: UIControl {
         self._value = self.minValue
       case let .SliderEnabled(value):
         self.sliderEnabled = value
+      case let .ViewInset(value):
+        self.viewInset = value
+      case let .MinMaxSwitchTreshold(value):
+        self.minMaxSwitchTreshold = value
+      case let .ThumbImage(value):
+        self.thumbImage = value
+      case let .ThumbOffset(value):
+        self.thumbOffset = value
       }
+        
     }
-    // Adjust because value not rise up to the maxValue
-    self.maxValue++
   }
   
   private func layout(degree: Double) {
@@ -189,7 +228,7 @@ public class CircleSlider: UIControl {
   }
   
   private func thumbCenter(degree: Double) -> CGPoint {
-    let radius = (self.bounds.width * 0.5) - (self.barWidth * 0.5)
+    let radius = (CGRectInset(self.bounds, viewInset, viewInset).width * 0.5) - (self.barWidth * 0.5) - thumbOffset
     return Math.pointFromAngle(self.frame, angle: degree, radius: Double(radius))
   }
 }

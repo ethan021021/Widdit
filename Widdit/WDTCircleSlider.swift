@@ -19,34 +19,38 @@ class WDTCircleSlider: CircleSlider {
     
     class var sliderOptionsHours: [CircleSliderOption] {
         return [
-            .BarColor(UIColor.grayColor()),
-            .ThumbColor(UIColor.WDTGrayBlueColor()),
-            .ThumbWidth(CGFloat(40)),
-            .TrackingColor(UIColor.WDTBlueColor()),
-            .BarWidth(2.5),
+            .BarColor(UIColor.clearColor()),
+            .ThumbImage(UIImage(named: "knob_button")!),
+            .ThumbWidth(25),
+            .TrackingColor(UIColor.wddGreenColor()),
+            .BarWidth(12),
             .StartAngle(270),
             .MaxValue(23),
-            .MinValue(1)
+            .MinValue(1),
+            .ThumbOffset(20)
         ]
     }
     
     class var sliderOptionsDays: [CircleSliderOption] {
         return [
-            .BarColor(UIColor.WDTBlueColor()),
-            .ThumbColor(UIColor.WDTGrayBlueColor()),
-            .ThumbWidth(CGFloat(40)),
-            .TrackingColor(UIColor.purpleColor()),
-            .BarWidth(2.5),
+            .BarColor(UIColor.wddGreenColor()),
+            .ThumbImage(UIImage(named: "knob_button")!),
+            .ThumbWidth(CGFloat(25)),
+            .TrackingColor(UIColor.wddTealColor()),
+            .BarWidth(12),
             .StartAngle(270),
             .MaxValue(30),
-            .MinValue(1)
+            .MinValue(1),
+            .ThumbOffset(20)
         ]
     }
     
     init() {
         super.init(frame: CGRectZero, options: WDTCircleSlider.sliderOptionsHours)
         
-        UIView.animateWithDuration(0.1, delay: 0.5, options: UIViewAnimationOptions.TransitionNone, animations: { () -> Void in
+        
+        
+        UIView.animateWithDuration(1.1, delay: 0.5, options: UIViewAnimationOptions.TransitionNone, animations: { () -> Void in
             
             }, completion: { (finished: Bool) -> Void in
                 self.value = 12

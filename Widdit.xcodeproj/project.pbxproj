@@ -62,6 +62,7 @@
 		A6B9D0051D1D87640099F907 /* WDTImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B9D0041D1D87630099F907 /* WDTImageProvider.swift */; };
 		A6E7F7BF1D82F4EA00D725E8 /* WDDExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E7F7BE1D82F4EA00D725E8 /* WDDExtensions.swift */; };
 		A6E7F7C11D85C4B000D725E8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311147651CAB42AE00150ECD /* Main.storyboard */; };
+		A6EA6A7A1D92C5F900D13E1C /* ProfileEditAboutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EA6A791D92C5F900D13E1C /* ProfileEditAboutVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +127,7 @@
 		A6B9D0021D1D16710099F907 /* WDTCircleSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTCircleSlider.swift; sourceTree = "<group>"; };
 		A6B9D0041D1D87630099F907 /* WDTImageProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTImageProvider.swift; sourceTree = "<group>"; };
 		A6E7F7BE1D82F4EA00D725E8 /* WDDExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDDExtensions.swift; sourceTree = "<group>"; };
+		A6EA6A791D92C5F900D13E1C /* ProfileEditAboutVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileEditAboutVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,10 +250,11 @@
 				31F12EC91C9E184100E63A2E /* FeedVC.swift */,
 				31F12ECB1C9E185600E63A2E /* MorePostsVC.swift */,
 				31F12ECF1C9E191000E63A2E /* NewPostVC.swift */,
+				31F12EC71C9E181F00E63A2E /* ActivityVC.swift */,
 				79B4D4811CC80ABE0073B65D /* ReplyViewController.swift */,
 				31F12EC31C9E17D700E63A2E /* ProfileVC.swift */,
 				31F12ED51C9E3A6900E63A2E /* ProfileEditVC.swift */,
-				31F12EC71C9E181F00E63A2E /* ActivityVC.swift */,
+				A6EA6A791D92C5F900D13E1C /* ProfileEditAboutVC.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -331,12 +334,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 31F12E9C1C9E115B00E63A2E /* Build configuration list for PBXNativeTarget "Widdit" */;
 			buildPhases = (
-				B8FB45A7F4DA920C74A1FB57 /* 📦 Check Pods Manifest.lock */,
+				B8FB45A7F4DA920C74A1FB57 /* [CP] Check Pods Manifest.lock */,
 				31F12E831C9E115B00E63A2E /* Sources */,
 				31F12E841C9E115B00E63A2E /* Frameworks */,
 				31F12E851C9E115B00E63A2E /* Resources */,
-				51F6D64152ADB0ED1D4A21D1 /* 📦 Embed Pods Frameworks */,
-				35543814FB421C7570C8A099 /* 📦 Copy Pods Resources */,
+				51F6D64152ADB0ED1D4A21D1 /* [CP] Embed Pods Frameworks */,
+				35543814FB421C7570C8A099 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -416,14 +419,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		35543814FB421C7570C8A099 /* 📦 Copy Pods Resources */ = {
+		35543814FB421C7570C8A099 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,14 +434,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Widdit/Pods-Widdit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		51F6D64152ADB0ED1D4A21D1 /* 📦 Embed Pods Frameworks */ = {
+		51F6D64152ADB0ED1D4A21D1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,19 +449,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Widdit/Pods-Widdit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B8FB45A7F4DA920C74A1FB57 /* 📦 Check Pods Manifest.lock */ = {
+		B8FB45A7F4DA920C74A1FB57 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -486,6 +489,7 @@
 				A6B9D0011D1D12F60099F907 /* WDTAvatar.swift in Sources */,
 				A6E7F7BF1D82F4EA00D725E8 /* WDDExtensions.swift in Sources */,
 				A638AC6E1D2A617400AC5781 /* WDTHeader.swift in Sources */,
+				A6EA6A7A1D92C5F900D13E1C /* ProfileEditAboutVC.swift in Sources */,
 				A6B3FE9E1D07318100DC1FFF /* WDTPostModel.swift in Sources */,
 				A672411D1D1C14B20060FAC0 /* UIImageEffects.swift in Sources */,
 				31F12EC41C9E17D700E63A2E /* ProfileVC.swift in Sources */,

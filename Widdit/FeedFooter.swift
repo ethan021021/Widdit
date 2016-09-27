@@ -48,7 +48,7 @@ class FeedFooter: UITableViewHeaderFooterView {
     var replyBtn: UIButton = UIButton(type: .Custom)
     var imDownBtn: UIButton = UIButton(type: .Custom)
     var cardView: WDTFooterCardView = WDTFooterCardView()
-    var feed: WDTFeed!
+    var vc: UIViewController!
     var post: PFObject!
     var user: PFUser!
     
@@ -95,7 +95,7 @@ class FeedFooter: UITableViewHeaderFooterView {
         
         let vertLine = UIView()
         vertLine.backgroundColor = UIColor(r: 216, g: 216, b: 216, a: 1)
-        self.addSubview(vertLine)
+        addSubview(vertLine)
         vertLine.snp_makeConstraints { (make) in
             make.width.equalTo(0.3.x2)
             make.height.equalTo(imDownBtn).offset(3)
@@ -151,7 +151,7 @@ class FeedFooter: UITableViewHeaderFooterView {
         destVC.toUser = user
         destVC.usersPost = post
         destVC.comeFromTheFeed = true
-        feed!.navigationController!.pushViewController(destVC, animated: true)
+        vc.customPresentViewController(presenter, viewController: destVC, animated: true, completion: nil)
     }
     
     

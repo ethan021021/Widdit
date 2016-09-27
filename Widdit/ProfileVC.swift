@@ -12,8 +12,9 @@ import ParseFacebookUtilsV4
 import ImageViewer
 import SimpleAlert
 import Whisper
+import BetterSegmentedControl
 
-class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
+class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, WDTLoad {
 
     
     var tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
@@ -71,10 +72,9 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         
         let wdtHeader = WDTHeader(frame: CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds) + 50))
         
-        wdtHeader.segmentedControl.addTarget(self, action: #selector(wdtHeaderSegmentedControlTapped), forControlEvents: .ValueChanged)
-        wdtHeader.segmentedControl.selectedSegmentIndex = 0
+        wdtHeader.control.addTarget(self, action: #selector(wdtHeaderSegmentedControlTapped), forControlEvents: .ValueChanged)
         
-        wdtHeader.setName(PFUser.currentUser()!["firstName"] as? String)
+        wdtHeader.setName(user["firstName"] as? String)
         
         WDTAvatar.countAvatars(user) { (num) in
             scrollView.contentSize = CGSizeMake(self.view.frame.width * CGFloat(num), self.headerHeight)
@@ -115,6 +115,10 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    override func viewDidAppear(animated: Bool) {
+        loadPosts()
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let headerView = self.tableView.tableHeaderView as! WDTHeader
         headerView.scrollViewDidScroll(scrollView)
@@ -142,8 +146,8 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    func wdtHeaderSegmentedControlTapped(sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
+    func wdtHeaderSegmentedControlTapped(sender: BetterSegmentedControl) {
+        if sender.index == 0 {
             infoSelected = false
         } else {
             infoSelected = true
@@ -151,7 +155,7 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         tableView.reloadData()
     }
 
-    override func loadPosts() {
+    func loadPosts() {
         PFGeoPoint.geoPointForCurrentLocationInBackground {
             (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
             
@@ -160,7 +164,7 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
             }
         }
         wdtPost.postsOfUser = self.user
-        wdtPost.requestPosts { (success) in
+        wdtPost.requestPosts(nil, world: nil) { (success) in
             self.tableView.reloadData()
         }
     }
@@ -234,6 +238,8 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
             cell.geoPoint = self.geoPoint
             cell.fillCell(post)
             cell.moreBtn.hidden = true
+            cell.vc = self
+            cell.wdtFeed = self
             
             cell.setNeedsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
@@ -297,6 +303,14 @@ class ProfileVC: WDTFeedVC, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    
+//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return "About"
+//    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         

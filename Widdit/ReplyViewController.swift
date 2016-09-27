@@ -24,6 +24,8 @@ class ReplyViewController: SLKTextViewController {
     var messages = [MessageModel]()
     var usersPost: PFObject!
     var userObjArray = [PFObject]()
+    var avaImage: UIImageView = UIImageView()
+    let userNameLbl = UILabel()
     
     var isDown = false
     var toUser: PFUser!
@@ -44,11 +46,71 @@ class ReplyViewController: SLKTextViewController {
         installation["user"] = PFUser.currentUser()
         installation.saveInBackground()
         
+        
+        let titleView = UIView()
+        titleView.backgroundColor = UIColor.whiteColor()
+        view.addSubview(titleView)
+        titleView.snp_makeConstraints { (make) in
+            make.top.equalTo(view)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            make.height.equalTo(24.x2)
+        }
+        
+        let topLine = UIView()
+        topLine.backgroundColor = UIColor.lightGrayColor()
+        titleView.addSubview(topLine)
+        topLine.alpha = 0.5
+        topLine.snp_makeConstraints { (make) in
+            make.left.equalTo(titleView)
+            make.right.equalTo(titleView)
+            make.bottom.equalTo(titleView).offset(-0.5.x2)
+            make.height.equalTo(0.5.x2)
+        }
+        
+        
+        avaImage.layer.cornerRadius = 8.0
+        avaImage.clipsToBounds = true
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(avaImageTapped(_:)))
+        avaImage.userInteractionEnabled = true
+        avaImage.addGestureRecognizer(tapGestureRecognizer)
+        titleView.addSubview(avaImage)
+        avaImage.snp_remakeConstraints(closure: { (make) in
+            make.top.equalTo(titleView).offset(6.x2)
+            make.left.equalTo(titleView).offset(6.x2)
+            make.width.equalTo(16.x2)
+            make.height.equalTo(16.x2)
+        })
+        
+        
+        userNameLbl.font = UIFont.WDTAgoraRegular(12)
+        userNameLbl.textColor = UIColor.blackColor()
+        titleView.addSubview(userNameLbl)
+        userNameLbl.snp_remakeConstraints(closure: { (make) in
+            make.left.equalTo(avaImage.snp_right).offset(6.x2)
+            make.top.equalTo(titleView).offset(9.5.x2)
+        })
+        
+        
+        let closeBtn = UIButton()
+        closeBtn.setImage(UIImage(named: "ic_reply_close"), forState: .Normal)
+        closeBtn.addTarget(self, action: #selector(closeBtnTapped), forControlEvents: .TouchUpInside)
+        titleView.addSubview(closeBtn)
+        closeBtn.snp_makeConstraints { (make) in
+            make.right.equalTo(titleView).offset(-6.x2)
+            make.top.equalTo(titleView).offset(6.x2)
+            make.width.equalTo(12.x2)
+            make.height.equalTo(12.x2)
+        }
+        
+        
+        
         tableView!.registerClass(MessageTableViewCell.self, forCellReuseIdentifier: "MessageTableViewCell")
         inverted = false
         tableView!.rowHeight = UITableViewAutomaticDimension
         tableView!.estimatedRowHeight = 64.0
         tableView!.separatorStyle = .None
+        tableView!.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
         registerPrefixesForAutoCompletion(["@",  "#", ":", "+:", "/"])
         
         textView.placeholder = "Message";
@@ -61,12 +123,36 @@ class ReplyViewController: SLKTextViewController {
         textView.registerMarkdownFormattingSymbol(">", withTitle: "Quote")
         
         
+        
         requestMessages()
     }
+    
+    func closeBtnTapped() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 
+    func avaImageTapped(sender: AnyObject) {
+//        let destVC = ProfileVC()
+//        destVC.user = user
+//        feed.navigationController?.pushViewController(destVC, animated: true)
+    }
     
     func requestMessages() {
-        print(toUser.username)
+        
+        toUser.fetchInBackgroundWithBlock { (u, error) in
+            let user: PFUser = u as! PFUser
+            if let avaFile = user["ava"] as? PFFile {
+                self.avaImage.kf_setImageWithURL(NSURL(string: avaFile.url!)!)
+            }
+            
+            if let firstName = user["firstName"] as? String {
+                self.userNameLbl.text = firstName
+            }
+            
+            
+        }
+        
+        
         WDTActivity.isDownAndReverseDown(toUser, post: usersPost) { (down) in
             if let down = down  {
                 let relation = down.relationForKey("replies")
@@ -97,8 +183,14 @@ class ReplyViewController: SLKTextViewController {
                                 
                                 return message
                             })
-                            print(replies)
                             self.tableView?.reloadData()
+                            if self.messages.count > 0 {
+                                let indexPath = NSIndexPath(forRow: self.messages.count - 1, inSection: 0)
+                                let rowAnimation: UITableViewRowAnimation = .Bottom
+                                let scrollPosition: UITableViewScrollPosition = .Bottom
+                                self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: scrollPosition, animated: true)
+                            }
+                            
                         } else {
                             print("No objects")
                         }
@@ -150,10 +242,10 @@ extension ReplyViewController {
         self.messages.append(message)
         self.tableView!.insertRowsAtIndexPaths([indexPath], withRowAnimation: rowAnimation)
         self.tableView!.endUpdates()
-        self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: scrollPosition, animated: true)
         // Fixes the cell from blinking (because of the transform, when using translucent cells)
         // See https://github.com/slackhq/SlackTextViewController/issues/94#issuecomment-69929927
         self.tableView!.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: scrollPosition, animated: true)
         super.didPressRightButton(sender)
         
         
@@ -189,6 +281,7 @@ extension ReplyViewController {
         parseMessage.saveInBackgroundWithBlock { (bool, error) in
             let relation = activityObj.relationForKey("replies")
             relation.addObject(parseMessage)
+            
             
             //sends message
             activityObj["comeFromTheFeed"] = self.comeFromTheFeed

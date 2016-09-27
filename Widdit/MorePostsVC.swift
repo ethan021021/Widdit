@@ -10,7 +10,7 @@ import UIKit
 import Parse
 import ImageViewer
 
-class MorePostsVC: WDTFeed {
+class MorePostsVC: UITableViewController, WDTLoad {
     
 //    var tableView: UITableView!
     
@@ -27,10 +27,10 @@ class MorePostsVC: WDTFeed {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        view.backgroundColor = UIColor.wddSilverColor()
         tableView.registerClass(FeedFooter.self, forHeaderFooterViewReuseIdentifier: "FeedFooterMorePosts")
         tableView.registerClass(PostCell.self, forCellReuseIdentifier: "PostCell")
-        tableView.backgroundColor = UIColor.whiteColor()
+        tableView.backgroundColor = UIColor.wddSilverColor()
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 150.0;
         tableView.separatorStyle = .None
@@ -53,9 +53,9 @@ class MorePostsVC: WDTFeed {
         loadPosts()
     }
     
-    override func loadPosts() {
+    func loadPosts() {
         
-        wdtPost.requestPosts { (success) in
+        wdtPost.requestPosts(nil, world: nil) { (success) in
             self.tableView.reloadData()
             self.refresher.endRefreshing()
             
@@ -114,7 +114,8 @@ class MorePostsVC: WDTFeed {
     {
         let cell = tableView.dequeueReusableCellWithIdentifier("PostCell", forIndexPath: indexPath) as! PostCell
         let post = collectionOfPosts[indexPath.section]
-        cell.feed = self
+        cell.vc = self
+        cell.wdtFeed = self
         cell.geoPoint = self.geoPoint
         cell.fillCell(post)
         cell.moreBtn.hidden = true
@@ -158,7 +159,7 @@ class MorePostsVC: WDTFeed {
         if PFUser.currentUser()?.username == user.username {
             return nil
         } else {
-            footerView.feed = self
+            footerView.vc = self
             footerView.setDown(user, post: post)
         }
         

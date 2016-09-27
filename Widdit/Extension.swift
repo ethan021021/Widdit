@@ -7,6 +7,14 @@
 //
 
 import UIKit
+import Presentr
+
+let presenter: Presentr = {
+    let presenter = Presentr(presentationType: .Alert)
+    presenter.presentationType = .Popup
+    presenter.transitionType = .CoverVerticalFromTop
+    return presenter
+}()
 
 extension UIColor {
     convenience init(r: Float, g: Float, b: Float, a: Float) {

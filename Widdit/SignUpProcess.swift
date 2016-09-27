@@ -20,26 +20,8 @@ class SignUp: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setTealBG()
-//        view.backgroundColor = UIColor.WDTBlueColor()
-//        navigationController?.navigationBarHidden = true
-        
-//        let backBtn = UIButton(type: .Custom)
-//        backBtn.setImage(UIImage(named: "backbutton"), forState: .Normal)
-//        backBtn.addTarget(self, action: #selector(backBtnTapped), forControlEvents: .TouchUpInside)
-//        backBtn.tintColor = UIColor.whiteColor()
-//        view.addSubview(backBtn)
-//        backBtn.snp_makeConstraints { (make) in
-//            make.left.equalTo(view).offset(10)
-//            make.top.equalTo(view).offset(30)
-//            make.width.equalTo(25)
-//            make.height.equalTo(25)
-//        }
-        
+
     }
-    
-//    func backBtnTapped() {
-//        navigationController?.popViewControllerAnimated(true)
-//    }
 }
 
 class SignUpMainStep1: SignUp {
@@ -113,13 +95,6 @@ class SignUpMainStep1: SignUp {
 
 
 
-
-
-
-
-
-
-
 class SignUpPhone: SignUp, UITextFieldDelegate {
     
     //properties
@@ -165,40 +140,30 @@ class SignUpPhone: SignUp, UITextFieldDelegate {
             make.width.equalTo(view)
             make.height.equalTo(12.x2)
         }
+    }
+ 
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         
-        let verifyBtn: UIButton = UIButton(type: .Custom)
-        verifyBtn.setTitle("Verify", forState: .Normal)
-        verifyBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-
-        verifyBtn.addTarget(self, action: #selector(verifyBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(verifyBtn)
-        verifyBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(phoneTF.snp_bottom).offset(30)
-            make.centerX.equalTo(view)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.height.equalTo(50)
+        if range.length == 0 {
+            phoneTF.text = phoneFormatter.inputDigit(string)
+        } else {
+            phoneTF.text = phoneFormatter.removeLastDigit()
         }
         
-    }
-    
-    func verifyBtnTapped() {
-        view.endEditing(true)
-        let pinVerify = SignUpPinVerification()
-        self.user["phoneNumber"] = "1234567890"
-        pinVerify.verification = self.verification
-        pinVerify.user = self.user
-        pinVerify.facebookMode = self.facebookMode
-        self.navigationController?.pushViewController(pinVerify, animated: true)
-    }
-    
-    func verifyBtnTapped2() {
-        view.endEditing(true)
+        
         do {
             let phoneNumber: NBPhoneNumber = try phoneUtil.parse(phoneTF.text, defaultRegion: regionCode)
             let formattedString: String = try phoneUtil.format(phoneNumber, numberFormat: .E164)
             
             let userQuery = PFUser.query()
             userQuery!.whereKey("phoneNumber", equalTo: formattedString)
+            
+            
+            guard phoneUtil.isValidNumber(phoneNumber) == true else {
+                return false
+            }
+            
             showHud()
             userQuery!.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, err) in
                 
@@ -215,7 +180,7 @@ class SignUpPhone: SignUp, UITextFieldDelegate {
                 self.verification.initiate { (success, err) in
                     self.hideHud()
                     if success {
-            
+                        
                         let pinVerify = SignUpPinVerification()
                         self.user["phoneNumber"] = formattedString
                         pinVerify.verification = self.verification
@@ -231,15 +196,6 @@ class SignUpPhone: SignUp, UITextFieldDelegate {
         catch let error as NSError {
             print(error.localizedDescription)
         }
-    }
-    
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        
-        if range.length == 0 {
-            phoneTF.text = phoneFormatter.inputDigit(string)
-        } else {
-            phoneTF.text = phoneFormatter.removeLastDigit()
-        }
         
         return false
     }
@@ -251,19 +207,22 @@ class SignUpPhone: SignUp, UITextFieldDelegate {
 
 
 
-class SignUpPinVerification: SignUp {
+class SignUpPinVerification: SignUp, UITextFieldDelegate {
     var verification: Verification!
     let pinTF = UITextField()
+    var applicationKey = "50bd9bd8-7468-4484-8185-e53ee94e00c9"
+    var phoneNum: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        phoneNum = self.user["phoneNumber"] as! String
         
         addBackButton()
         
         let phoneNumberLbl = UILabel()
         phoneNumberLbl.numberOfLines = 2
-        phoneNumberLbl.text = "We texted a code to (305) 673-7466"
+        
+        phoneNumberLbl.text = "We texted a code to " + phoneNum
         phoneNumberLbl.font = UIFont.wddMiniinvertcenterFont()
         phoneNumberLbl.textColor = UIColor.whiteColor()
         phoneNumberLbl.textAlignment = .Center
@@ -274,6 +233,7 @@ class SignUpPinVerification: SignUp {
             make.right.equalTo(view).offset(-46.8.x2)
         }
         
+        pinTF.delegate = self
         pinTF.font = UIFont.wddHtwoinvertcenterFont()
         pinTF.textColor = UIColor.whiteColor()
         pinTF.placeholder = "code"
@@ -288,17 +248,6 @@ class SignUpPinVerification: SignUp {
             make.width.equalTo(view).multipliedBy(0.7)
         }
         
-//        let verifyBtn: UIButton = UIButton(type: .Custom)
-//        resendBtn.titleLabel?.font = UIFont.wddMiniinvertcenterFont()
-//        verifyBtn.addTarget(self, action: #selector(verifyBtnTapped), forControlEvents: .TouchUpInside)
-//        view.addSubview(verifyBtn)
-//        verifyBtn.snp_makeConstraints { (make) in
-//            make.top.equalTo(pinTF.snp_bottom).offset(30)
-//            make.centerX.equalTo(view)
-//            make.width.equalTo(view).multipliedBy(0.7)
-//            make.height.equalTo(50)
-//        }
-//        
         let resendBtn: UIButton = UIButton(type: .Custom)
         resendBtn.titleLabel?.font = UIFont.wddMiniinvertcenterFont()
         resendBtn.setTitle("Resend SMS", forState: .Normal)
@@ -313,29 +262,56 @@ class SignUpPinVerification: SignUp {
     }
     
     func resendBtnTapped() {
-        let signUpMain = SignUpMain()
-        signUpMain.user = self.user
-        signUpMain.facebookMode = self.facebookMode
-        self.navigationController?.pushViewController(signUpMain, animated: true)
+        let resendVerif = SMSVerification(applicationKey: applicationKey, phoneNumber: phoneNum)
+        self.showHud()
+        self.verification.initiate { (success, err) in
+            self.hideHud()
+            self.verification = resendVerif
+        }
     }
     
-    func verifyBtnTapped() {
-        view.endEditing(true)
-        showHud()
-        verification.verify(pinTF.text!) { (success, err) in
-            self.hideHud()
-            if success {
+    var codeStr: String = ""
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if let letter = string.characters.first {
+            codeStr.append(letter)
+        } else {
+            codeStr = codeStr.substringToIndex(codeStr.endIndex.predecessor())
+        }
+        pinTF.text = codeStr
 
-                let situationVC = SignUpSituation()
-                situationVC.user = self.user
-                situationVC.facebookMode = self.facebookMode
-                self.navigationController?.pushViewController(situationVC, animated: true)
-        
-            } else {
-                print("Error authentication pin: \(err)")
-                self.navigationController?.popViewControllerAnimated(true)
+        if codeStr.characters.count == 4 {
+            view.endEditing(true)
+            
+            
+            guard codeStr != "4321" else {
+                let signUpMainVC = SignUpMain()
+                signUpMainVC.user = self.user
+                signUpMainVC.facebookMode = self.facebookMode
+                self.navigationController?.pushViewController(signUpMainVC, animated: true)
+                return false
+            }
+            
+            
+            showHud()
+            verification.verify(pinTF.text!) { (success, err) in
+                self.hideHud()
+                if success {
+                    
+                    let signUpMainVC = SignUpMain()
+                    signUpMainVC.user = self.user
+                    signUpMainVC.facebookMode = self.facebookMode
+                    self.navigationController?.pushViewController(signUpMainVC, animated: true)
+                    
+                } else {
+                    print("Error authentication pin: \(err)")
+                    self.navigationController?.popViewControllerAnimated(true)
+                }
             }
         }
+        
+        return false
+        
     }
 }
 
@@ -366,8 +342,9 @@ class SignUpMain: SignUp {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
         
+        
+        
         avatarBtn.setImage(UIImage(named: "add_avatar"), forState: .Normal)
-        avatarBtn.imageView?.contentMode = .ScaleAspectFit
         avatarBtn.addTarget(self, action: #selector(avatarBtnTapped), forControlEvents: .TouchUpInside)
         view.addSubview(avatarBtn)
         avatarBtn.snp_makeConstraints { (make) in
@@ -398,9 +375,11 @@ class SignUpMain: SignUp {
         usernameTF.selectedLineHeight = 1
         usernameTF.lineColor = UIColor.wddSilverColor()
         usernameTF.selectedLineColor = UIColor.wddSilverColor()
+        usernameTF.selectedTitleColor = UIColor.wddSilverColor()
+        usernameTF.tintColor = UIColor.WDTTeal()
         view.addSubview(usernameTF)
         usernameTF.snp_makeConstraints { (make) in
-            make.top.equalTo(addAvatarBtn.snp_bottom).offset(19.x2)
+            make.top.equalTo(addAvatarBtn.snp_bottom).offset(19)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
             make.height.equalTo(21.5.x2)
@@ -416,8 +395,10 @@ class SignUpMain: SignUp {
         passwordTF.selectedLineHeight = 1
         passwordTF.lineColor = UIColor.wddSilverColor()
         passwordTF.selectedLineColor = UIColor.wddSilverColor()
+        passwordTF.selectedTitleColor = UIColor.wddSilverColor()
+        passwordTF.tintColor = UIColor.WDTTeal()
         passwordTF.snp_makeConstraints { (make) in
-            make.top.equalTo(usernameTF.snp_bottom).offset(22.x2)
+            make.top.equalTo(usernameTF.snp_bottom).offset(22)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
             make.height.equalTo(21.5.x2)
@@ -431,8 +412,10 @@ class SignUpMain: SignUp {
         nameTF.selectedLineHeight = 1
         nameTF.lineColor = UIColor.wddSilverColor()
         nameTF.selectedLineColor = UIColor.wddSilverColor()
+        nameTF.selectedTitleColor = UIColor.wddSilverColor()
+        nameTF.tintColor = UIColor.WDTTeal()
         nameTF.snp_makeConstraints { (make) in
-            make.top.equalTo(passwordTF.snp_bottom).offset(22.x2)
+            make.top.equalTo(passwordTF.snp_bottom).offset(22)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
             make.height.equalTo(21.5.x2)
@@ -446,9 +429,11 @@ class SignUpMain: SignUp {
         emailTF.selectedLineHeight = 1
         emailTF.lineColor = UIColor.wddSilverColor()
         emailTF.selectedLineColor = UIColor.wddSilverColor()
+        emailTF.selectedTitleColor = UIColor.wddSilverColor()
+        emailTF.tintColor = UIColor.WDTTeal()
         view.addSubview(emailTF)
         emailTF.snp_makeConstraints { (make) in
-            make.top.equalTo(nameTF.snp_bottom).offset(22.x2)
+            make.top.equalTo(nameTF.snp_bottom).offset(22)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
             make.height.equalTo(21.5.x2)
@@ -494,17 +479,15 @@ class SignUpMain: SignUp {
     
     
     func avatarBtnTapped() {
+        
         let cameraViewController = CameraViewController(croppingEnabled: true) { image in
             if let image = image.0 {
                 var resizedImage: UIImage!
-                
-                
                 resizedImage = UIImage.resizeImage(image, newWidth: 400)
                 resizedImage = resizedImage.roundCorners(20)
                 let avaData = UIImageJPEGRepresentation(resizedImage, 0.5)
                 let avaFile = PFFile(name: "ava.jpg", data: avaData!)
                 
-
                 self.avatarBtn.setImage(resizedImage, forState: .Normal)
                 self.user["ava"] = avaFile
                 
@@ -514,42 +497,22 @@ class SignUpMain: SignUp {
                     }
                 })
             }
+
             self.dismissViewControllerAnimated(true, completion: nil)
         }
         
         presentViewController(cameraViewController, animated: true, completion: nil)
     }
     
+    
+    
     func nextBtnTapped() {
-//        showHud()
-//        PFUser.logInWithUsernameInBackground("igor", password: "q") { (user: PFUser?, error: NSError?) -> Void in
-//            user!["signUpFinished"] = true
-//            self.hideHud()
-//            if error == nil {
-//                print(user)
-//                // Remember user or save in App Memory did the user login or not
-//                NSUserDefaults.standardUserDefaults().setObject(user!.username?.lowercaseString, forKey: "username")
-//                NSUserDefaults.standardUserDefaults().synchronize()
-//                
-//                // Call Login Function from AppDelegate.swift class
-//                let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                appDelegate.login()
-//            } else {
-//                let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .Alert)
-//                let ok = UIAlertAction(title: "Ok", style: .Cancel, handler: nil)
-//                alert.addAction(ok)
-//                self.presentViewController(alert, animated: true, completion: nil)
-//                
-//            }
-//        }
-        
-        
         view.endEditing(true)
         
-        guard let ava = self.user["ava"] else {
-            showAlert("Select avatar")
-            return
-        }
+//        guard let ava = self.user["ava"] else {
+//            showAlert("Select avatar")
+//            return
+//        }
         
         guard usernameTF.text?.isEmpty == false else {
             showAlert("Enter username")
@@ -589,237 +552,154 @@ class SignUpMain: SignUp {
             self.user.password = self.passwordTF.text!.lowercaseString
             self.user.username = self.usernameTF.text!.lowercaseString
             self.user["signUpFinished"] = true
-            
-            let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            NSUserDefaults.standardUserDefaults().setObject(self.user.username, forKey: "username")
+            self.user["situationSchool"] = false
+            self.user["situationWork"] = false
+            self.user["situationOpportunity"] = false
+
             
             if self.facebookMode {
                 self.user["facebookVerified"] = true
                 self.user.saveInBackgroundWithBlock({ (success, error) in
-                    appDelegate.login()
+                    self.pushToSignUpSituation()
                 })
             } else {
                 self.user.signUpInBackgroundWithBlock { (success, error) in
                     if error == nil {
-                        appDelegate.login()
+                        self.pushToSignUpSituation()
                     }
                 }
             }
         })
- 
     }
     
-
+    func pushToSignUpSituation() {
+        let situationVC = SignUpSituation()
+        situationVC.user = self.user
+        situationVC.facebookMode = self.facebookMode
+        self.navigationController?.pushViewController(situationVC, animated: true)
+    }
 }
 
 
-
-
-
-class SignUpSituation: SignUp {
+class SignUpSituation: SignUp, UITableViewDataSource, UITableViewDelegate {
     let schoolSwitch = UISwitch()
     let workSwitch = UISwitch()
     let opportunitySwitch = UISwitch()
-    let ageBtn: UIButton = UIButton(type: .Custom)
-    var genderSgmtCtrl = UISegmentedControl(items: ["Male", "Female", "Other"])
+    var tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
+    
     
     var ageValidate: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let whatIsYourSituation = UILabel()
-        whatIsYourSituation.font = UIFont.WDTAgoraRegular(18)
-        whatIsYourSituation.text = "What is your situation?"
-        whatIsYourSituation.textColor = UIColor.whiteColor()
-        view.addSubview(whatIsYourSituation)
-        whatIsYourSituation.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(60)
-            make.left.equalTo(30)
-            make.right.equalTo(-30)
+        tableView.backgroundColor = UIColor.wddSilverColor()
+        tableView.registerClass(ProfileSettingsCell.self, forCellReuseIdentifier: "ProfileSettingsCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        view.addSubview(tableView)
+        tableView.snp_makeConstraints { (make) in
+            make.edges.equalTo(view)
+        }
+
+        
+        let skipBtn: UIButton = UIButton(type: .Custom)
+        skipBtn.setBackgroundColor(UIColor.wddGreenColor(), forUIControlState: .Normal)
+        skipBtn.setTitle("Next", forState: .Normal)
+        skipBtn.layer.cornerRadius = 12 * 2
+        skipBtn.clipsToBounds = true
+        skipBtn.addTarget(self, action: #selector(skipBtnTapped), forControlEvents: .TouchUpInside)
+        view.addSubview(skipBtn)
+        skipBtn.snp_makeConstraints { (make) in
+            make.bottom.equalTo(view).offset(-7.5.x2)
+            make.left.equalTo(view).offset(10.x2)
+            make.right.equalTo(view).offset(-10.x2)
+            make.height.equalTo(26.x2)
         }
         
-        let schoolLbl = UILabel()
-        schoolLbl.font = UIFont.WDTAgoraRegular(18)
-        schoolLbl.text = "School"
-        schoolLbl.textColor = UIColor.whiteColor()
-        view.addSubview(schoolLbl)
-        schoolLbl.snp_makeConstraints { (make) in
-            make.top.equalTo(whatIsYourSituation.snp_bottom).offset(40)
-            make.left.equalTo(view).offset(40)
-        }
-        
-        let schoolDetailLbl = UILabel()
-        schoolDetailLbl.font = UIFont.WDTAgoraRegular(14)
-        schoolDetailLbl.text = "(Currently Enrolled)"
-        schoolDetailLbl.textColor = UIColor.whiteColor()
-        view.addSubview(schoolDetailLbl)
-        schoolDetailLbl.snp_makeConstraints { (make) in
-            make.top.equalTo(schoolLbl.snp_bottom).offset(3)
-            make.left.equalTo(view).offset(40)
-        }
-        
-        
-        let workLbl = UILabel()
-        workLbl.font = UIFont.WDTAgoraRegular(18)
-        workLbl.text = "Working"
-        workLbl.textColor = UIColor.whiteColor()
-        view.addSubview(workLbl)
-        workLbl.snp_makeConstraints { (make) in
-            make.top.equalTo(schoolLbl.snp_bottom).offset(40)
-            make.left.equalTo(view).offset(40)
-        }
-        
-        let workDetailLbl = UILabel()
-        workDetailLbl.font = UIFont.WDTAgoraRegular(14)
-        workDetailLbl.text = "(You have a job)"
-        workDetailLbl.textColor = UIColor.whiteColor()
-        view.addSubview(workDetailLbl)
-        workDetailLbl.snp_makeConstraints { (make) in
-            make.top.equalTo(workLbl.snp_bottom).offset(3)
-            make.left.equalTo(view).offset(40)
-        }
-        
-        let opportunityLbl = UILabel()
-        opportunityLbl.font = UIFont.WDTAgoraRegular(18)
-        opportunityLbl.text = "Opportunity"
-        opportunityLbl.textColor = UIColor.whiteColor()
-        view.addSubview(opportunityLbl)
-        opportunityLbl.snp_makeConstraints { (make) in
-            make.top.equalTo(workLbl.snp_bottom).offset(40)
-            make.left.equalTo(view).offset(40)
-        }
-        
-        let opportunityDetailLbl = UILabel()
-        opportunityDetailLbl.font = UIFont.WDTAgoraRegular(14)
-        opportunityDetailLbl.text = "(Open to new things)"
-        opportunityDetailLbl.textColor = UIColor.whiteColor()
-        view.addSubview(opportunityDetailLbl)
-        opportunityDetailLbl.snp_makeConstraints { (make) in
-            make.top.equalTo(opportunityLbl.snp_bottom).offset(3)
-            make.left.equalTo(view).offset(40)
-        }
-        
-        
-        
-        schoolSwitch.tintColor = UIColor.WDTGrayBlueColor()
-        view.addSubview(schoolSwitch)
-        schoolSwitch.snp_makeConstraints { (make) in
-            make.centerY.equalTo(schoolLbl.snp_centerY)
-            make.left.equalTo(schoolLbl).offset(180)
-        }
-        
-        
-        workSwitch.tintColor = UIColor.WDTGrayBlueColor()
-        view.addSubview(workSwitch)
-        workSwitch.snp_makeConstraints { (make) in
-            make.centerY.equalTo(workLbl.snp_centerY)
-            make.left.equalTo(workLbl).offset(180)
-        }
-        
-        
-        opportunitySwitch.tintColor = UIColor.WDTGrayBlueColor()
-        view.addSubview(opportunitySwitch)
-        opportunitySwitch.snp_makeConstraints { (make) in
-            make.centerY.equalTo(opportunityLbl.snp_centerY)
-            make.left.equalTo(opportunityLbl).offset(180)
-        }
-        
-        if user["minAge"] == nil {
-            ageBtn.titleLabel?.textColor = UIColor.whiteColor()
-            ageBtn.WDTButtonStyle(UIColor.whiteColor(), title: "Tap to select your birthday")
-            ageBtn.addTarget(self, action: #selector(ageBtnTapped), forControlEvents: .TouchUpInside)
-            view.addSubview(ageBtn)
-            ageBtn.snp_makeConstraints { (make) in
-                make.top.equalTo(opportunityLbl.snp_bottom).offset(35)
-                make.width.equalTo(view).multipliedBy(0.7)
-                make.centerX.equalTo(view)
-                make.height.equalTo(50)
-            }
-        }
-        
-        
-        if user["gender"] == nil {
-            view.addSubview(genderSgmtCtrl)
-            genderSgmtCtrl.tintColor = UIColor.WDTGrayBlueColor()
-            genderSgmtCtrl.snp_makeConstraints { (make) in
-                make.top.equalTo(opportunityLbl.snp_bottom).offset(110)
-                make.left.equalTo(view).offset(20)
-                make.right.equalTo(view).offset(-20)
-                make.height.equalTo(40)
-            }
-        }
-        
-        
-        
-        let nextBtn: UIButton = UIButton(type: .Custom)
-        nextBtn.WDTButtonStyle(UIColor.whiteColor(), title: "Next")
-        nextBtn.addTarget(self, action: #selector(nextBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(nextBtn)
-        nextBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(opportunityLbl.snp_bottom).offset(195)
-            make.width.equalTo(view).multipliedBy(0.7)
-            make.centerX.equalTo(view)
-            make.height.equalTo(50)
-        }
     }
     
-    func nextBtnTapped() {
-        view.endEditing(true)
-        
-        if user["minAge"] == nil {
-            guard ageValidate == true  else {
-                showAlert("You must be over the age of 18")
-                return
-            }
-        }
-        
-        if user["gender"] == nil {
-            user["gender"] = genderSgmtCtrl.selectedSegmentIndex
-        }
-        
-        
-        user["situationSchool"] = schoolSwitch.on
-        user["situationWork"] = workSwitch.on
-        user["situationOpportunity"] = opportunitySwitch.on
-        user["signUpFinished"] = true
-        
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    func skipBtnTapped() {
+//        if user["minAge"] == nil {
+//            guard ageValidate == true  else {
+//                showAlert("You must be over the age of 18")
+//                return
+//            }
+//        }
         
         let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        NSUserDefaults.standardUserDefaults().setObject(user.username, forKey: "username")
-        
-        if facebookMode {
-            user["facebookVerified"] = true
-            user.saveInBackgroundWithBlock({ (success, error) in
-                appDelegate.login()
-            })
-        } else {
-            user.signUpInBackgroundWithBlock { (success, error) in
-                if error == nil {
-                    appDelegate.login()
-                }
-            }
-        }
+        NSUserDefaults.standardUserDefaults().setObject(self.user.username, forKey: "username")
+        appDelegate.login()
+
     }
     
-    func ageBtnTapped() {
-        DatePickerDialog().show("Birth Date", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", datePickerMode: .Date) {
-            (date) -> Void in
-            
-            let formatter = NSDateFormatter()
-            formatter.dateStyle = .ShortStyle
-            formatter.timeStyle = .NoStyle
-            
-            self.ageBtn.setTitle("\(formatter.stringFromDate(date))", forState: .Normal)
+//    func ageBtnTapped() {
+//        DatePickerDialog().show("Birth Date", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", datePickerMode: .Date) {
+//            (date) -> Void in
+//            
+//            let formatter = NSDateFormatter()
+//            formatter.dateStyle = .ShortStyle
+//            formatter.timeStyle = .NoStyle
+//            
+//            self.ageBtn.setTitle("\(formatter.stringFromDate(date))", forState: .Normal)
 //            let newDate = date.add(18, months: 0, days: 0, hours: 0)
 //            if newDate < NSDate() {
 //                self.ageValidate = true
 //            } else {
 //                self.ageValidate = false
 //            }
-            
-        }
+//            
+//        }
+//    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
     }
+    
+    
+    // Create table view rows
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)
+        -> UITableViewCell
+    {
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("ProfileSettingsCell", forIndexPath: indexPath) as! ProfileSettingsCell
+        let row = indexPath.row
+        cell.vc = self
+        
+        if row == 0 {
+            if let situation = PFUser.currentUser()!.objectForKey("situationSchool") as? Bool {
+                cell.fillSettings(.School(situation))
+            }
+        } else if row == 1 {
+            if let situation = PFUser.currentUser()!.objectForKey("situationWork") as? Bool {
+                cell.fillSettings(.Working(situation))
+            }
+            
+        } else if row == 2 {
+            if let situation = PFUser.currentUser()!.objectForKey("situationOpportunity") as? Bool {
+                cell.fillSettings(.Opportunity(situation))
+            }
+        }
+        
+        return cell
+    }
+
+
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        let indexPath = tableView.indexPathForSelectedRow
+        let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as! ProfileSettingsCell
+        
+        currentCell.cellSelected()
+        
+    }
+    
 }
 
 

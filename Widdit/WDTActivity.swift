@@ -98,14 +98,7 @@ class WDTActivity {
     
     
     func requestDowns(completion: (success: Bool) -> Void) {
-        
-//        let activitiesToMeQuery = PFQuery(className: "Activity")
-//        activitiesToMeQuery.whereKey("by", equalTo: currentUser)
-//        activitiesToMeQuery.whereKey("type", equalTo: "down")
-//        let activitiesFromMeQuery = PFQuery(className: "Activity")
-//        activitiesFromMeQuery.whereKey("to", equalTo: currentUser)
-//        activitiesFromMeQuery.whereKey("type", equalTo: "down")
-        
+                
         let activitiesQuery = PFQuery(className: "Activity")
             //.orQueryWithSubqueries([activitiesToMeQuery, activitiesFromMeQuery])
         activitiesQuery.whereKey("to", equalTo: currentUser)
