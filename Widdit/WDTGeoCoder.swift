@@ -2,7 +2,7 @@
 //  WDTGeoCoder.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 07.12.16.
+//  Created by Igor Kuznetsov on 07.12.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 

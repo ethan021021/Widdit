@@ -2,7 +2,7 @@
 //  WebViewController.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 21.01.17.
+//  Created by Igor Kuznetsov on 21.01.17.
 //  Copyright © 2017 John McCants. All rights reserved.
 //
 

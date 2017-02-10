@@ -2,7 +2,7 @@
 //  ReplyViewController2.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 20.12.16.
+//  Created by Igor Kuznetsov on 20.12.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  ProfileEditAboutVC.swift
 //  Widdit
 //
-//  Created by Игорь Кузнецов on 21.09.16.
+//  Created by Igor Kuznetsov on 21.09.16.
 //  Copyright © 2016 John McCants. All rights reserved.
 //
 
