@@ -1,70 +1,37 @@
 # SRKControls
-
-> Custom controls to turn UITextfields into item-selection with picker and date-selections.
-
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/EZSwiftExtensions.svg)](https://img.shields.io/cocoapods/v/LFAlertController.svg)  
-
-[![Platform](https://img.shields.io/cocoapods/p/LFAlertController.svg?style=flat)](http://cocoapods.org/pods/LFAlertController)
-
-Using this library, one can convert `UITextfield` objects in-to a `combo-box-style-item-picker` or `date-time-picker`.
-Check-out following screen-shots to understand behaviour and go through following list of features.
-
-* Combo-box style picker
-* Date-time picker
-* Time picker
-* Date picker
-* Support for iPad & on iPad it will be shown as a pop-over
+Custom controls to turn UITextfields into item-selection with picker and date-selections.
 
 ---
-
-***Example Screenshot 1: Screen-shot indicates noraml textfields but with different class***
-
-![Example Screen-shot 1](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20with%20normal%20appearance.png?raw=true)
-
----
-
-***Example Screenshot 2: Screen-shot indicates Combo-picker example***
-
-![Example Screen-shot 2](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20-%20SRKComboBox.png?raw=true)
-
----
-
-***Example Screenshot 3: Screen-shot indicates Date-picker example***
-
-![Example Screenshot 3](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20-%20SRKDateTimeBox%20-%20Date%20Picker.png?raw=true)
-
----
-
-***Example Screenshot 4: Screen-shot indicates time-picker example***
-
-![Example Screenshot 4](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20-%20SRKDateTimeBox%20-%20Time%20Picker.png?raw=true)
-
----
-
-## Requirements
-
-- iOS 7.0+
-- Xcode 7.3
-
-## Installation
 
 ***Step 1.*** `pod 'SRKControls', '~> 3.0.1'`
 
+---
+
 ***Step 2.*** After above pod-line, add line `use_frameworks!`
+
+---
 
 ***Step 3.*** `pod install`
 
-## Usage example
+---
 
-***Step 1.*** Go to your `ViewController.swift` & `import SRKControls`
+***Step 4.*** Go to your `ViewController.swift` & `import SRKControls`
 
-***Step 2.*** Go to your `ViewController.xib` or `Main.Storyboard`, drag & drop `UITextField` object on user-interface. Connect `delegate` of that textField-object.
+---
 
-***Step 3.*** Change textField-Object class to `SRKComboBox` or `SRKDateTimeBox` as per your need. Also have an `IBOutlet` Connection to your `ViewController`.
+***Step 5.*** Go to your `ViewController.xib` or `Main.Storyboard`, drag & drop `UITextField` object on user-interface. Connect `delegate` of that textField-object.
 
-***Step 4.*** Add `UITextFieldDelegate`, `SRKComboBoxDelegate` and / or `SRKDateTimeBoxDelegate` as per your need.
+---
 
-***Step 5.*** Put following lines of code
+***Step 6.*** Change textField-Object class to `SRKComboBox` or `SRKDateTimeBox` as per your need. Also have an `IBOutlet` Connection to your `ViewController`.
+
+---
+
+***Step 7.*** Add `UITextFieldDelegate`, `SRKComboBoxDelegate` and / or `SRKDateTimeBoxDelegate` as per your need.
+
+---
+
+***Step 8.*** Put following lines of code
 
 
 ```Swift
@@ -204,3 +171,29 @@ Check-out following screen-shots to understand behaviour and go through followin
 		print("Let's do some action here")
 	}
 ```
+
+---
+
+***Example Screenshot 1: Screen-shot indicates noraml textfields but with different class***
+
+![Example Screen-shot 1](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20with%20normal%20appearance.png?raw=true)
+
+---
+
+***Example Screenshot 2: Screen-shot indicates Combo-picker example***
+
+![Example Screen-shot 2](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20-%20SRKComboBox.png?raw=true)
+
+---
+
+***Example Screenshot 3: Screen-shot indicates Date-picker example***
+
+![Example Screenshot 3](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20-%20SRKDateTimeBox%20-%20Date%20Picker.png?raw=true)
+
+---
+
+***Example Screenshot 4: Screen-shot indicates time-picker example***
+
+![Example Screenshot 4](https://github.com/sag333ar/SRKControls/blob/master/ScreenShots/SRKControls%20-%20SRKDateTimeBox%20-%20Time%20Picker.png?raw=true)
+
+---

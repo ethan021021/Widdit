@@ -47,9 +47,9 @@ PODS:
   - SkyFloatingLabelTextField (1.2.1)
   - SlackTextViewController (1.9.3)
   - SnapKit (0.22.0)
-  - SRKControls (3.0.6):
-    - SRKControls/Controls (= 3.0.6)
-  - SRKControls/Controls (3.0.6)
+  - SRKControls (3.0.5):
+    - SRKControls/Controls (= 3.0.5)
+  - SRKControls/Controls (3.0.5)
   - StatefulViewController (1.2)
   - Whisper (3.1.1)
   - XCGLogger (3.6.0)
@@ -86,7 +86,7 @@ DEPENDENCIES:
   - SkyFloatingLabelTextField
   - SlackTextViewController
   - SnapKit (~> 0.22.0)
-  - SRKControls
+  - SRKControls (from `https://github.com/lolohouse/SRKControls.git`)
   - StatefulViewController
   - Whisper
   - XCGLogger (from `https://github.com/DaveWoodCom/XCGLogger`, branch `swift_2.3`)
@@ -107,6 +107,8 @@ EXTERNAL SOURCES:
   Presentr:
     :git: https://github.com/icalialabs/Presentr.git
     :tag: 0.2.1
+  SRKControls:
+    :git: https://github.com/lolohouse/SRKControls.git
   XCGLogger:
     :branch: swift_2.3
     :git: https://github.com/DaveWoodCom/XCGLogger
@@ -127,6 +129,9 @@ CHECKOUT OPTIONS:
   Presentr:
     :git: https://github.com/icalialabs/Presentr.git
     :tag: 0.2.1
+  SRKControls:
+    :commit: b940aa0066e744fee82c141a112ca9c187575872
+    :git: https://github.com/lolohouse/SRKControls.git
   XCGLogger:
     :commit: 19b6b14b6f8bc8d8fec12fa3c8ef1fa88099a7df
     :git: https://github.com/DaveWoodCom/XCGLogger
@@ -166,11 +171,11 @@ SPEC CHECKSUMS:
   SkyFloatingLabelTextField: 3f6610aded18e778df5cfab3b9e12a11b3e014e9
   SlackTextViewController: bd2a34c188d4f7dec93cf42388f38551263fac82
   SnapKit: 0dd2fd157330f1ea11fd84da13e6be8a7a22bae0
-  SRKControls: 1b3c78d73436cf53bf087d5147ee6fc90700e7c5
+  SRKControls: ef82f31f3bdea31ab8ec5d36057f553c8b8815a5
   StatefulViewController: 58a8134ea4a2f43504a9671700385f699450d018
   Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
   XCGLogger: 53a3efe22e228e8b25ed8184bc074c2b06d48490
 
-PODFILE CHECKSUM: 773f17d9d6c2b5d70247be81c2a84be75ff7c959
+PODFILE CHECKSUM: faf28b71ac86dacf6496086eb634f8acb6a2e5d3
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.2.0

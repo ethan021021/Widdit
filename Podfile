@@ -29,7 +29,7 @@ pod 'Instabug'
 pod 'Whisper'
 pod 'RAMAnimatedTabBarController'
 pod 'PermissionScope'
-pod 'SRKControls'
+pod 'SRKControls', :git => 'https://github.com/lolohouse/SRKControls.git'
 pod 'SkyFloatingLabelTextField'
 pod 'Presentr', :git => 'https://github.com/icalialabs/Presentr.git', :tag => '0.2.1'
 pod 'MBTwitterScroll'
@@ -50,4 +50,3 @@ post_install do |installer|
 end
 
 end
-
