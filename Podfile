@@ -2,7 +2,7 @@
 # platform :ios, '8.0'
 # Uncomment this line if you're using Swift
 use_frameworks!
-
+source 'https://github.com/CocoaPods/Specs.git'
 target 'Widdit' do
 
 pod 'SlackTextViewController'
@@ -18,22 +18,28 @@ pod 'ImageViewer'
 pod 'Kingfisher', '~> 2.5.0'
 pod 'AFImageHelper'
 pod 'libPhoneNumber-iOS', '~> 0.8'
-pod 'XCGLogger', '~> 3.3'
-pod 'ALCameraViewController', :git => 'https://github.com/AlexLittlejohn/ALCameraViewController.git', :branch => 'master'
-#pod 'ImagePicker'
+pod 'XCGLogger', :git => 'https://github.com/DaveWoodCom/XCGLogger', :branch => 'swift_2.3'
+pod 'ALCameraViewController'
+pod 'Fusuma', :git => 'https://github.com/ytakzk/Fusuma', :branch => 'swift2.3'
+pod 'BetterSegmentedControl', '0.4'
+pod 'SevenSwitch', '~> 2.0'
+pod 'StatefulViewController'#, :git => 'https://github.com/aschuch/StatefulViewController', :branch => 'swift2.3'
+pod 'SDVersion'
+pod 'Instabug'
 pod 'Whisper'
 pod 'RAMAnimatedTabBarController'
 pod 'PermissionScope'
 pod 'SRKControls'
 pod 'SkyFloatingLabelTextField'
-pod 'Presentr'
-pod 'JSQMessagesViewController', :git => 'https://github.com/jessesquires/JSQMessagesViewController.git', :branch => 'develop'
-pod 'BetterSegmentedControl', '0.4'
-pod 'SevenSwitch', '~> 2.0'
-pod 'StatefulViewController', :git => 'https://github.com/aschuch/StatefulViewController', :branch => 'swift2.3'
-pod 'BTNavigationDropdownMenu'
-pod 'SDVersion'
-pod 'Instabug'
+pod 'Presentr', :git => 'https://github.com/icalialabs/Presentr.git', :tag => '0.2.1'
+pod 'MBTwitterScroll'
+pod 'Localytics', '~> 4.0'
+pod 'DGActivityIndicatorView'
+pod 'Device'
+pod 'Onboard'
+pod 'NoChat', :git => 'https://github.com/little2s/NoChat', :branch => 'swift2_3'
+pod 'NoChatTG', :git => 'https://github.com/little2s/NoChat', :branch => 'swift2_3'
+pod 'ActiveLabel', :git => 'https://github.com/optonaut/ActiveLabel.swift', :branch => 'swift-2.3'
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|

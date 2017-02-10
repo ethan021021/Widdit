@@ -12,12 +12,12 @@ import Parse
 class ProfileEditAboutVC: UIViewController, UITextViewDelegate {
     
     var tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
-
+    let aboutTxt = UITextView()
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.wddSilverColor()
         
-        let aboutTxt = UITextView()
+        
         if let about = PFUser.currentUser()!["about"] as? String {
             aboutTxt.text = about
         }
@@ -29,18 +29,29 @@ class ProfileEditAboutVC: UIViewController, UITextViewDelegate {
             make.top.equalTo(view)
             make.left.equalTo(view)
             make.right.equalTo(view)
-            make.height.equalTo(view).multipliedBy(0.45)
+            make.height.equalTo(view).multipliedBy(0.6)
         }
         
         navigationItem.title = "About"
         
+        
+        let saveButton = UIBarButtonItem(title: "Save", style: .Done, target: self, action: #selector(saveButtonTapped))
+        navigationItem.rightBarButtonItem = saveButton
     }
     
-    
-    func textViewDidEndEditing(textView: UITextView) {
-        PFUser.currentUser()!["about"] = textView.text
-        PFUser.currentUser()!.saveInBackground()
+    func saveButtonTapped() {
+        PFUser.currentUser()!["about"] = aboutTxt.text
+        showHud()
+        PFUser.currentUser()!.saveInBackgroundWithBlock { (_, _) in
+            self.hideHud()
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+        
     }
+    
+    //func textViewDidEndEditing(textView: UITextView) {
+        
+    //}
 
 
 }

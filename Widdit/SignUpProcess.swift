@@ -78,6 +78,8 @@ class SignUpMainStep1: SignUp {
                     self.user.username = self.usernameTF.text!.lowercaseString
                     var nextVC: SignUp!
                     
+                    
+                    
                     if self.facebookMode {
                         nextVC = SignUpPhone()
                     } else {
@@ -151,15 +153,13 @@ class SignUpPhone: SignUp, UITextFieldDelegate {
             phoneTF.text = phoneFormatter.removeLastDigit()
         }
         
-        
         do {
             let phoneNumber: NBPhoneNumber = try phoneUtil.parse(phoneTF.text, defaultRegion: regionCode)
             let formattedString: String = try phoneUtil.format(phoneNumber, numberFormat: .E164)
             
             let userQuery = PFUser.query()
             userQuery!.whereKey("phoneNumber", equalTo: formattedString)
-            
-            
+
             guard phoneUtil.isValidNumber(phoneNumber) == true else {
                 return false
             }
@@ -319,7 +319,7 @@ import ALCameraViewController
 import SRKControls
 import SkyFloatingLabelTextField
 
-class SignUpMain: SignUp {
+class SignUpMain: SignUp, UITextFieldDelegate {
     let usernameTF = SkyFloatingLabelTextField()
     let nameTF = SkyFloatingLabelTextField()
     let emailTF = SkyFloatingLabelTextField()
@@ -366,8 +366,19 @@ class SignUpMain: SignUp {
             make.centerX.equalTo(view)
         }
         
+        if facebookMode == true {
+            if let avaFile = self.user["ava"] as? PFFile {
+                avaFile.getDataInBackgroundWithBlock { (data: NSData?, error: NSError?) -> Void in
+                    let image = (UIImage(data: data!))!.roundCorners(20)
+                    self.avatarBtn.setImage(image, forState: .Normal)
+                }
+            }
+        }
+
 
         usernameTF.autocapitalizationType = .None
+        usernameTF.tag = 0
+        usernameTF.delegate = self
         usernameTF.becomeFirstResponder()
         usernameTF.placeholder = "Username"
         usernameTF.title = "Username"
@@ -387,7 +398,9 @@ class SignUpMain: SignUp {
         
 
         passwordTF.placeholder = "Password"
+        passwordTF.tag = 1
         passwordTF.title = "Password"
+        passwordTF.delegate = self
         passwordTF.autocapitalizationType = .None
         passwordTF.secureTextEntry = true
         view.addSubview(passwordTF)
@@ -405,6 +418,8 @@ class SignUpMain: SignUp {
         }
         
         nameTF.placeholder = "Name"
+        nameTF.tag = 2
+        nameTF.delegate = self
         nameTF.title = "Name"
         nameTF.autocapitalizationType = .None
         view.addSubview(nameTF)
@@ -424,6 +439,8 @@ class SignUpMain: SignUp {
         
         emailTF.placeholder = "E-mail"
         emailTF.title = "E-mail"
+        emailTF.tag = 3
+        emailTF.delegate = self
         emailTF.autocapitalizationType = .None
         emailTF.lineHeight = 1
         emailTF.selectedLineHeight = 1
@@ -439,6 +456,22 @@ class SignUpMain: SignUp {
             make.height.equalTo(21.5.x2)
         }
         
+        if facebookMode == true {
+            if let email = self.user["email"] as? String {
+                emailTF.enabled = false
+                emailTF.text = email
+            }
+            
+            if let name = self.user["firstName"] as? String {
+                nameTF.enabled = false
+                nameTF.text = name
+            }
+            
+            passwordTF.text = "test"
+            passwordTF.hidden = true
+            nameTF.hidden = true
+            emailTF.hidden = true
+        }
         
 //        birthdayTF.placeholder = "Birthday"
 //        birthdayTF.autocapitalizationType = .None
@@ -477,6 +510,11 @@ class SignUpMain: SignUp {
         }
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
+    }
     
     func avatarBtnTapped() {
         
@@ -524,10 +562,13 @@ class SignUpMain: SignUp {
             return
         }
         
-        guard passwordTF.text?.isEmpty == false else {
-            showAlert("Enter password")
-            return
+        if facebookMode == false {
+            guard passwordTF.text?.isEmpty == false else {
+                showAlert("Enter password")
+                return
+            }    
         }
+        
         
 //        guard passwordTF.text == passwordAgainTF.text else {
 //            showAlert("Reentered password is wrong")
@@ -535,41 +576,74 @@ class SignUpMain: SignUp {
 //        }
         
         let userQuery = PFUser.query()
-        
-        userQuery!.whereKey("email", equalTo: emailTF.text!)
-        showHud()
+        userQuery!.whereKey("username", equalTo: usernameTF.text!)
+        self.showHud()
         userQuery!.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, err) in
             self.hideHud()
             
-            guard let objects = objects where objects.isEmpty == true else {
-                self.showAlert("Email already exists")
-                return
-            }
-            
-            let phoneVerifyVC = SignUpPhone()
-            self.user["firstName"] = self.usernameTF.text!
-            self.user["email"] = self.emailTF.text!
-            self.user.password = self.passwordTF.text!.lowercaseString
-            self.user.username = self.usernameTF.text!.lowercaseString
-            self.user["signUpFinished"] = true
-            self.user["situationSchool"] = false
-            self.user["situationWork"] = false
-            self.user["situationOpportunity"] = false
-
-            
-            if self.facebookMode {
-                self.user["facebookVerified"] = true
-                self.user.saveInBackgroundWithBlock({ (success, error) in
-                    self.pushToSignUpSituation()
-                })
-            } else {
-                self.user.signUpInBackgroundWithBlock { (success, error) in
-                    if error == nil {
-                        self.pushToSignUpSituation()
-                    }
+            if err == nil {
+                if let _ = objects!.first {
+                    self.showAlert("Username already exists")
+                } else {
+                    let userQuery = PFUser.query()
+                    
+                    userQuery!.whereKey("email", equalTo: self.emailTF.text!)
+                    self.showHud()
+                    userQuery!.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, err) in
+                        self.hideHud()
+                        
+                        guard let objects = objects where objects.isEmpty == true else {
+                            self.showAlert("Email already exists")
+                            return
+                        }
+                        
+                        let phoneVerifyVC = SignUpPhone()
+                        self.user["firstName"] = self.usernameTF.text!
+                        self.user["email"] = self.emailTF.text!
+                        self.user.password = self.passwordTF.text!.lowercaseString
+                        self.user.username = self.usernameTF.text!.lowercaseString
+                        self.user["signUpFinished"] = true
+                        self.user["situationSchool"] = false
+                        self.user["situationWork"] = false
+                        self.user["situationOpportunity"] = false
+                        
+                        
+                        if self.facebookMode {
+                            self.user["facebookVerified"] = true
+                            self.showHud()
+                            self.user.saveInBackgroundWithBlock({ (success, error) in
+                                // temp. solution
+                                PFUser.logInWithUsernameInBackground(self.usernameTF.text!.lowercaseString, password: self.passwordTF.text!.lowercaseString) { (user: PFUser?, error: NSError?) -> Void in
+                                    self.hideHud()
+                                    if error == nil {
+                                        
+                                        // Remember user or save in App Memory did the user login or not
+                                        NSUserDefaults.standardUserDefaults().setObject(user!.username?.lowercaseString, forKey: "username")
+                                        NSUserDefaults.standardUserDefaults().synchronize()
+                                        self.pushToSignUpSituation()
+                                        
+                                    }
+                                }
+                                
+                                //                    PFFacebookUtils.logInInBackgroundWithReadPermissions(["email"], block: { (user, err) in
+                                
+                                //                    })
+                                
+                            })
+                        } else {
+                            self.showHud()
+                            self.user.signUpInBackgroundWithBlock { (success, error) in
+                                self.hideHud()
+                                if error == nil {
+                                    self.pushToSignUpSituation()
+                                }
+                            }
+                        }
+                    })
                 }
             }
         })
+        
     }
     
     func pushToSignUpSituation() {
@@ -579,6 +653,7 @@ class SignUpMain: SignUp {
         self.navigationController?.pushViewController(situationVC, animated: true)
     }
 }
+
 
 
 class SignUpSituation: SignUp, UITableViewDataSource, UITableViewDelegate {
@@ -592,6 +667,9 @@ class SignUpSituation: SignUp, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Whats your situation?"
+        showPermissionScope()
         
         tableView.backgroundColor = UIColor.wddSilverColor()
         tableView.registerClass(ProfileSettingsCell.self, forCellReuseIdentifier: "ProfileSettingsCell")
@@ -617,6 +695,7 @@ class SignUpSituation: SignUp, UITableViewDataSource, UITableViewDelegate {
             make.height.equalTo(26.x2)
         }
         
+
     }
     
     
@@ -626,16 +705,10 @@ class SignUpSituation: SignUp, UITableViewDataSource, UITableViewDelegate {
     }
     
     func skipBtnTapped() {
-//        if user["minAge"] == nil {
-//            guard ageValidate == true  else {
-//                showAlert("You must be over the age of 18")
-//                return
-//            }
-//        }
-        
-        let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+
         NSUserDefaults.standardUserDefaults().setObject(self.user.username, forKey: "username")
-        appDelegate.login()
+        
+        AppDelegate.appDelegate.login()
 
     }
     

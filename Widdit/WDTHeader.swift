@@ -81,7 +81,7 @@ class WDTHeader: UIView, UIScrollViewDelegate {
         control = BetterSegmentedControl(
             frame: CGRect(x: 0.0, y: 100.0, width: bounds.width, height: 44.0),
             titles: ["FEED", "ABOUT"],
-            index: 0,
+            index: 1,
             backgroundColor: UIColor.whiteColor(),
             titleColor: UIColor(r: 177, g: 215, b: 215, a: 1),
             indicatorViewBackgroundColor: UIColor.clearColor(),
@@ -145,6 +145,27 @@ class WDTHeader: UIView, UIScrollViewDelegate {
             
             lastView = imageView
         }
+        
+        if files.count == 0 {
+            for v in containerView.subviews {
+                v.removeFromSuperview()
+            }
+
+            let imageView: UIImageView = UIImageView()
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.backgroundColor = UIColor.whiteColor()
+            imageView.clipsToBounds = true
+            imageView.contentMode = .ScaleAspectFill
+            imageView.image = UIImage(named: "ic_blank_placeholder")
+            containerView.addSubview(imageView)
+            imageView.snp_makeConstraints(closure: { (make) in
+                make.left.equalTo(containerView)
+                make.top.equalTo(self).offset(-5)
+                make.height.equalTo(imageView.snp_width).offset(10)
+                make.width.equalTo(self)
+            })
+            
+        }
     }
     
     func setName(name: String?) {
@@ -154,33 +175,33 @@ class WDTHeader: UIView, UIScrollViewDelegate {
     }
     
     
-    func setAbout(about: String?) {
-//        if let about = about {
-//            aboutLbl.text = about
-//            line.hidden = false
-//        }
-    }
-    
-    func setVerified(email: Bool, facebook: Bool, phone: Bool) {
-        
-        if email == true {
-            
-        }
-        
-        if facebook == true {
-            
-        }
-        
-        if phone == true {
-            
-        }
-
-    }
-    
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        
         if scrollView.tag == 1 {
+        
             let currentPage = floor(scrollView.contentOffset.x / UIScreen.mainScreen().bounds.size.width);
             pageControl.currentPage = Int(currentPage)
+        } else {
+        
+            
+            print(scrollView.contentOffset.y)
+            if scrollView.contentOffset.y < 0 {
+                let offset = scrollView.contentOffset.y //+ 20
+                var headerTransform = CATransform3DIdentity
+                let headerScaleFactor: CGFloat = -(offset) / 320
+                let headerSizevariation: CGFloat = ((320 * (1.0 + headerScaleFactor)) - 320)/2.0
+                headerTransform = CATransform3DTranslate(headerTransform, 0, -headerSizevariation, 0)
+                
+                headerTransform = CATransform3DScale(headerTransform, 1.0 + headerScaleFactor, 1.0 + headerScaleFactor, 0)
+                self.scrollView.layer.transform = headerTransform
+                
+            } else {
+                var headerTransform = CATransform3DIdentity
+                headerTransform = CATransform3DTranslate(headerTransform, 0, 0, 0)
+//                let headerScaleFactor: CGFloat = -(offset) / 320
+//                headerTransform = CATransform3DScale(headerTransform, 1.0 + headerScaleFactor, 1.0 + headerScaleFactor, 0)
+                self.scrollView.layer.transform = headerTransform
+            }
         }
     }
 }

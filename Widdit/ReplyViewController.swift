@@ -1,52 +1,42 @@
 //
-//  ViewController.swift
-//  IPMQuickstart
+//  ReplyViewController2.swift
+//  Widdit
 //
-//  Created by Brent Schooley on 12/8/15.
-//  Copyright © 2015 Twilio. All rights reserved.
+//  Created by Игорь Кузнецов on 20.12.16.
+//  Copyright © 2016 John McCants. All rights reserved.
 //
 
 import UIKit
-import SlackTextViewController
 import Parse
+import NoChat
+import NoChatTG
 
-class ReplyViewController: SLKTextViewController {
-    
-    lazy var dateFormatter: NSDateFormatter = {
-        let formatter = NSDateFormatter()
-        formatter.timeStyle = .ShortStyle
-        formatter.dateStyle = .MediumStyle
-        formatter.doesRelativeDateFormatting = true
-        return formatter
-    }()
-    
 
-    var messages = [MessageModel]()
+protocol ActivityVCDelegate {
+    func makeRequest()
+}
+
+class ReplyViewController: ChatViewController {
+    
+    
+    let banHandler = WDTBanHandler()
+    var tableView: UITableView?
+    
+    
+    var delegate: ActivityVCDelegate?
     var usersPost: PFObject!
-    var userObjArray = [PFObject]()
+    var toUser: PFUser!
+    var comeFromTheFeed = true
+    let inputController = NoChatTG.ChatInputViewController()
     var avaImage: UIImageView = UIImageView()
     let userNameLbl = UILabel()
     
-    var isDown = false
-    var toUser: PFUser!
-    var comeFromTheFeed = true
-    var body: String = ""
-
-    override class func tableViewStyleForCoder(decoder: NSCoder) -> UITableViewStyle {
-        return .Plain
-    }
+    let messageLayoutCache = NSCache()
     
-    // MARK: View Lifecycle
     override func viewDidLoad() {
+        inverted = true
         super.viewDidLoad()
-        
-        
-        // Associate the device with a user
-        let installation = PFInstallation.currentInstallation()
-        installation["user"] = PFUser.currentUser()
-        installation.saveInBackground()
-        
-        
+
         let titleView = UIView()
         titleView.backgroundColor = UIColor.whiteColor()
         view.addSubview(titleView)
@@ -76,7 +66,7 @@ class ReplyViewController: SLKTextViewController {
         avaImage.addGestureRecognizer(tapGestureRecognizer)
         titleView.addSubview(avaImage)
         avaImage.snp_remakeConstraints(closure: { (make) in
-            make.top.equalTo(titleView).offset(6.x2)
+            make.top.equalTo(titleView).offset(3.x2)
             make.left.equalTo(titleView).offset(6.x2)
             make.width.equalTo(16.x2)
             make.height.equalTo(16.x2)
@@ -102,44 +92,11 @@ class ReplyViewController: SLKTextViewController {
             make.width.equalTo(12.x2)
             make.height.equalTo(12.x2)
         }
-        
-        
-        
-        tableView!.registerClass(MessageTableViewCell.self, forCellReuseIdentifier: "MessageTableViewCell")
-        inverted = false
-        tableView!.rowHeight = UITableViewAutomaticDimension
-        tableView!.estimatedRowHeight = 64.0
-        tableView!.separatorStyle = .None
-        tableView!.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
-        registerPrefixesForAutoCompletion(["@",  "#", ":", "+:", "/"])
-        
-        textView.placeholder = "Message";
-        
-        textView.registerMarkdownFormattingSymbol("*", withTitle: "Bold")
-        textView.registerMarkdownFormattingSymbol("_", withTitle: "Italics")
-        textView.registerMarkdownFormattingSymbol("~", withTitle: "Strike")
-        textView.registerMarkdownFormattingSymbol("`", withTitle: "Code")
-        textView.registerMarkdownFormattingSymbol("```", withTitle: "Preformatted")
-        textView.registerMarkdownFormattingSymbol(">", withTitle: "Quote")
-        
-        
-        
-        requestMessages()
     }
     
-    func closeBtnTapped() {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-
-    func avaImageTapped(sender: AnyObject) {
-//        let destVC = ProfileVC()
-//        destVC.user = user
-//        feed.navigationController?.pushViewController(destVC, animated: true)
-    }
-    
-    func requestMessages() {
-        
+    func fetchUsernameAndAvatar() {
         toUser.fetchInBackgroundWithBlock { (u, error) in
+            
             let user: PFUser = u as! PFUser
             if let avaFile = user["ava"] as? PFFile {
                 self.avaImage.kf_setImageWithURL(NSURL(string: avaFile.url!)!)
@@ -148,145 +105,152 @@ class ReplyViewController: SLKTextViewController {
             if let firstName = user["firstName"] as? String {
                 self.userNameLbl.text = firstName
             }
-            
-            
         }
-        
-        
-        WDTActivity.isDownAndReverseDown(toUser, post: usersPost) { (down) in
-            if let down = down  {
-                let relation = down.relationForKey("replies")
-                let query = relation.query()
-                query.addAscendingOrder("createdAt")
-                query.findObjectsInBackgroundWithBlock({ (replies: [PFObject]?, err) in
-                    if err == nil {
-                        if replies?.count > 0 {
-                            self.messages = replies!.map({ (reply) -> MessageModel in
-                                
-                                var message = MessageModel(name: "", body: "", createdAt: NSDate())
-                                
-                                let sender = reply["by"] as! PFUser
-                                
-                                if let firstName = sender["firstName"]  {
-                                    message.name = firstName as! String
-                                } else {
-                                    message.name = "No name"
-                                }
-                                
-                                if let body = reply["body"] {
-                                    message.body = body as! String
-                                }
-                                
-                                if let createdAt = reply.createdAt {
-                                    message.createdAt = createdAt
-                                }
-                                
-                                return message
-                            })
-                            self.tableView?.reloadData()
-                            if self.messages.count > 0 {
-                                let indexPath = NSIndexPath(forRow: self.messages.count - 1, inSection: 0)
-                                let rowAnimation: UITableViewRowAnimation = .Bottom
-                                let scrollPosition: UITableViewScrollPosition = .Bottom
-                                self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: scrollPosition, animated: true)
-                            }
-                            
-                        } else {
-                            print("No objects")
-                        }
-                    } else {
-                        print(err)
-                    }
-                })
+    }
+    
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let tv = self.tableView {
+            tv.reloadData()
+            if let delegate = delegate {
+                delegate.makeRequest()
             }
         }
     }
     
-    // MARK: UITableView Delegate
-    // Return number of rows in the table
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+    func closeBtnTapped() {
+        dismissViewControllerAnimated(true, completion: {
+            if let tv = self.tableView {
+                tv.reloadData()
+            }
+            
+            if let delegate = self.delegate {
+                delegate.makeRequest()
+            }
+        })
     }
     
-    // Create table view rows
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)
-        -> UITableViewCell {
-            let cell = tableView.dequeueReusableCellWithIdentifier("MessageTableViewCell", forIndexPath: indexPath) as! MessageTableViewCell
-            let message = messages[indexPath.row]
-            
-            // Set table cell values
-            cell.nameLabel.text = message.name
-            cell.bodyLabel.text = message.body
-            cell.createdAtLabel.text = self.dateFormatter.stringFromDate(message.createdAt)
-            cell.selectionStyle = .None
-            
-            return cell
+    func avaImageTapped(sender: AnyObject) {
+        //        let destVC = ProfileVC()
+        //        destVC.user = user
+        //        feed.navigationController?.pushViewController(destVC, animated: true)
     }
     
-    // MARK: UITableViewDataSource Delegate
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+    // Setup chat items
+    override func createPresenterBuilders() -> [ChatItemType: [ChatItemPresenterBuilderProtocol]] {
+        return [
+            DateItem.itemType : [
+                DateItemPresenterBuider()
+            ],
+            MessageType.Text.rawValue : [
+                MessagePresenterBuilder<TextBubbleView, TGTextMessageViewModelBuilder>(
+                    viewModelBuilder: TGTextMessageViewModelBuilder(),
+                    layoutCache: messageLayoutCache
+                )
+            ]
+        ]
+    }
+    
+
+    override func createChatInputViewController() -> UIViewController {
+        
+        
+        inputController.onSendText = { [weak self] text in
+            self?.sendText(text)
+        }
+        
+        return inputController
+    }
+    
+}
+
+extension ReplyViewController {
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        messageLayoutCache.removeAllObjects()
+        
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
     }
 }
 
 extension ReplyViewController {
-    override func didPressRightButton(sender: AnyObject?) {
-        let message = MessageModel(name: PFUser.currentUser()!["firstName"] as! String, body: self.textView.text, createdAt: NSDate())
+    func sendText(text: String) {
         
-        body = self.textView.text
+        let message = WDTMessageFactory.createTextMessage(text: text, senderId: "outgoing", isIncoming: false)
+        (self.chatDataSource as! WDTChatDataSource).addMessages([message])
         
-        let indexPath = NSIndexPath(forRow: self.messages.count, inSection: 0)
-        let rowAnimation: UITableViewRowAnimation = .Bottom
-        let scrollPosition: UITableViewScrollPosition = .Bottom
-        self.tableView!.beginUpdates()
-        self.messages.append(message)
-        self.tableView!.insertRowsAtIndexPaths([indexPath], withRowAnimation: rowAnimation)
-        self.tableView!.endUpdates()
-        // Fixes the cell from blinking (because of the transform, when using translucent cells)
-        // See https://github.com/slackhq/SlackTextViewController/issues/94#issuecomment-69929927
-        self.tableView!.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        self.tableView!.scrollToRowAtIndexPath(indexPath, atScrollPosition: scrollPosition, animated: true)
-        super.didPressRightButton(sender)
-        
-        
-        WDTActivity.isDownAndReverseDown(toUser, post: usersPost) { (down) in
-            if let down = down  {
-                
-                self.sendMessage(sender, activityObj: down)
+        banHandler.isUserInBanList(toUser, banUser: PFUser.currentUser()!) { (banListObject) in
+            
+            if let _ = banListObject {
+                self.showAlert("You are banned!")
+                (self.chatDataSource as! WDTChatDataSource).removeLastMsg()
             } else {
-                WDTActivity.addActivity(self.toUser, post: self.usersPost, type: .Undown, completion: { (activityObj) in
-                
-                    self.sendMessage(sender, activityObj: activityObj)
-                })
+                WDTActivity.isDownAndReverseDown(self.toUser, post: self.usersPost) { (down) in
+                    if let down = down  {
+                        
+                        self.sendMessage(down, text: text)
+                    } else {
+                        WDTActivity.addActivity(self.toUser, post: self.usersPost, type: .Undown, completion: { (activityObj) in
+                            
+                            self.sendMessage(activityObj, text: text)
+                        })
+                    }
+                }
             }
         }
+ 
     }
     
-    func sendMessage(sender: AnyObject?, activityObj: PFObject) {
-        self.textView.refreshFirstResponder()
-        
-        
-        
+    func sendMessage(activityObj: PFObject, text: String) {
+
         let parseMessage = PFObject(className: "replies")
         
         parseMessage["by"] = PFUser.currentUser()
         parseMessage["to"] = self.toUser
-        parseMessage["body"] = body
+        parseMessage["body"] = text
         parseMessage["postText"] = self.usersPost["postText"]
         parseMessage["post"] = PFObject(withoutDataWithClassName: "posts", objectId: self.usersPost.objectId)
         
-        WDTPush.sendPushAfterReply(self.toUser.username!, msg: body, postId: self.usersPost.objectId!, comeFromTheFeed: comeFromTheFeed)
+        
+        
+        
+        WDTPush.sendPushAfterReply(self.toUser.username!, msg: text, postId: self.usersPost.objectId!, comeFromTheFeed: comeFromTheFeed)
         
         
         parseMessage.saveInBackgroundWithBlock { (bool, error) in
             let relation = activityObj.relationForKey("replies")
             relation.addObject(parseMessage)
             
-            
             //sends message
+            
+            if PFUser.currentUser()?.objectId != self.usersPost["user"].objectId {
+                activityObj["replyDate"]  = parseMessage.updatedAt
+            }
+            
+            activityObj["replyRead"] = false
+            activityObj["repliesSeen"] = false
             activityObj["comeFromTheFeed"] = self.comeFromTheFeed
             activityObj["whoRepliedLast"] = PFUser.currentUser()
             activityObj.saveInBackground()
         }
     }
 }
+
+
+class TGTextMessageViewModel: TextMessageViewModel {
+    
+}
+
+class TGTextMessageViewModelBuilder: MessageViewModelBuilderProtocol {
+    
+    private let messageViewModelBuilder = MessageViewModelBuilder()
+    
+    func createMessageViewModel(message message: MessageProtocol) -> MessageViewModelProtocol {
+        let messageViewModel = messageViewModelBuilder.createMessageViewModel(message: message)
+        messageViewModel.status.value = .Success
+        let textMessageViewModel = TGTextMessageViewModel(text: message.content, messageViewModel: messageViewModel)
+        return textMessageViewModel
+    }
+}
+

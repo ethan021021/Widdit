@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import ActiveLabel
 
 class AboutCell: UITableViewCell {
 
-    let aboutTxt = UITextView()
+    let aboutTxt = ActiveLabel()
+    var vc: UIViewController!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,10 +26,24 @@ class AboutCell: UITableViewCell {
     
     func configureSubviews() {
         contentView.addSubview(aboutTxt)
-        aboutTxt.editable = false
-        aboutTxt.scrollEnabled = false
-        aboutTxt.userInteractionEnabled = true;
-        aboutTxt.dataDetectorTypes = [.Link, .PhoneNumber]
+        aboutTxt.font = UIFont.wddMinirubyFont()
+        aboutTxt.numberOfLines = 0
+        aboutTxt.enabledTypes = [.URL]
+        aboutTxt.URLColor = UIColor.wddTealColor()
+        //aboutTxt.editable = false
+        //aboutTxt.scrollEnabled = false
+        aboutTxt.userInteractionEnabled = true
+        //aboutTxt.dataDetectorTypes = [.Link, .PhoneNumber]
+        
+        aboutTxt.handleURLTap { (url) in
+            
+            let webVC = WebViewController()
+            webVC.makeRequest(url)
+            let nc = UINavigationController(rootViewController: webVC)
+            self.vc.presentViewController(nc, animated: true, completion: nil)
+            
+        }
+        
         aboutTxt.snp_makeConstraints { (make) in
             make.left.equalTo(contentView).offset(6.x2)
             make.right.equalTo(contentView).offset(-6.x2)
@@ -54,11 +70,11 @@ enum WDTSituation: Int {
     func getDescription() -> (String, String) {
         switch self {
         case .School:
-            return ("At school", "ic_school")
+            return ("In School", "ic_school")
         case .Working:
-            return ("Working", "ic_job")
+            return ("Employed", "ic_job")
         case .Opportunity:
-            return ("Opportunity", "ic_open")
+            return ("Down for Whatever", "ic_open")
         }
     }
 }
@@ -105,11 +121,11 @@ enum WDTSettings {
         case .Gender:
             return "Gender"
         case .School:
-            return "Currently at school"
+            return "I’m in school"
         case .Working:
-            return "Have a job"
+            return "I have a job"
         case .Opportunity:
-            return "Open to new things"
+            return "I’m open to new things"
         }
     }
 }
@@ -211,8 +227,9 @@ class ProfileCell: UITableViewCell {
         titleLbl.numberOfLines = 1
         titleLbl.snp_makeConstraints { (make) in
             make.left.equalTo(iconImg.snp_right).offset(6.x2)
-            make.top.equalTo(contentView).offset(6.x2)
-            make.bottom.equalTo(contentView).offset(-8.x2)
+            make.centerY.equalTo(contentView)
+//            make.top.equalTo(contentView).offset(6.x2)
+//            make.bottom.equalTo(contentView).offset(-8.x2)
         }
         
     }
@@ -250,17 +267,21 @@ class ProfileCell: UITableViewCell {
         iconImg.image = UIImage(named: imgname)
         titleLbl.text = title
         
-        if let _ = user["phoneNumber"] {
-            accessoryType = .Checkmark
-            
-        }
+        accessoryType = .None
         
-        if let _ = user["email"] {
-            accessoryType = .Checkmark
-        }
-        
-        if let facebookVerified = user["facebookVerified"] as? Bool where facebookVerified == true {
-            accessoryType = .Checkmark
+        switch verification {
+        case .Email:
+            if let _ = user["email"] {
+                accessoryType = .Checkmark
+            }
+        case .Facebook:
+            if let _ = user["facebookVerified"] {
+                accessoryType = .Checkmark
+            }
+        case .Phone:
+            if let _ = user["phoneNumber"] {
+                accessoryType = .Checkmark
+            }
         }
     }
 
@@ -269,12 +290,14 @@ class ProfileCell: UITableViewCell {
 import SimpleAlert
 import ALCameraViewController
 //import ImagePicker
+//import Fusuma
 
 class ProfileSettingAvatarsCell: UITableViewCell {
     
     let addAvatar1 = UIButton()
     let addAvatar2 = UIButton()
     let addAvatar3 = UIButton()
+    let deleteAvatar1 = UIButton()
     let deleteAvatar2 = UIButton()
     let deleteAvatar3 = UIButton()
     var vc: UIViewController!
@@ -307,6 +330,19 @@ class ProfileSettingAvatarsCell: UITableViewCell {
             make.height.equalTo(44.x2)
         }
         
+        
+        addAvatar1.addSubview(deleteAvatar1)
+        deleteAvatar1.hidden = true
+        deleteAvatar1.tag = 1
+        deleteAvatar1.setImage(UIImage(named: "ic_delete"), forState: .Normal)
+        deleteAvatar1.addTarget(self, action: #selector(deletePhotoButtonTapped), forControlEvents: .TouchUpInside)
+        deleteAvatar1.snp_makeConstraints { (make) in
+            make.right.equalTo(addAvatar1).offset(11.x2)
+            make.bottom.equalTo(addAvatar1).offset(11.x2)
+            make.width.equalTo(22.x2)
+            make.height.equalTo(22.x2)
+        }
+        
 
         
         addAvatar2.layer.cornerRadius = 10
@@ -323,13 +359,13 @@ class ProfileSettingAvatarsCell: UITableViewCell {
         addAvatar2.addSubview(deleteAvatar2)
         deleteAvatar2.hidden = true
         deleteAvatar2.tag = 2
-        deleteAvatar2.setImage(UIImage(named: "DeletePhotoButton"), forState: .Normal)
+        deleteAvatar2.setImage(UIImage(named: "ic_delete"), forState: .Normal)
         deleteAvatar2.addTarget(self, action: #selector(deletePhotoButtonTapped), forControlEvents: .TouchUpInside)
         deleteAvatar2.snp_makeConstraints { (make) in
-            make.right.equalTo(addAvatar2).offset(5)
-            make.bottom.equalTo(addAvatar2).offset(5)
-            make.width.equalTo(18)
-            make.height.equalTo(18)
+            make.right.equalTo(addAvatar2).offset(11.x2)
+            make.bottom.equalTo(addAvatar2).offset(11.x2)
+            make.width.equalTo(22.x2)
+            make.height.equalTo(22.x2)
         }
         
         
@@ -347,13 +383,13 @@ class ProfileSettingAvatarsCell: UITableViewCell {
         addAvatar3.addSubview(deleteAvatar3)
         deleteAvatar3.hidden = true
         deleteAvatar3.tag = 3
-        deleteAvatar3.setImage(UIImage(named: "DeletePhotoButton"), forState: .Normal)
+        deleteAvatar3.setImage(UIImage(named: "ic_delete"), forState: .Normal)
         deleteAvatar3.addTarget(self, action: #selector(deletePhotoButtonTapped), forControlEvents: .TouchUpInside)
         deleteAvatar3.snp_makeConstraints { (make) in
-            make.right.equalTo(addAvatar3).offset(5)
-            make.bottom.equalTo(addAvatar3).offset(5)
-            make.width.equalTo(18)
-            make.height.equalTo(18)
+            make.right.equalTo(addAvatar3).offset(11.x2)
+            make.bottom.equalTo(addAvatar3).offset(11.x2)
+            make.width.equalTo(22.x2)
+            make.height.equalTo(22.x2)
         }
         
         
@@ -368,14 +404,17 @@ class ProfileSettingAvatarsCell: UITableViewCell {
     }
     
     func fillCell() {
+        
         WDTAvatar.getAvatar(PFUser.currentUser()!, avaNum: 1) { (ava) in
+        
             if let ava = ava {
-                //                self.deleteAvatar1.hidden = false
+                self.deleteAvatar1.hidden = false
                 self.addAvatar1.setImage(ava, forState: .Normal)
             }
         }
         
         WDTAvatar.getAvatar(PFUser.currentUser()!, avaNum: 2) { (ava) in
+        
             if let ava = ava {
                 self.deleteAvatar2.hidden = false
                 self.addAvatar2.setImage(ava, forState: .Normal)
@@ -383,6 +422,7 @@ class ProfileSettingAvatarsCell: UITableViewCell {
         }
         
         WDTAvatar.getAvatar(PFUser.currentUser()!, avaNum: 3) { (ava) in
+        
             if let ava = ava {
                 self.deleteAvatar3.hidden = false
                 self.addAvatar3.setImage(ava, forState: .Normal)
@@ -393,6 +433,7 @@ class ProfileSettingAvatarsCell: UITableViewCell {
     func deletePhotoButtonTapped(sender: AnyObject) {
         if sender.tag! == 1 {
             addAvatar1.setImage(UIImage(named: "add_photo"), forState: .Normal)
+            deleteAvatar1.hidden = true
             PFUser.currentUser()!.removeObjectForKey("ava")
             
         } else if sender.tag! == 2 {
@@ -411,47 +452,95 @@ class ProfileSettingAvatarsCell: UITableViewCell {
         
     }
     
+    var selectedAvatar: Int = 0
+    
     func addAvatarButtonTapped(sender: AnyObject) {
-        
-        let cameraViewController = CameraViewController(croppingEnabled: true) { image in
-            if let image = image.0 {
+
+        let cameraViewController = CameraViewController(croppingEnabled: true) { [weak self] image, asset in
+            
+            if let image = image {
                 var resizedImage: UIImage!
                 let user = PFUser.currentUser()!
                 
-                resizedImage = UIImage.resizeImage(image, newWidth: 400)
+                resizedImage = UIImage.resizeImage(image, newWidth: 800)
                 resizedImage = resizedImage.roundCorners(20)
                 let avaData = UIImageJPEGRepresentation(resizedImage, 0.5)
                 let avaFile = PFFile(name: "ava.jpg", data: avaData!)
                 
                 if sender.tag == 1 {
-                    self.addAvatar1.setImage(resizedImage, forState: .Normal)
+                    self!.addAvatar1.setImage(resizedImage, forState: .Normal)
                     user["ava"] = avaFile
+                    self!.deleteAvatar1.hidden = false
                     
                 } else if sender.tag == 2 {
-                    self.addAvatar2.setImage(resizedImage, forState: .Normal)
+                    self!.addAvatar2.setImage(resizedImage, forState: .Normal)
                     user["ava2"] = avaFile
-                    self.deleteAvatar2.hidden = false
+                    self!.deleteAvatar2.hidden = false
                     
                 } else if sender.tag == 3 {
-                    self.addAvatar3.setImage(resizedImage, forState: .Normal)
+                    self!.addAvatar3.setImage(resizedImage, forState: .Normal)
                     user["ava3"] = avaFile
-                    self.deleteAvatar3.hidden = false
+                    self!.deleteAvatar3.hidden = false
                     
                 }
                 
+                self!.vc.showHud()
                 user.saveInBackgroundWithBlock ({ (success:Bool, error:NSError?) -> Void in
+                    self!.vc.hideHud()
                     if success {
                         
                     }
                 })
             }
-            self.vc.dismissViewControllerAnimated(true, completion: nil)
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self!.vc.dismissViewControllerAnimated(true, completion: nil)
+            })
         }
         
         vc.presentViewController(cameraViewController, animated: true, completion: nil)
     }
+
     
-    
+//    func fusumaDismissedWithImage(image: UIImage) {
+//        
+//        var resizedImage: UIImage!
+//        let user = PFUser.currentUser()!
+//        
+//        resizedImage = UIImage.resizeImage(image, newWidth: 800)
+//        resizedImage = resizedImage.roundCorners(20)
+//        let avaData = UIImageJPEGRepresentation(resizedImage, 0.5)
+//        let avaFile = PFFile(name: "ava.jpg", data: avaData!)
+//        
+//        if selectedAvatar == 1 {
+//            self.addAvatar1.setImage(resizedImage, forState: .Normal)
+//            user["ava"] = avaFile
+//            self.deleteAvatar1.hidden = false
+//            
+//        } else if selectedAvatar == 2 {
+//            self.addAvatar2.setImage(resizedImage, forState: .Normal)
+//            user["ava2"] = avaFile
+//            self.deleteAvatar2.hidden = false
+//            
+//        } else if selectedAvatar == 3 {
+//            self.addAvatar3.setImage(resizedImage, forState: .Normal)
+//            user["ava3"] = avaFile
+//            self.deleteAvatar3.hidden = false
+//            
+//        }
+//        
+//        vc.showHud()
+//        user.saveInBackgroundWithBlock ({ (success:Bool, error:NSError?) -> Void in
+//            self.vc.hideHud()
+//            if success {
+//                
+//            }
+//        })
+//        
+////        self.vc.dismissViewControllerAnimated(true, completion: nil)
+//        
+//    }
+
 }
 
 import SevenSwitch
@@ -481,6 +570,7 @@ class ProfileSettingsCell: UITableViewCell, UITextFieldDelegate {
         titleLbl.textColor = UIColor.lightGrayColor()
         titleLbl.snp_makeConstraints { (make) in
             make.left.equalTo(contentView).offset(6.x2)
+//            make.centerY.equalTo(contentView)
             make.top.equalTo(contentView).offset(6.x2)
             make.bottom.equalTo(contentView).offset(-8.x2)
         }

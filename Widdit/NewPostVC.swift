@@ -8,13 +8,18 @@
 
 import UIKit
 import Parse
+import ActiveLabel
 
 
 import MBProgressHUD
 import CircleSlider
-//import ImagePicker
 import ALCameraViewController
+import PermissionScope
 
+
+protocol NewPostVCDelegate {
+    func loadPosts()
+}
 
 class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDelegate {
     
@@ -25,15 +30,17 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
     var postDurationLabel: UILabel = UILabel()
     var sliderView: UIView = UIView()
     var wdtSlider = WDTCircleSlider()
-    
     var photoImage: UIImage?
     var geoPoint: PFGeoPoint?
-
     var postBtn:UIBarButtonItem!
     private var editPost: PFObject? = nil
+    let selectCategory = UIButton()
+    var delegate: NewPostVCDelegate!
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         postBtn = UIBarButtonItem(title: "Post", style: .Done, target: self, action: #selector(postBtnTapped))
         postBtn.tintColor = UIColor.whiteColor()
@@ -92,7 +99,7 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
         }
         
         
-        postDurationLabel.font = UIFont.wddSmallgreycenterFont()
+        postDurationLabel.font = UIFont.wddMinigreyLightFont()
         postDurationLabel.textColor = UIColor.lightGrayColor()
         postDurationLabel.snp_makeConstraints { (make) in
             make.bottom.equalTo(sliderView.snp_top).offset(-25)
@@ -119,11 +126,13 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
                 self.geoPoint = geoPoint
             }
         }
+        
     }
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        postTxt.becomeFirstResponder()
+//        postTxt.becomeFirstResponder()
     }
     
     
@@ -163,8 +172,6 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
             make.right.equalTo(wdtSlider).offset(-25)
             make.bottom.equalTo(wdtSlider).offset(-23)
         }
-
-        
     }
     
     
@@ -189,22 +196,24 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
     }
     
     func addPhotoButtonTapped(sender: AnyObject) {
-        let croppingEnabled = true
-        let cameraViewController = CameraViewController(croppingEnabled: true, allowsLibraryAccess: true) { (img, ing2) in
-            print("!!!!!")
+        let cameraViewController = CameraViewController(croppingEnabled: true) { image in
+            if let image = image.0 {
+                let resizedImage = UIImage.resizeImage(image, newWidth: 1080)
+                self.addPhotoButton.setImage(resizedImage, forState: .Normal)
+                self.photoImage = resizedImage
+                self.deletePhotoButton.hidden = false
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
         }
-//        let cameraViewController = CameraViewController(croppingEnabled: croppingEnabled) { image in
-//            if let image = image.0 {
-//                let resizedImage = UIImage.resizeImage(image, newWidth: 1080)
-//                self.addPhotoButton.setImage(resizedImage, forState: .Normal)
-//                self.photoImage = resizedImage
-//            }
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//            self.deletePhotoButton.hidden = false
-//        }
         
         presentViewController(cameraViewController, animated: true, completion: nil)
     }
+    
+
+    
     
     func deletePhotoButtonTapped(sender: AnyObject) {
         deletePhotoButton.hidden = true
@@ -230,7 +239,6 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
     }
     
     func postGuard() {
-        print(wdtSlider.value)
         if postTxt.text.characters.count > 0 && self.wdtSlider.value > 1 {
             postBtn.enabled = true
         } else {
@@ -261,12 +269,22 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
             object = editPost
             object.removeObjectForKey("photoFile")
         }
-        
+
         object["postText"] = postTxt.text
         object["user"] = PFUser.currentUser()!
 
         if let geoPoint = self.geoPoint {
             object["geoPoint"] = geoPoint
+            
+            WDTGeoCoder.getCity(geoPoint.latitude, lon: geoPoint.longitude, completion: { (place) in
+                object["city"] = place
+                object.saveInBackground()
+            })
+            
+            WDTGeoCoder.getCountry(geoPoint.latitude, lon: geoPoint.longitude, completion: { (place) in
+                object["country"] = place
+                object.saveInBackground()
+            })
         }
         
         var calendarUnit: NSCalendarUnit!
@@ -291,14 +309,32 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
 
         }
         showHud()
+        object["hashtags"] = ActiveLabel.parseText(self.postTxt.text)
         object.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
             self.hideHud()
             if error == nil {
-                NSNotificationCenter.defaultCenter().postNotificationName("uploaded", object: nil)
+                
+                self.delegate.loadPosts()
                 self.dismissViewControllerAnimated(true, completion: nil)
                 self.viewDidLoad()
-
+                
+                self.addNewCategories(ActiveLabel.parseText(self.postTxt.text), postObject: object)
             }
+        }
+    }
+    
+    func addNewCategories(categories: [String], postObject: PFObject) {
+        for category in categories {
+            
+            let categoriesQuery = PFQuery(className: "categories")
+            categoriesQuery.whereKey("title", equalTo: category)
+            categoriesQuery.getFirstObjectInBackgroundWithBlock({ (obj, err) in
+                if obj == nil {
+                    let hashtagObj = PFObject(className: "categories")
+                    hashtagObj["title"] = category
+                    hashtagObj.saveInBackground()
+                }
+            })
         }
     }
 }

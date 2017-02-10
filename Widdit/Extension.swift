@@ -8,13 +8,28 @@
 
 import UIKit
 import Presentr
+import Parse
 
 let presenter: Presentr = {
-    let presenter = Presentr(presentationType: .Alert)
-    presenter.presentationType = .Popup
+    let presenter = Presentr(presentationType: .Popup)
+    presenter.presentationType = .Custom(width: .Default, height: .Half, center: .Custom(centerPoint: CGPointMake(UIScreen.mainScreen().bounds.size.width / 2, UIScreen.mainScreen().bounds.size.height * 0.32)))
+    
     presenter.transitionType = .CoverVerticalFromTop
     return presenter
 }()
+
+
+extension NSUserDefaults {
+    class func isFirstStart() -> Bool {
+        let isFirstStart = NSUserDefaults.standardUserDefaults().valueForKey("isFirstStart") as? Bool
+        if let isFirstStart = isFirstStart where isFirstStart == false {
+            return false
+        } else {
+            NSUserDefaults.standardUserDefaults().setBool(false, forKey: "isFirstStart")
+            return true
+        }        
+    }
+}
 
 extension UIColor {
     convenience init(r: Float, g: Float, b: Float, a: Float) {
@@ -33,20 +48,41 @@ extension UIColor {
         return UIColor(r: 62, g: 203, b: 204, a: 1)
     }
     
+    class func WDTTealLight() -> UIColor {
+        return UIColor(r: 62, g: 203, b: 204, a: 0.25)
+    }
     
 }
 
+extension UIImage {
+    convenience init(view: UIView) {
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        self.init(CGImage: image!.CGImage!)
+    }
+}
 
 extension UIFont {
     class func WDTAgoraRegular(size: CGFloat) -> UIFont {
         return UIFont(name: "PFAgoraSansPro-Regular", size: size)!
     }
     
+    
     class func WDTAgoraMedium(size: CGFloat) -> UIFont {
         return UIFont(name: "PFAgoraSansPro-Medium", size: size)!
     }
 }
 
+extension UIRefreshControl {
+    func beginRefreshingManually() {
+        if let scrollView = superview as? UIScrollView {
+            scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y - frame.height), animated: true)
+        }
+        beginRefreshing()
+    }
+}
 
 extension UIImage {
     class func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
@@ -244,6 +280,9 @@ extension String {
 
 import SimpleAlert
 import MBProgressHUD
+import DGActivityIndicatorView
+import PermissionScope
+
 
 extension UIViewController {
     
@@ -254,12 +293,58 @@ extension UIViewController {
         presentViewController(alert, animated: true, completion: nil)
     }
     
+    
     func showHud() {
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        let actInd = DGActivityIndicatorView(type: .BallRotate, tintColor: UIColor.WDTTeal())
+        actInd.frame = CGRectMake(0, 0, 70, 70)
+        actInd.startAnimating()
+        
+        let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+        hud.customView = actInd
+        hud.mode = .CustomView
+        hud.color = UIColor(r: 0, g: 0, b: 0, a: 0.0)
     }
     
     func hideHud() {
         MBProgressHUD.hideAllHUDsForView(view, animated: true)
+    }
+    
+    
+    func showPermissionScope() {
+        let pscope = PermissionScope()
+        
+        pscope.addPermission(NotificationsPermission(notificationCategories: nil),
+                             message: "Get notified on downs and replies")
+        pscope.addPermission(LocationWhileInUsePermission(),
+                             message: "Doing this lets you see peoples posts")
+        
+        pscope.show({ finished, results in
+            print("got results \(results)")
+            for result in results {
+                if result.type == .Notifications && result.status == .Authorized {
+                    UIApplication.sharedApplication().registerForRemoteNotifications()
+                }
+                
+                if result.type == .LocationInUse && result.status == .Authorized {
+                    PFGeoPoint.geoPointForCurrentLocationInBackground {
+                        (geoPoint: PFGeoPoint?, error: NSError?) -> Void in
+                        
+                        if error == nil {
+                            
+                            PFUser.currentUser()!["geoPoint"] = geoPoint
+                            PFUser.currentUser()!.saveInBackground()
+                        }
+                    }
+                }
+                
+                
+            }
+            
+            }, cancelled: { (results) -> Void in
+                print("thing was cancelled")
+        })
+        
+    
     }
     
     

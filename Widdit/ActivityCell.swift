@@ -9,13 +9,15 @@
 import UIKit
 import Parse
 import Presentr
+import NoChat
 
 class ActivityCell: UITableViewCell {
     var avaImg: UIImageView = UIImageView()
     var username: UILabel = UILabel()
     var title: UILabel = UILabel()
     var postText: UILabel = UILabel()
-    var activityVC: UITableViewController!
+    var activityVC: ActivityVC!
+    var tableView: UITableView!
     var replyButton: UIButton = UIButton(type: .Custom)
     var downCell: Bool = false
     var toUser: PFUser!
@@ -61,16 +63,18 @@ class ActivityCell: UITableViewCell {
         
         
         contentView.addSubview(replyButton)
-        replyButton.setTitle("Reply", forState: .Normal)
-        replyButton.setImage(UIImage(named: "ic_reply"), forState: .Normal)
+        //replyButton.setTitle("Reply", forState: .Normal)
+//        replyButton.setImage(UIImage(named: "ic_reply"), forState: .Normal)
         replyButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         replyButton.titleLabel?.font = UIFont.wddSmallFont()
         replyButton.selected = true
+        replyButton.imageView?.contentMode = .ScaleAspectFit
         replyButton.addTarget(self, action: #selector(replyButtonTapped), forControlEvents: .TouchUpInside)
     }
     
-    func fillCell(activityObject: PFObject) {
-        print(activityObject)
+    func fillCell(_activityObject: AnyObject) {
+        let activityObject = _activityObject as! PFObject
+        
         let postText = activityObject["postText"] as! String
         byUser = activityObject["by"] as! PFUser
         toUser = activityObject["to"] as! PFUser
@@ -82,18 +86,22 @@ class ActivityCell: UITableViewCell {
                 avaFile.getDataInBackgroundWithBlock { (data: NSData?, error: NSError?) -> Void in
                     self.avaImg.image = UIImage(data: data!)
                 }
+            } else {
+                self.avaImg.image = UIImage(named: "ic_blank_placeholder_square")
             }
         } else {
             if let avaFile = byUser["ava"] as? PFFile {
                 avaFile.getDataInBackgroundWithBlock { (data: NSData?, error: NSError?) -> Void in
                     self.avaImg.image = UIImage(data: data!)
                 }
+            } else {
+                self.avaImg.image = UIImage(named: "ic_blank_placeholder_square")
             }
         }
         
         self.postText.text = postText
         replyButton.hidden = false
-        
+
         if downCell == true {
             if byUser.username == PFUser.currentUser()!.username {
                 username.text = "You"
@@ -104,6 +112,22 @@ class ActivityCell: UITableViewCell {
                 username.text = byUser.username
                 title.text = " is down for your post"
             }
+            
+            if let whoRepliedLast = activityObject["whoRepliedLast"] as? PFUser {
+                if let _ = activityObject["comeFromTheFeed"] as? Bool {
+                    if PFUser.currentUser()!.username != whoRepliedLast.username {
+                        if activityObject["replyRead"] as? Bool == true {
+                            replyButton.setImage(UIImage(named: "ic_activity_read"), forState: .Normal)
+                        } else {
+                            replyButton.setImage(UIImage(named: "ic_activity_unread"), forState: .Normal)
+                        }
+                    } else {
+                        replyButton.setImage(UIImage(named: "ic_activity_sent"), forState: .Normal)
+                    }
+                }
+            } else {
+                replyButton.setImage(UIImage(named: "ic_reply"), forState: .Normal)
+            }
         } else {
             if let whoRepliedLast = activityObject["whoRepliedLast"] as? PFUser {
                 if let firstMessage = activityObject["comeFromTheFeed"] as? Bool {
@@ -113,15 +137,39 @@ class ActivityCell: UITableViewCell {
                     } else {
                         if PFUser.currentUser()!.username == byUser.username {
                             username.text = toUser.username
+                            if whoRepliedLast.username == byUser.username {
+                                title.text = ""
+                            } else {
+                                title.text = " replied back"
+                            }
+                            
                         } else {
                             username.text = byUser.username
+                            
+                            if whoRepliedLast.username == byUser.username {
+                                title.text = " replied back"
+                            } else {
+                                title.text = ""
+                            }
                         }
                         
-                        title.text = " replied back"
+                        
                     }
+                }
+                
+                if PFUser.currentUser()!.username != whoRepliedLast.username {
+                    if activityObject["replyRead"] as? Bool == true {
+                        replyButton.setImage(UIImage(named: "ic_activity_read"), forState: .Normal)
+                    } else {
+                        replyButton.setImage(UIImage(named: "ic_activity_unread"), forState: .Normal)
+                    }
+                } else {
+                    replyButton.setImage(UIImage(named: "ic_activity_sent"), forState: .Normal)
                 }
             }
         }
+        
+        
     }
     
     
@@ -146,8 +194,8 @@ class ActivityCell: UITableViewCell {
         
         postText.snp_remakeConstraints { (make) in
             make.left.equalTo(avaImg.snp_right).offset(10)
-            make.top.equalTo(title.snp_bottom).offset(5)
-            make.right.equalTo(replyButton.snp_left).offset(-10)
+            make.top.equalTo(username.snp_bottom).offset(5)
+            make.right.equalTo(contentView).offset(-68)
             make.bottom.equalTo(contentView).offset(-20)
         }
         
@@ -158,9 +206,12 @@ class ActivityCell: UITableViewCell {
 //        }
         
         replyButton.snp_remakeConstraints { (make) in
-            make.top.equalTo(contentView)
-            make.bottom.equalTo(contentView)
+            
             make.right.equalTo(contentView).offset(-10)
+            make.width.equalTo(60)
+            make.height.equalTo(40)
+            make.centerY.equalTo(contentView)
+            
 
         }
         
@@ -169,18 +220,37 @@ class ActivityCell: UITableViewCell {
     
     func replyButtonTapped(sender: AnyObject?) {
         
-        let destVC = ReplyViewController()
-
-        if byUser.username == PFUser.currentUser()!.username {
-            destVC.toUser = toUser
-        } else {
-            destVC.toUser = byUser
-        }
+        let chatItemsDecorator = WDTChatItemsDecorator()
         
-        destVC.usersPost = post
-        destVC.comeFromTheFeed = false
+        let demoDataSource = WDTChatDataSource()
+        var user: PFUser!
+        if byUser.username == PFUser.currentUser()!.username {
+            user = toUser
+        } else {
+            user = byUser
+        }
+        activityVC.showHud()
+        WDTChatItemFactory.createChatItemsTG(user, usersPost: post) { (messages) in
+            self.activityVC.hideHud()
+            demoDataSource.chatItems = messages
+            
+            let chatVC = ReplyViewController()
+            chatVC.delegate = self.activityVC
+            chatVC.tableView = self.tableView
+            chatVC.toUser = user
+            chatVC.usersPost = self.post
+            chatVC.comeFromTheFeed = false
+            chatVC.chatItemsDecorator = chatItemsDecorator
+            chatVC.chatDataSource = demoDataSource
+            chatVC.hidesBottomBarWhenPushed = true
+            chatVC.fetchUsernameAndAvatar()
+            self.activityVC.customPresentViewController(presenter, viewController: chatVC, animated: true, completion: {
+                chatVC.inputController.growTextView.becomeFirstResponder()
+                
+            })
+        }
 
-        activityVC.customPresentViewController(presenter, viewController: destVC, animated: true, completion: nil)
+        
         
     }
     
@@ -192,6 +262,8 @@ class ActivityCell: UITableViewCell {
             destVC.user = byUser
         }
         
+        destVC.addBackButton()
+        activityVC.navigationController!.navigationBarHidden = true
         activityVC.navigationController?.pushViewController(destVC, animated: true)
     }
 }

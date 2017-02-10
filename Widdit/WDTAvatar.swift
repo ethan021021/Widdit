@@ -46,8 +46,13 @@ class WDTAvatar {
         
         if let avaQuery = avaQuery {
             avaQuery.getDataInBackgroundWithBlock { (data: NSData?, error: NSError?) -> Void in
-                let img = UIImage(data: data!)
-                completion(ava: img)
+                if let data = data {
+                    let img = UIImage(data: data)
+                    completion(ava: img)
+                } else {
+                    completion(ava: nil)        
+                }
+                
             }
         } else {
             completion(ava: nil)

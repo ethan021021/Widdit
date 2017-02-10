@@ -63,6 +63,10 @@ extension UIColor {
     class func wddCloudyBlueColor() -> UIColor {
         return UIColor(red: 177.0 / 255.0, green: 215.0 / 255.0, blue: 215.0 / 255.0, alpha: 1.0)
     }
+    
+    class var wddLightTeal24: UIColor {
+        return UIColor(red: 147.0 / 255.0, green: 237.0 / 255.0, blue: 199.0 / 255.0, alpha: 0.24)
+    }
 }
 
 // Text styles

@@ -46,7 +46,10 @@ public class CircleSlider: UIControl {
       }
         
       self._value = value
-      self.sendActionsForControlEvents(.ValueChanged)
+      
+      self.sendActionsForControlEvents(.ValueChanged)  
+      
+      
       var degree = Math.degreeFromValue(self.startAngle, value: self.value, maxValue: self.maxValue, minValue: self.minValue)
         
       // fix rendering issue near max value

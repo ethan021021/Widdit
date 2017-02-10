@@ -14,9 +14,10 @@ import SimpleAlert
 import Whisper
 import BetterSegmentedControl
 
-class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, WDTLoad {
 
-    
+class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, WDTLoad, NewPostVCDelegate {
+
+    let banHandler = WDTBanHandler()
     var tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
     var configuration: ImageViewerConfiguration!
     let imageProvider = WDTImageProvider()
@@ -31,7 +32,9 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
     var headerView: UIView!
     
     var avatars: [PFFile] = []
-    var infoSelected = false
+    var infoSelected = true
+    var wdtHeader: WDTHeader!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,9 +54,11 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
         tableView.separatorStyle = .None
         tableView.delegate = self
         tableView.dataSource = self
+        self.automaticallyAdjustsScrollViewInsets = false
+        
         view.addSubview(tableView)
         tableView.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(-20)
+            make.top.equalTo(view)
             make.left.equalTo(view)
             make.right.equalTo(view)
             make.bottom.equalTo(view)
@@ -70,15 +75,37 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
         scrollView.showsHorizontalScrollIndicator = false
         
         
-        let wdtHeader = WDTHeader(frame: CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds) + 50))
-        
+        wdtHeader = WDTHeader(frame: CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds) + 50))
         wdtHeader.control.addTarget(self, action: #selector(wdtHeaderSegmentedControlTapped), forControlEvents: .ValueChanged)
-        
         wdtHeader.setName(user["firstName"] as? String)
-        
         WDTAvatar.countAvatars(user) { (num) in
             scrollView.contentSize = CGSizeMake(self.view.frame.width * CGFloat(num), self.headerHeight)
         }
+        
+
+        
+        
+        tableView.tableHeaderView = wdtHeader
+        self.loadPosts()
+        
+        let settingsBtn = UIButton()
+        settingsBtn.setImage(UIImage(named: "ic_settings"), forState: .Normal)
+        settingsBtn.addTarget(self, action: #selector(editButtonTapped), forControlEvents: .TouchUpInside)
+        settingsBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 50, 50, 0)
+        
+        tableView.addSubview(settingsBtn)
+        settingsBtn.snp_makeConstraints(closure: { (make) in
+            make.top.equalTo(view).offset(16.x2)
+            make.right.equalTo(view).offset(-6.x2)
+            make.width.equalTo(40.x2)
+            make.height.equalTo(40.x2)
+        })
+        //settingsBtn.hidden = user.username != PFUser.currentUser()?.username
+
+        
+    }
+    
+    func loadAvatars() {
         avatars = []
         
         if let ava = user["ava"] as? PFFile {
@@ -93,30 +120,12 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             avatars.append(ava)
         }
         
-        if let ava = user["ava4"] as? PFFile {
-            avatars.append(ava)
-        }
         wdtHeader.setImages(avatars)
-        
-
-        tableView.tableHeaderView = wdtHeader
-        self.loadPosts()
-        
-        let settingsBtn = UIButton()
-        settingsBtn.setImage(UIImage(named: "ic_settings"), forState: .Normal)
-        settingsBtn.addTarget(self, action: #selector(editButtonTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(settingsBtn)
-        settingsBtn.snp_makeConstraints(closure: { (make) in
-            make.top.equalTo(view).offset(16.x2)
-            make.right.equalTo(view).offset(-6.x2)
-        })
-        settingsBtn.hidden = user.username != PFUser.currentUser()?.username
-
     }
-    
     
     override func viewDidAppear(animated: Bool) {
         loadPosts()
+        loadAvatars()
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -126,24 +135,46 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
     
     
     func editButtonTapped() {
-        
-        
         let alert = SimpleAlert.Controller(view: nil, style: .ActionSheet)
-        alert.addAction(SimpleAlert.Action(title: "Edit", style: .Default) { action in
-            let destVC = ProfileEditVC()
-            destVC.view.backgroundColor = UIColor.whiteColor()
-            let nc = UINavigationController(rootViewController: destVC)
-            self.presentViewController(nc, animated: true, completion: nil)
-        })
         
-        alert.addAction(SimpleAlert.Action(title: "Logout", style: .Destructive) { action in
-            self.logout()
-        })
-
-        alert.addAction(SimpleAlert.Action(title: "Cancel", style: .Cancel))
-
-        presentViewController(alert, animated: true, completion: nil)
-        
+        if user.username == PFUser.currentUser()?.username {
+            
+            alert.addAction(SimpleAlert.Action(title: "Edit", style: .Default) { action in
+                let destVC = ProfileEditVC()
+                destVC.view.backgroundColor = UIColor.whiteColor()
+                let nc = UINavigationController(rootViewController: destVC)
+                self.presentViewController(nc, animated: true, completion: nil)
+                })
+            
+            alert.addAction(SimpleAlert.Action(title: "Logout", style: .Destructive) { action in
+                self.logout()
+                })
+            
+            alert.addAction(SimpleAlert.Action(title: "Cancel", style: .Cancel))
+            
+            presentViewController(alert, animated: true, completion: nil)
+        } else {
+            var banTitle = "Block"
+            self.showHud()
+            banHandler.isUserInBanList(PFUser.currentUser()!, banUser: user) { (banListObject) in
+                self.hideHud()
+                if let _ = banListObject {
+                    banTitle = "Unblock"
+                } else {
+                    banTitle = "Block"
+                }
+                
+                alert.addAction(SimpleAlert.Action(title: banTitle, style: .Default) { action in
+                    self.showHud()
+                    self.banHandler.addOrRemove(self.user) { (added) in
+                        self.hideHud()
+                    }
+                })
+                
+                alert.addAction(SimpleAlert.Action(title: "Cancel", style: .Cancel))
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     func wdtHeaderSegmentedControlTapped(sender: BetterSegmentedControl) {
@@ -164,7 +195,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             }
         }
         wdtPost.postsOfUser = self.user
-        wdtPost.requestPosts(nil, world: nil) { (success) in
+        wdtPost.requestPosts(nil, world: nil, category: nil, excludeCategory: nil) { (success) in
             self.tableView.reloadData()
         }
     }
@@ -196,6 +227,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             if indexPath.section == 0 {
                 let cell = tableView.dequeueReusableCellWithIdentifier("AboutCell", forIndexPath: indexPath) as! AboutCell
                 if let about = user["about"] as? String {
+                    cell.vc = self
                     cell.fillCell(about)
                 }
                 
@@ -240,13 +272,13 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             cell.moreBtn.hidden = true
             cell.vc = self
             cell.wdtFeed = self
+            cell.newPostDelegate = self
             
             cell.setNeedsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
             
             return cell
         }
-        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -263,7 +295,6 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
                 presentImageViewer(imageViewer)
             }
         }
-        
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -293,24 +324,22 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             if PFUser.currentUser()?.username == user.username {
                 return nil
             } else {
-                //            footerView.feed = self
                 footerView.setDown(user, post: post)
             }
             
             return footerView
         }
-        
-        
     }
     
-    
-//    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "About"
-//    }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        if infoSelected == true {
+            return 20
+        } else {
+            return 1
+        }
     }
+    
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
@@ -348,11 +377,11 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
         self.navigationController?.pushViewController(guest, animated: true)
     }
     
-    
     func logout() {
-        
         // implement log out
+        showHud()
         PFUser.logOutInBackgroundWithBlock { (error:NSError?) -> Void in
+            self.hideHud()
             if error == nil {
                 
                 // remove logged in user from App memory
@@ -370,10 +399,9 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
 
                 FBSDKAccessToken.setCurrentAccessToken(nil)
                 FBSDKProfile.setCurrentProfile(nil)
-
                 
-                let appDelegate : AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                appDelegate.window?.rootViewController = UINavigationController(rootViewController: WelcomeVC())
+                AppDelegate.appDelegate.window?.rootViewController = UINavigationController(rootViewController: WelcomeVC())
+            
                 
             }
         }

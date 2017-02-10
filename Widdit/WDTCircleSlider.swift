@@ -21,13 +21,13 @@ class WDTCircleSlider: CircleSlider {
         return [
             .BarColor(UIColor.clearColor()),
             .ThumbImage(UIImage(named: "knob_button")!),
-            .ThumbWidth(25),
+            .ThumbWidth(30),
             .TrackingColor(UIColor.wddGreenColor()),
             .BarWidth(12),
             .StartAngle(270),
-            .MaxValue(23),
+            .MaxValue(24),
             .MinValue(1),
-            .ThumbOffset(20)
+            .ThumbOffset(25)
         ]
     }
     
@@ -35,27 +35,32 @@ class WDTCircleSlider: CircleSlider {
         return [
             .BarColor(UIColor.wddGreenColor()),
             .ThumbImage(UIImage(named: "knob_button")!),
-            .ThumbWidth(CGFloat(25)),
+            .ThumbWidth(CGFloat(30)),
             .TrackingColor(UIColor.wddTealColor()),
             .BarWidth(12),
             .StartAngle(270),
-            .MaxValue(30),
+            .MaxValue(31),
             .MinValue(1),
-            .ThumbOffset(20)
+            .ThumbOffset(25)
+            
         ]
     }
+    
+    var timer: NSTimer!
     
     init() {
         super.init(frame: CGRectZero, options: WDTCircleSlider.sliderOptionsHours)
         
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.01, target: self, selector: #selector(setDefaultValue), userInfo: nil, repeats: true)
+    }
+    
+    func setDefaultValue() {
         
+        value += 0.1
         
-        UIView.animateWithDuration(1.1, delay: 0.5, options: UIViewAnimationOptions.TransitionNone, animations: { () -> Void in
-            
-            }, completion: { (finished: Bool) -> Void in
-                self.value = 12
-        })
-
+        if value >= 12 {
+            timer.invalidate()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,20 +84,36 @@ class WDTCircleSlider: CircleSlider {
     
     
     var lastValue: Int = 0
+    var stack: [Int] = []
     
     func roundControll() {
         let value = Int(self.value)
-        
-        if lastValue == 23 && circle == .Hours {
-            if value == 24 || value == 1 || value == 2 || value == 3 {
-                self.changeOptionsFromHoursToDays()
+        if value != lastValue {
+            stack.append(value)
+            
+            if (value >= 1 && value <= 4) && (lastValue >= 22 && lastValue <= 24) && circle == .Hours {
+                changeOptionsFromHoursToDays()
+            } else if (value >= 27 && value <= 31) && (lastValue >= 1 && lastValue <= 3) && circle == .Days {
+                changeOptionsFromDaysToHours()
             }
-        } else if lastValue == 1 && circle == .Days {
-            if value == 31 || value == 30 || value == 29 {
-                self.changeOptionsFromDaysToHours()
+            lastValue = value
+        }
+        
+        
+    }
+    
+    func isStackRise() -> Bool? {
+        let stackCount = stack.count
+        if stackCount > 1 {
+            if (stack[stackCount - 1] > stack[stackCount - 2]) || (stack[stackCount - 2] == 24 && stack[stackCount - 1] == 1) {
+                return true
+            } else if (stack[stackCount - 1] < stack[stackCount - 2]) || (stack[stackCount - 2] == 1 && stack[stackCount - 1] == 30) {
+                return false
             }
         }
         
-        lastValue = value
+        return nil
     }
+    
+    
 }

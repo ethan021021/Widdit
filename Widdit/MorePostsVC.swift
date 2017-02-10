@@ -22,7 +22,7 @@ class MorePostsVC: UITableViewController, WDTLoad {
     let wdtPost = WDTPost()
     var collectionOfPosts = [PFObject]()
     var geoPoint: PFGeoPoint?
-    
+    var selectedCategory: String?
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +46,15 @@ class MorePostsVC: UITableViewController, WDTLoad {
         // Receive Notification from NewPostVC
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MorePostsVC.uploaded(_:)), name: "uploaded", object: nil)
 
+        let closeFeedBtn = UIBarButtonItem(image: UIImage(named: "ic_navbar_back"), style: .Done, target: self, action: #selector(closeFeedBtnTapped))
+        closeFeedBtn.tintColor = UIColor.whiteColor()
+        navigationItem.leftBarButtonItem = closeFeedBtn
+     
+        
+    }
+    
+    func closeFeedBtnTapped() {
+        navigationController?.popViewControllerAnimated(true)
     }
     
     // reloading func with posts after received notification
@@ -54,8 +63,9 @@ class MorePostsVC: UITableViewController, WDTLoad {
     }
     
     func loadPosts() {
-        
-        wdtPost.requestPosts(nil, world: nil) { (success) in
+        showHud()
+        wdtPost.requestPosts(nil, world: nil, category: selectedCategory, excludeCategory: false) { (success) in
+            self.hideHud()
             self.tableView.reloadData()
             self.refresher.endRefreshing()
             
@@ -66,12 +76,26 @@ class MorePostsVC: UITableViewController, WDTLoad {
                 } else {
                     return false
                 }
-                
             })
             self.tableView.reloadData()
+            
+            if let selectedCategory = self.selectedCategory {
+                self.wdtPost.requestPosts(nil, world: nil, category: selectedCategory, excludeCategory: true) { (success) in
+                    
+                    let posts = self.wdtPost.collectionOfAllPosts.filter({
+                        let u = $0["user"] as! PFUser
+                        if u.username == self.user.username {
+                            return true
+                        } else {
+                            return false
+                        }
+                    })
+                    
+                    self.collectionOfPosts.appendContentsOf(posts)
+                    self.tableView.reloadData()
+                }
+            }
         }
-        
-
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -139,14 +163,11 @@ class MorePostsVC: UITableViewController, WDTLoad {
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let post = collectionOfPosts[section]
-        let user = post["user"] as! PFUser
-        
-        if PFUser.currentUser()?.username == user.username {
-            return 0
-        } else {
-            return 55
-        }
+        return 55
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 1
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -155,14 +176,8 @@ class MorePostsVC: UITableViewController, WDTLoad {
         let footerView = footer as! FeedFooter
         let post = collectionOfPosts[section]
         let user = post["user"] as! PFUser
-        
-        if PFUser.currentUser()?.username == user.username {
-            return nil
-        } else {
-            footerView.vc = self
-            footerView.setDown(user, post: post)
-        }
-        
+        footerView.vc = self
+        footerView.setDown(user, post: post)
         return footerView
     }
 }

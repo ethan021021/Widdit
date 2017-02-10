@@ -11,19 +11,44 @@ import Parse
 
 class WDTPush {
     
-    private class func sendPush(toUsername: String, data: [String: AnyObject]) {
+    private class func sendPush(toUsername: String, var data: [String: AnyObject]) {
         
-        let push = PFPush()
+        print(data)
+        
+        
+        
+        //let push = PFPush()
         
         let userQuery = PFUser.query()
         userQuery?.whereKey("username", equalTo: toUsername)
+        userQuery!.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, err) in
+            
+            
+            if err == nil {
+                if let receiver = objects!.first {
+                    
+                    data["receiver"] = receiver.objectId!
+
+                    PFCloud.callFunctionInBackground("sendPush", withParameters: data) {
+                        (response: AnyObject?, error: NSError?) -> Void in
+                        
+                        
+                        let resp = response as? [String: AnyObject?]
+                        print(resp)
+                        let resp2 = response as? String
+                        print(resp2)
+                        
+                    }
+                }
+            }
+        })
         
-        let pushQuery = PFInstallation.query()
-        pushQuery?.whereKey("user", matchesQuery: userQuery!)
-        
-        push.setData(data)
-        push.setQuery(pushQuery)
-        push.sendPushInBackground()
+//        let pushQuery = PFInstallation.query()
+//        pushQuery?.whereKey("user", matchesQuery: userQuery!)
+//        
+//        push.setData(data)
+//        push.setQuery(pushQuery)
+//        push.sendPushInBackground()
     }
     
     class func sendPushAfterDownTapped(toUsername: String, postId: String) {
@@ -37,7 +62,7 @@ class WDTPush {
             return
         }
         
-        let data = ["alert": "\(username) is down for your post", "badge": "Increment", "sound": "notification.mp3", "who": userObjectId, "post": postId]
+        let data = ["alert": "\(username) is down for your post", "badge": "Increment", "sound": "notification.mp3", "who": userObjectId, "post": postId, "type": "down"]
         WDTPush.sendPush(toUsername, data: data)
     }
     
@@ -59,7 +84,7 @@ class WDTPush {
             message = "replied back"
         }
         
-        let data = ["alert": "\(username) \(message)", "badge": "Increment", "sound": "notification.mp3", "who": userObjectId, "post": postId]
+        let data = ["alert": "\(username) \(message)", "badge": "Increment", "sound": "notification.mp3", "who": userObjectId, "post": postId, "type": "reply"]
         WDTPush.sendPush(toUsername, data: data)
     }
 }

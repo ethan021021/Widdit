@@ -20,16 +20,6 @@ class ProfileEditVC: UIViewController, UITextViewDelegate, UITableViewDelegate, 
     var emailTxt: UITextField = UITextField()
     var aboutTxt: WDTPlaceholderTextView = WDTPlaceholderTextView()
     var genderSgmtCtrl = UISegmentedControl(items: ["Male", "Female", "Other"])
-    
-    
-    
-    let addAvatar1 = UIButton()
-    let addAvatar2 = UIButton()
-    let addAvatar3 = UIButton()
-    let addAvatar4 = UIButton()
-    let deleteAvatar2 = UIButton()
-    let deleteAvatar3 = UIButton()
-    let deleteAvatar4 = UIButton()
     let schoolSwitch = UISwitch()
     let workSwitch = UISwitch()
     let opportunitySwitch = UISwitch()
@@ -175,7 +165,7 @@ class ProfileEditVC: UIViewController, UITextViewDelegate, UITableViewDelegate, 
         if indexPath.section == 2 {
             navigationController?.pushViewController(ProfileEditAboutVC(), animated: true)
             
-        } else {
+        } else if indexPath.section == 3 {
             let indexPath = tableView.indexPathForSelectedRow
             let currentCell = tableView.cellForRowAtIndexPath(indexPath!) as! ProfileSettingsCell
             currentCell.cellSelected()

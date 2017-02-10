@@ -37,11 +37,17 @@
 		31F12EDA1C9E6A5700E63A2E /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F12ED91C9E6A5700E63A2E /* ActivityCell.swift */; };
 		31FF6CF41CAF84D4001D1654 /* FBInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31FF6CF31CAF84D4001D1654 /* FBInfo.swift */; };
 		7994B5471CE16D7B008EB1D8 /* notification.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7994B5461CE16D7B008EB1D8 /* notification.mp3 */; };
-		79B4D4821CC80ABE0073B65D /* ReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B4D4811CC80ABE0073B65D /* ReplyViewController.swift */; };
 		79B4D4841CC80D150073B65D /* MessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B4D4831CC80D150073B65D /* MessageTableViewCell.swift */; };
 		79B4D4861CC8102B0073B65D /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B4D4851CC8102B0073B65D /* MessageModel.swift */; };
+		A6222FC61DF8461D00493DCB /* WDTGeoCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6222FC51DF8461D00493DCB /* WDTGeoCoder.swift */; };
 		A62E342E1D37E3A7001762F9 /* SignUpProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62E342D1D37E3A7001762F9 /* SignUpProcess.swift */; };
+		A635758B1DB38A9F00A33A02 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A635758A1DB38A9E00A33A02 /* UserNotifications.framework */; };
 		A638AC6E1D2A617400AC5781 /* WDTHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A638AC6D1D2A617400AC5781 /* WDTHeader.swift */; };
+		A63ECBC31E09AE0800BBDD93 /* ReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63ECBC21E09AE0800BBDD93 /* ReplyViewController.swift */; };
+		A63ECBC71E0AC12B00BBDD93 /* WDTChatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63ECBC41E0AC12B00BBDD93 /* WDTChatDataSource.swift */; };
+		A63ECBC81E0AC12B00BBDD93 /* WDTChatIemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63ECBC51E0AC12B00BBDD93 /* WDTChatIemFactory.swift */; };
+		A63ECBC91E0AC12B00BBDD93 /* WDTChatItemsDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63ECBC61E0AC12B00BBDD93 /* WDTChatItemsDecorator.swift */; };
+		A64D6C3A1E12BBB40032526C /* WDTBanHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A64D6C391E12BBB40032526C /* WDTBanHandler.swift */; };
 		A66019011D3832ED00FC9F9B /* DatePickerDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66019001D3832ED00FC9F9B /* DatePickerDialog.swift */; };
 		A66B82181D8AC63B000D940D /* AboutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66B82171D8AC63B000D940D /* AboutCell.swift */; };
 		A67240FB1D1808440060FAC0 /* WDTPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67240FA1D1808440060FAC0 /* WDTPush.swift */; };
@@ -55,6 +61,10 @@
 		A67241191D19326F0060FAC0 /* FeedFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67241181D19326F0060FAC0 /* FeedFooter.swift */; };
 		A672411B1D1ACD0A0060FAC0 /* WDTPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672411A1D1ACD090060FAC0 /* WDTPlaceholderTextView.swift */; };
 		A672411D1D1C14B20060FAC0 /* UIImageEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672411C1D1C14B20060FAC0 /* UIImageEffects.swift */; };
+		A67DD88F1E1AFD5B0092A00C /* SelectCategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67DD88E1E1AFD5B0092A00C /* SelectCategoryVC.swift */; };
+		A67DD8911E1BCF920092A00C /* FeedCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67DD8901E1BCF920092A00C /* FeedCategoryCell.swift */; };
+		A67DD8931E1BD72F0092A00C /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67DD8921E1BD72F0092A00C /* CategoryCell.swift */; };
+		A6B2B44E1E33756D005AB552 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B2B44D1E33756C005AB552 /* WebViewController.swift */; };
 		A6B3FE9E1D07318100DC1FFF /* WDTPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B3FE9D1D07318100DC1FFF /* WDTPostModel.swift */; };
 		A6B893661D3D43870013234E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B893651D3D43870013234E /* Extension.swift */; };
 		A6B9D0011D1D12F60099F907 /* WDTAvatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6B9D0001D1D12F50099F907 /* WDTAvatar.swift */; };
@@ -102,11 +112,17 @@
 		6B0032CE04787FA854080E9E /* Pods_Widdit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widdit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D40BFB75DA61F740B7C5F63 /* Pods-Widdit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widdit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Widdit/Pods-Widdit.release.xcconfig"; sourceTree = "<group>"; };
 		7994B5461CE16D7B008EB1D8 /* notification.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notification.mp3; sourceTree = "<group>"; };
-		79B4D4811CC80ABE0073B65D /* ReplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyViewController.swift; sourceTree = "<group>"; };
 		79B4D4831CC80D150073B65D /* MessageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableViewCell.swift; sourceTree = "<group>"; };
 		79B4D4851CC8102B0073B65D /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		A6222FC51DF8461D00493DCB /* WDTGeoCoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTGeoCoder.swift; sourceTree = "<group>"; };
 		A62E342D1D37E3A7001762F9 /* SignUpProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpProcess.swift; sourceTree = "<group>"; };
+		A635758A1DB38A9E00A33A02 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		A638AC6D1D2A617400AC5781 /* WDTHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTHeader.swift; sourceTree = "<group>"; };
+		A63ECBC21E09AE0800BBDD93 /* ReplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyViewController.swift; sourceTree = "<group>"; };
+		A63ECBC41E0AC12B00BBDD93 /* WDTChatDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTChatDataSource.swift; sourceTree = "<group>"; };
+		A63ECBC51E0AC12B00BBDD93 /* WDTChatIemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTChatIemFactory.swift; sourceTree = "<group>"; };
+		A63ECBC61E0AC12B00BBDD93 /* WDTChatItemsDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTChatItemsDecorator.swift; sourceTree = "<group>"; };
+		A64D6C391E12BBB40032526C /* WDTBanHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTBanHandler.swift; sourceTree = "<group>"; };
 		A66019001D3832ED00FC9F9B /* DatePickerDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerDialog.swift; sourceTree = "<group>"; };
 		A66B82171D8AC63B000D940D /* AboutCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutCell.swift; sourceTree = "<group>"; };
 		A66B82191D8AEE9C000D940D /* Widdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widdit.entitlements; sourceTree = "<group>"; };
@@ -121,6 +137,10 @@
 		A67241181D19326F0060FAC0 /* FeedFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedFooter.swift; sourceTree = "<group>"; };
 		A672411A1D1ACD090060FAC0 /* WDTPlaceholderTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPlaceholderTextView.swift; sourceTree = "<group>"; };
 		A672411C1D1C14B20060FAC0 /* UIImageEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageEffects.swift; sourceTree = "<group>"; };
+		A67DD88E1E1AFD5B0092A00C /* SelectCategoryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCategoryVC.swift; sourceTree = "<group>"; };
+		A67DD8901E1BCF920092A00C /* FeedCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCategoryCell.swift; sourceTree = "<group>"; };
+		A67DD8921E1BD72F0092A00C /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		A6B2B44D1E33756C005AB552 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		A6B3FE9D1D07318100DC1FFF /* WDTPostModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPostModel.swift; sourceTree = "<group>"; };
 		A6B893651D3D43870013234E /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		A6B9D0001D1D12F50099F907 /* WDTAvatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTAvatar.swift; sourceTree = "<group>"; };
@@ -135,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A635758B1DB38A9F00A33A02 /* UserNotifications.framework in Frameworks */,
 				31F12EC11C9E13C300E63A2E /* libz.tbd in Frameworks */,
 				31F12EBF1C9E13B800E63A2E /* libsqlite3.tbd in Frameworks */,
 				31F12EBD1C9E13AB00E63A2E /* AudioToolbox.framework in Frameworks */,
@@ -190,6 +211,7 @@
 		31F12EC21C9E13F300E63A2E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A635758A1DB38A9E00A33A02 /* UserNotifications.framework */,
 				3111475A1CAB210F00150ECD /* FBSDKCoreKit.framework */,
 				3111475B1CAB210F00150ECD /* FBSDKLoginKit.framework */,
 				31F12EC01C9E13C300E63A2E /* libz.tbd */,
@@ -228,6 +250,11 @@
 				A672411C1D1C14B20060FAC0 /* UIImageEffects.swift */,
 				A6B893651D3D43870013234E /* Extension.swift */,
 				A6E7F7BE1D82F4EA00D725E8 /* WDDExtensions.swift */,
+				A6222FC51DF8461D00493DCB /* WDTGeoCoder.swift */,
+				A64D6C391E12BBB40032526C /* WDTBanHandler.swift */,
+				A63ECBC41E0AC12B00BBDD93 /* WDTChatDataSource.swift */,
+				A63ECBC51E0AC12B00BBDD93 /* WDTChatIemFactory.swift */,
+				A63ECBC61E0AC12B00BBDD93 /* WDTChatItemsDecorator.swift */,
 			);
 			name = WDTUtils;
 			sourceTree = "<group>";
@@ -251,10 +278,11 @@
 				31F12ECB1C9E185600E63A2E /* MorePostsVC.swift */,
 				31F12ECF1C9E191000E63A2E /* NewPostVC.swift */,
 				31F12EC71C9E181F00E63A2E /* ActivityVC.swift */,
-				79B4D4811CC80ABE0073B65D /* ReplyViewController.swift */,
 				31F12EC31C9E17D700E63A2E /* ProfileVC.swift */,
 				31F12ED51C9E3A6900E63A2E /* ProfileEditVC.swift */,
 				A6EA6A791D92C5F900D13E1C /* ProfileEditAboutVC.swift */,
+				A63ECBC21E09AE0800BBDD93 /* ReplyViewController.swift */,
+				A67DD88E1E1AFD5B0092A00C /* SelectCategoryVC.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -290,6 +318,9 @@
 				79B4D4831CC80D150073B65D /* MessageTableViewCell.swift */,
 				A67241181D19326F0060FAC0 /* FeedFooter.swift */,
 				A66B82171D8AC63B000D940D /* AboutCell.swift */,
+				A67DD8901E1BCF920092A00C /* FeedCategoryCell.swift */,
+				A67DD8921E1BD72F0092A00C /* CategoryCell.swift */,
+				A6B2B44D1E33756C005AB552 /* WebViewController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -362,8 +393,9 @@
 				TargetAttributes = {
 					31F12E861C9E115B00E63A2E = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = S6V29A8HUW;
+						DevelopmentTeam = 7HTV4A5W6Y;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -479,23 +511,29 @@
 				A66B82181D8AC63B000D940D /* AboutCell.swift in Sources */,
 				31F12E8B1C9E115B00E63A2E /* AppDelegate.swift in Sources */,
 				79B4D4841CC80D150073B65D /* MessageTableViewCell.swift in Sources */,
+				A67DD88F1E1AFD5B0092A00C /* SelectCategoryVC.swift in Sources */,
 				31F12ECC1C9E185600E63A2E /* MorePostsVC.swift in Sources */,
+				A64D6C3A1E12BBB40032526C /* WDTBanHandler.swift in Sources */,
 				A67241191D19326F0060FAC0 /* FeedFooter.swift in Sources */,
 				31F12ECE1C9E188600E63A2E /* HeaderView.swift in Sources */,
+				A63ECBC31E09AE0800BBDD93 /* ReplyViewController.swift in Sources */,
 				31F12EDA1C9E6A5700E63A2E /* ActivityCell.swift in Sources */,
 				A66019011D3832ED00FC9F9B /* DatePickerDialog.swift in Sources */,
 				31F12ED81C9E65E300E63A2E /* PostCell.swift in Sources */,
+				A67DD8931E1BD72F0092A00C /* CategoryCell.swift in Sources */,
+				A63ECBC91E0AC12B00BBDD93 /* WDTChatItemsDecorator.swift in Sources */,
 				31F12ECA1C9E184100E63A2E /* FeedVC.swift in Sources */,
 				A6B9D0011D1D12F60099F907 /* WDTAvatar.swift in Sources */,
+				A6B2B44E1E33756D005AB552 /* WebViewController.swift in Sources */,
 				A6E7F7BF1D82F4EA00D725E8 /* WDDExtensions.swift in Sources */,
 				A638AC6E1D2A617400AC5781 /* WDTHeader.swift in Sources */,
 				A6EA6A7A1D92C5F900D13E1C /* ProfileEditAboutVC.swift in Sources */,
 				A6B3FE9E1D07318100DC1FFF /* WDTPostModel.swift in Sources */,
 				A672411D1D1C14B20060FAC0 /* UIImageEffects.swift in Sources */,
 				31F12EC41C9E17D700E63A2E /* ProfileVC.swift in Sources */,
+				A63ECBC71E0AC12B00BBDD93 /* WDTChatDataSource.swift in Sources */,
 				A67240FB1D1808440060FAC0 /* WDTPush.swift in Sources */,
 				31F12E931C9E115B00E63A2E /* Widdit.xcdatamodeld in Sources */,
-				79B4D4821CC80ABE0073B65D /* ReplyViewController.swift in Sources */,
 				31FF6CF41CAF84D4001D1654 /* FBInfo.swift in Sources */,
 				31F12ED01C9E191000E63A2E /* NewPostVC.swift in Sources */,
 				A6B9D0031D1D16710099F907 /* WDTCircleSlider.swift in Sources */,
@@ -504,6 +542,9 @@
 				A672411B1D1ACD0A0060FAC0 /* WDTPlaceholderTextView.swift in Sources */,
 				31F12EA01C9E122B00E63A2E /* SignInVC.swift in Sources */,
 				31F12ED61C9E3A6900E63A2E /* ProfileEditVC.swift in Sources */,
+				A63ECBC81E0AC12B00BBDD93 /* WDTChatIemFactory.swift in Sources */,
+				A67DD8911E1BCF920092A00C /* FeedCategoryCell.swift in Sources */,
+				A6222FC61DF8461D00493DCB /* WDTGeoCoder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +667,7 @@
 				CODE_SIGN_ENTITLEMENTS = Widdit/Widdit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: John McCants (VJDF2B67L9)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: John McCants (VJDF2B67L9)";
+				DEVELOPMENT_TEAM = 7HTV4A5W6Y;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -633,11 +675,12 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Widdit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.widdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6055831a-5f7c-478a-9a4b-1bee72d4cc43";
+				PROVISIONING_PROFILE_SPECIFIER = "Widdit-Developer";
 				SWIFT_OBJC_BRIDGING_HEADER = "Widdit/Widdit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
@@ -655,6 +698,7 @@
 				CODE_SIGN_ENTITLEMENTS = Widdit/Widdit.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: John McCants (7HTV4A5W6Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: John McCants (7HTV4A5W6Y)";
+				DEVELOPMENT_TEAM = 7HTV4A5W6Y;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -662,11 +706,12 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Widdit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.widdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0b3f5c15-28f6-4e71-8e05-6ae09f99b44d";
+				PROVISIONING_PROFILE_SPECIFIER = "Widdit-Distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "Widdit/Widdit-Bridging-Header.h";
 				SWIFT_VERSION = 2.3;
 			};

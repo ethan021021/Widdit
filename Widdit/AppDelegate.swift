@@ -15,6 +15,8 @@ import XCGLogger
 import IQKeyboardManagerSwift
 import Whisper
 import RAMAnimatedTabBarController
+import Localytics
+
 
 import Instabug
 let log = XCGLogger.defaultInstance()
@@ -22,40 +24,36 @@ let log = XCGLogger.defaultInstance()
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    static var appDelegate:AppDelegate!
     var window: UIWindow?
+    var tabBar: RAMAnimatedTabBarController!
+    var activitySegmentLeft = true
+    var activityVC: ActivityVC!
+    var feedVC: FeedVC?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
         log.setup(.Debug, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: "path/to/file", fileLogLevel: .Debug)
-        
+        Localytics.autoIntegrate("72b96ef65da39d05200d320-49029ac8-9635-11e6-d4f8-00dba685b405", launchOptions: launchOptions)
+        AppDelegate.appDelegate = self
         log.debug("A debug message")
         IQKeyboardManager.sharedManager().enable = true
-        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(NewPostVC.self)
-        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(ReplyViewController.self)
-        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(SignUpPhone.self)
-        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(SignUpPinVerification.self)
-        
-        IQKeyboardManager.sharedManager().disableDistanceHandlingInViewControllerClass(ReplyViewController.self)
-        Instabug.startWithToken("af9c74a8cc68cae2f2be3771fa9910a5", invocationEvent: IBGInvocationEvent.Shake)
-    
-        
-        //configure push notifications
-//        let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-//        let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
-//        application.registerUserNotificationSettings(settings)
-//        application.registerForRemoteNotifications()
+        IQKeyboardManager.sharedManager().enableAutoToolbar = false
 
         //app wide navigation bar changes
         UINavigationBar.appearance().barTintColor = UIColor.wddTealColor()
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.wddBodylightinvertcenterFont()]
+        //UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.wddBodylightinvertcenterFont()]
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.systemFontOfSize(18)]
+
         UINavigationBar.appearance().translucent = true
         
         
         let image = UIImage(named: "ic_navbar_back")
         UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -66), forBarMetrics: .Default)
+        
         UINavigationBar.appearance().backIndicatorImage = image
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = image
         
@@ -73,14 +71,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // [Optional] Power your app with Local Datastore. For more info, go to
         // https://parse.com/docs/ios_guide#localdatastore/iOS
-        Parse.enableLocalDatastore()
+//        Parse.enableLocalDatastore()
         
         
-        //WDTPostModel.initialize()
-        // Initialize Parse.
+
         
-        Parse.setApplicationId("CbvFKWpmIJFzo8gKzwPXdM5lN1bGPXu2Ln3lbjGx",
-            clientKey: "H6X4RPx8lay4X1YUCu9gA1kPjI2gFxepr152h5x6")
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "CbvFKWpmIJFzo8gKzwPXdM5lN1bGPXu2Ln3lbjGx"
+            $0.clientKey = "H6X4RPx8lay4X1YUCu9gA1kPjI2gFxepr152h5x6"
+            $0.server = "http://159.203.232.104:1337/parse"
+        }
+        Parse.initializeWithConfiguration(configuration)
+        
         PFUser.enableRevocableSessionInBackground()
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
@@ -95,36 +97,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        
         login()
+        
         
         guard let launchOptions = launchOptions else {return true}
         if let userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as? [NSObject: AnyObject] {
-            if let topController = UIApplication.topViewController() {
-                let destVC = ActivityVC()
-                topController.navigationController?.pushViewController(destVC, animated: true)
-            }
             
-//            if let postObjectId = userInfo["post"], userObjectId = userInfo["who"] {
-//                let post = PFObject(withoutDataWithClassName: "posts", objectId: postObjectId as? String)
-//                let query = PFUser.query()
-//                query?.whereKey("objectId", equalTo: userObjectId)
-//                query?.getObjectInBackgroundWithId(userObjectId as! String, block: { (user: PFObject?, error: NSError?) in
-//                    if let topController = UIApplication.topViewController() {
-//                        let destVC = ReplyViewController()
-//                        destVC.usersPost = post
-//                        destVC.toUser = user as! PFUser
-//                        topController.navigationController?.pushViewController(destVC, animated: true)
-//                    }
-//                })
-//            }
+            if userInfo["type"] as! String == "down" {
+                AppDelegate.appDelegate.activitySegmentLeft = false
+            } else if userInfo["type"] as! String == "reply" {
+                AppDelegate.appDelegate.activitySegmentLeft = true
+            }
+            self.tabBar.setSelectIndex(from: self.tabBar.selectedIndex, to: 1)
+                        
         }
         
-
+        
         
         return true
     }
     
+
     
     func delayedAction() {
         let alert2 = UIAlertController(title: "Ok2", message: "Ok", preferredStyle: .Alert)
@@ -137,30 +130,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func login() {
         
         // if loged in
-        if let user = PFUser.currentUser() {
+        if let user = PFUser.currentUser(){
+            Instabug.startWithToken("af9c74a8cc68cae2f2be3771fa9910a5", invocationEvent: IBGInvocationEvent.Shake)
             if let signUpFinished = user["signUpFinished"] as? Bool where signUpFinished == true {
                 
                 let tabBarItem1 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_feed"), selectedImage: UIImage(named: "ic_tabbar_feed_active"))
                 tabBarItem1.animation = RAMBounceAnimation(tag: 0)
-                let feedNC = UINavigationController(rootViewController: FeedVC(style: .Grouped))
+                tabBarItem1.title = "Feed"
+                tabBarItem1.textColor = UIColor.WDTTeal()
+                feedVC = FeedVC(style: .Grouped)
+                feedVC?.loadPosts()
+                let feedNC = UINavigationController(rootViewController: feedVC!)
                 feedNC.tabBarItem = tabBarItem1
-                
                 
                 let tabBarItem2 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_activity"), selectedImage: UIImage(named: "ic_tabbar_activity_active"))
                 tabBarItem2.animation = RAMBounceAnimation(tag: 1)
-                let activityNC = UINavigationController(rootViewController: ActivityVC())
+                tabBarItem2.title = "Activity"
+                tabBarItem2.textColor = UIColor.WDTTeal()
+                activityVC = ActivityVC()
+                let activityNC = UINavigationController(rootViewController: activityVC)
                 activityNC.tabBarItem = tabBarItem2
                 
                 let tabBarItem3 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_profile"), selectedImage: UIImage(named: "ic_tabbar_profile_active"))
                 tabBarItem3.animation = RAMBounceAnimation(tag: 2)
+                tabBarItem3.title = "Profile"
+                tabBarItem3.textColor = UIColor.WDTTeal()
                 let profileNC = UINavigationController(rootViewController: ProfileVC())
                 profileNC.tabBarItem = tabBarItem3
                 profileNC.navigationBarHidden = true
 
                 let controllers = [feedNC, activityNC, profileNC]
-                let tabBar = RAMAnimatedTabBarController(viewControllers: controllers)
+                tabBar = RAMAnimatedTabBarController(viewControllers: controllers)
                 window?.rootViewController = tabBar
                 tabBarItem1.playAnimation()
+                
+                removeOldCategories()
+                
+            } else {
+                let welcomeNC = UINavigationController(rootViewController: WelcomeVC())
+                window?.rootViewController = welcomeNC
             }
         } else {
             let welcomeNC = UINavigationController(rootViewController: WelcomeVC())
@@ -169,50 +177,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let installation = PFInstallation.currentInstallation()
         installation.setDeviceTokenFromData(deviceToken)
         installation.channels = ["global"]
+        installation["user"] = PFUser.currentUser()!
         installation.saveInBackground()
     }
 
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        processPushNotification(userInfo, application: application)
+    }
+    
+    func processPushNotification(userInfo: [NSObject : AnyObject], application: UIApplication) {
         if let topController = UIApplication.topViewController() {
+            
+            if ( application.applicationState != .Active ) {
+                if userInfo["type"] as! String == "down" {
+                    AppDelegate.appDelegate.activitySegmentLeft = false
+                } else if userInfo["type"] as! String == "reply" {
+                    AppDelegate.appDelegate.activitySegmentLeft = true
+                }
+                self.tabBar.setSelectIndex(from: self.tabBar.selectedIndex, to: 1)
+            }
             
             let userObjectId = userInfo["who"] as! String
             let postObjectId = userInfo["post"] as! String
-            
             let post = PFObject(withoutDataWithClassName: "posts", objectId: postObjectId)
             
             let query = PFUser.query()
             query?.whereKey("objectId", equalTo: userObjectId)
             
             query?.getObjectInBackgroundWithId(userObjectId, block: { (userObject: PFObject?, error: NSError?) in
-                let destVC = ReplyViewController()
-                let user = userObject as! PFUser
-                destVC.toUser = user
-                destVC.usersPost = post
-                
                 if topController.isKindOfClass(ReplyViewController) {
                     let replyVC = topController as! ReplyViewController
-                    replyVC.requestMessages()
+//                    replyVC.requestMessages()
                 } else {
                     if let aps = userInfo["aps"] as? NSDictionary {
                         if let alert = aps["alert"] as? NSDictionary {
                             if let message = alert["message"] as? String {
                                 let newMessageMurmur = Murmur(title: message)
-                                Whistle(newMessageMurmur, action: .Show(2.5))
+                                show(whistle: newMessageMurmur, action: .Show(2.5))
                             }
                         } else if let alert = aps["alert"] as? String {
                             let newMessageMurmur = Murmur(title: alert)
-                            Whistle(newMessageMurmur, action: .Show(2.5))
+                            show(whistle: newMessageMurmur, action: .Show(2.5))
                         }
                     }
-                    
-//                    if let alert = userInfo["alert"] as? String {
-//                        
-//                    }
-//                    topController.navigationController?.pushViewController(destVC, animated: true)
                 }
             })
         }
@@ -224,6 +236,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
+        self.tabBar.setSelectIndex(from: self.tabBar.selectedIndex, to: 0)
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
@@ -240,6 +253,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             installation.saveEventually()
         }
         FBSDKAppEvents.activateApp()
+        
+        if let feedVC = feedVC where feedVC.requesting == false {
+            feedVC.refresher.beginRefreshingManually()
+            feedVC.loadPosts()
+        }
+        
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool
@@ -316,6 +335,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    func removeOldCategories() {
+        
+        let categoryQuery = PFQuery(className: "categories")
+        categoryQuery.orderByDescending("updatedAt")
+        categoryQuery.findObjectsInBackgroundWithBlock { (cats, err) in
+            if let cats = cats {
+                for cat in cats {
+                    let catTitle = cat["title"] as! String
+                    let countCategoryQuery = PFQuery(className: "posts")
+                    countCategoryQuery.whereKey("hashtags", containedIn: [catTitle])
+                    countCategoryQuery.countObjectsInBackgroundWithBlock { (num, err) in
+                        if num == 0 {
+                            let categoryQuery = PFQuery(className: "categories")
+                            categoryQuery.whereKey("title", equalTo: catTitle)
+                            categoryQuery.getFirstObjectInBackgroundWithBlock({ (obj, err) in
+                                if let obj = obj {
+                                    obj.deleteInBackground()
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 }
 
@@ -376,6 +422,9 @@ extension NSTimer {
         CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
         return timer
     }
+    
+    
+    
 }
 
 
@@ -394,7 +443,7 @@ class RAMBounceAnimation : RAMItemAnimation {
     
     override func playAnimation(icon: UIImageView, textLabel: UILabel) {
         playBounceAnimation(icon)
-        textLabel.textColor = textSelectedColor
+        textLabel.textColor = UIColor.WDTTeal()
         switch tag {
         case 0:
             icon.image = UIImage(named: "ic_tabbar_feed_active")
@@ -409,7 +458,7 @@ class RAMBounceAnimation : RAMItemAnimation {
     }
     
     override func deselectAnimation(icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
-        textLabel.textColor = defaultTextColor
+
         switch tag {
         case 0:
             icon.image = UIImage(named: "ic_tabbar_feed")

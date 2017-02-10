@@ -106,6 +106,21 @@ func applyBorder(border:CGFloat, color:UIColor) -> UIImage?
 
 ```
 
+### Image Effects
+```Swift
+// Applies a light blur effect to the image
+func applyLightEffect() -> UIImage? 
+// Applies a extra light blur effect to the image
+func applyExtraLightEffect() -> UIImage? 
+// Applies a dark blur effect to the image
+func applyDarkEffect() -> UIImage? 
+// Applies a color tint to an image
+func applyTintEffect(tintColor: UIColor) -> UIImage? 
+// Applies a blur to an image based on the specified radius, tint color saturation and mask image
+func applyBlur(blurRadius:CGFloat, tintColor:UIColor?, saturationDeltaFactor:CGFloat, maskImage:UIImage? = nil) -> UIImage? 
+
+```
+
 ### Screen Density
 ```Swift
 // To create an image that is Retina aware, use the screen scale as a multiplier for your size. You should also use this technique for padding or borders.
