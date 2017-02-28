@@ -29,7 +29,6 @@ class SignInVC: UIViewController {
         
         view.backgroundColor = UIColor.wddTealColor()
         
-//        usernameTF.font = UIFont.wddHtwoinvertcenterFont()
         usernameTF.textColor = UIColor.whiteColor()
         usernameTF.placeholder = "Enter Username"
         usernameTF.title = "Username"
@@ -146,10 +145,6 @@ class WelcomeVC: UIViewController {
         logo.snp_makeConstraints { (make) in
             make.top.equalTo(view).offset(47.5)
             make.centerX.equalTo(view)
-//            make.left.equalTo(view).offset(63 * 2)
-//            make.right.equalTo(view).offset(-63 * 2)
-            
-            
         }
         
         let loginManager: FBSDKLoginManager = FBSDKLoginManager()
@@ -165,7 +160,6 @@ class WelcomeVC: UIViewController {
         signUpBtn.addTarget(self, action: #selector(signUpBtnTapped), forControlEvents: .TouchUpInside)
         view.addSubview(signUpBtn)
         signUpBtn.snp_makeConstraints { (make) in
-//            make.top.equalTo(logo.snp_bottom).offset(18)
             make.bottom.equalTo(orLbl.snp_top).offset(-27)
             make.centerX.equalTo(view)
         }
@@ -176,7 +170,6 @@ class WelcomeVC: UIViewController {
         orLbl.textColor = UIColor.whiteColor()
         
         orLbl.snp_makeConstraints { (make) in
-//            make.top.equalTo(signUpBtn.snp_bottom).offset(27)
             make.centerY.equalTo(view)
             make.centerX.equalTo(view)
         }
@@ -212,18 +205,6 @@ class WelcomeVC: UIViewController {
             make.top.equalTo(orLbl.snp_bottom).offset(27)
             make.centerX.equalTo(view)
         })
-        
-        
-//        let signUpBtn: UIButton = UIButton(type: .Custom)
-//        signUpBtn.WDTButtonStyle(UIColor.whiteColor(), title: "Sign Up")
-//        signUpBtn.addTarget(self, action: #selector(signUpBtnTapped), forControlEvents: .TouchUpInside)
-//        view.addSubview(signUpBtn)
-//        signUpBtn.snp_makeConstraints { (make) in
-//            make.bottom.equalTo(view).offset(-25)
-//            make.left.equalTo(usernameTF)
-//            make.right.equalTo(usernameTF)
-//            make.height.equalTo(50)
-//        }
         
         
         let alreadyHaveAnAccount: UIButton = UIButton(type: .Custom)
@@ -330,10 +311,7 @@ class WelcomeVC: UIViewController {
             //UIApplication.sharedApplication().registerForRemoteNotifications()
             PermissionScope().requestLocationInUse()
             self!.onboardingVC.dismissViewControllerAnimated(true, completion: nil)
-//            self!.onboardingVC.moveNextPage()
-//            self!.onboardingVC.locationBtn.hidden = true
-//            self!.onboardingVC.makeSkipButtonRight()
-//            self!.onboardingVC.skipButton.setTitle("Close", forState: .Normal)
+
         }
         
         onboardingVC.skipHandler = { [weak self] in

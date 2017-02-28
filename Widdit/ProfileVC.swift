@@ -21,7 +21,6 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
     var tableView: UITableView = UITableView(frame: CGRectZero, style: .Grouped)
     var configuration: ImageViewerConfiguration!
     let imageProvider = WDTImageProvider()
-    // Page Size
     var page : Int = 10
     
     var geoPoint: PFGeoPoint?
@@ -41,13 +40,10 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
         navigationItem.title = self.user.username?.uppercaseString
         
         configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
-
-        
         tableView.registerClass(FeedFooter.self, forHeaderFooterViewReuseIdentifier: "FeedFooter")
         tableView.registerClass(PostCell.self, forCellReuseIdentifier: "PostCell")
         tableView.registerClass(AboutCell.self, forCellReuseIdentifier: "AboutCell")
         tableView.registerClass(ProfileCell.self, forCellReuseIdentifier: "ProfileCell")
-        
         tableView.backgroundColor = UIColor.wddSilverColor()
         tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 150.0;
@@ -82,16 +78,12 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             scrollView.contentSize = CGSizeMake(self.view.frame.width * CGFloat(num), self.headerHeight)
         }
         
-
-        
-        
         tableView.tableHeaderView = wdtHeader
         self.loadPosts()
         
         
         
         settingsBtn.setImage((UIImage(named: "ic_settings")!.imageWithRenderingMode(.AlwaysTemplate)), forState: .Normal)
-        
         settingsBtn.addTarget(self, action: #selector(editButtonTapped), forControlEvents: .TouchUpInside)
         settingsBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 50, 50, 0)
         
@@ -103,8 +95,6 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             make.width.equalTo(40.x2)
             make.height.equalTo(40.x2)
         })
-        //settingsBtn.hidden = user.username != PFUser.currentUser()?.username
-
         
     }
     
@@ -122,8 +112,6 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
         if let ava = user["ava3"] as? PFFile {
             avatars.append(ava)
         }
-        
-        
         
         wdtHeader.setImages(avatars)
     }

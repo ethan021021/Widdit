@@ -27,9 +27,6 @@ class SelectCategoryVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         tableView.delegate = self
         tableView.dataSource = self
         tableView.registerClass(CategoryCell.self, forCellReuseIdentifier: "CategoryCell")
-        
-        
-        
         loadCategories()
         
         let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_navbar_add"), style: .Done, target: self, action: #selector(newPostButtonTapped))
@@ -96,7 +93,6 @@ class SelectCategoryVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         let obj = categories[indexPath.row]
         feedVC.selectedCategory(obj["title"] as! String)
         navigationController?.pushViewController(feedVC, animated: true)
-        //cancelBtnTapped()
     }
     
     override func didReceiveMemoryWarning() {

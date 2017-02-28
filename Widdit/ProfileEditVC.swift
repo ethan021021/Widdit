@@ -154,10 +154,6 @@ class ProfileEditVC: UIViewController, UITextViewDelegate, UITableViewDelegate, 
             
             return cell
         }
-        
-
-        
-        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -203,24 +199,4 @@ class ProfileEditVC: UIViewController, UITextViewDelegate, UITableViewDelegate, 
         NSNotificationCenter.defaultCenter().postNotificationName("reload", object: nil)
         
     }
-//    
-//    func textView(textView: UITextView,
-//                  shouldChangeTextInRange range: NSRange,
-//                                          replacementText text: String) -> Bool{
-//        
-//        let currentLength:Int = (textView.text as NSString).length
-//        let newLength:Int = (textView.text as NSString).length + (text as NSString).length - (range.length)
-////        let remainingChar:Int = 140 - currentLength
-//        
-//        aboutTxt.textColor = UIColor .blackColor()
-//        if text != "" {
-//            return (newLength > 140) ? false : true
-//        } else {
-//            return true
-//        }
-//        
-//    }
-
-
-
 }

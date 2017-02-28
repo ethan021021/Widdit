@@ -48,10 +48,4 @@ class ProfileEditAboutVC: UIViewController, UITextViewDelegate {
         }
         
     }
-    
-    //func textViewDidEndEditing(textView: UITextView) {
-        
-    //}
-
-
 }
