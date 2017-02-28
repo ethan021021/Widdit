@@ -246,12 +246,10 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
         }
     }
 
-    // hide keyboard function
     func hideKeyboardTap() {
         view.endEditing(true)
     }
     
-    // Cancel button tapped
     func cancelBtnTapped(sender: AnyObject) {
         
         dismissViewControllerAnimated(true, completion: nil)
@@ -259,10 +257,7 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
     
     func postBtnTapped(sender: AnyObject) {
         
-        // dismiss keyboard
         view.endEditing(true)
-        
-        // send data to server to "posts" class in Parse
         var object = PFObject(className: "posts")
         
         if let editPost = editPost {
@@ -317,7 +312,6 @@ class NewPostVC: UIViewController, UINavigationControllerDelegate, UITextViewDel
                 self.delegate.loadPosts()
                 self.dismissViewControllerAnimated(true, completion: nil)
                 self.viewDidLoad()
-                
                 self.addNewCategories(ActiveLabel.parseText(self.postTxt.text), postObject: object)
             }
         }

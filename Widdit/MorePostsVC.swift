@@ -12,12 +12,8 @@ import ImageViewer
 
 class MorePostsVC: UITableViewController, WDTLoad {
     
-//    var tableView: UITableView!
-    
-    // UI Objects
     var refresher : UIRefreshControl!
     var page : Int = 12
-
     var user: PFUser!
     let wdtPost = WDTPost()
     var collectionOfPosts = [PFObject]()
@@ -42,11 +38,7 @@ class MorePostsVC: UITableViewController, WDTLoad {
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(MorePostsVC.back(_:)))
         backSwipe.direction = UISwipeGestureRecognizerDirection.Right
         view.addGestureRecognizer(backSwipe)
-        
-        
-        // Receive Notification from NewPostVC
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MorePostsVC.uploaded(_:)), name: "uploaded", object: nil)
-
         let closeFeedBtn = UIBarButtonItem(image: UIImage(named: "ic_navbar_back"), style: .Done, target: self, action: #selector(closeFeedBtnTapped))
         closeFeedBtn.tintColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = closeFeedBtn
@@ -58,7 +50,6 @@ class MorePostsVC: UITableViewController, WDTLoad {
         navigationController?.popViewControllerAnimated(true)
     }
     
-    // reloading func with posts after received notification
     func uploaded(notification: NSNotification) {
         loadPosts()
     }
@@ -114,8 +105,6 @@ class MorePostsVC: UITableViewController, WDTLoad {
     }
 
     func back(sender: UIBarButtonItem) {
-        
-        // Push Back
         navigationController?.popViewControllerAnimated(true)
     }
     

@@ -20,8 +20,6 @@ class ActivityVC: UIViewController, StatefulViewController, UITableViewDelegate,
     let segmentedControl = UISegmentedControl(items: ["REPLIES", "DOWNS"])
     
     
-    
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBarHidden = false
@@ -207,9 +205,6 @@ class ActivityVC: UIViewController, StatefulViewController, UITableViewDelegate,
         let guest = MorePostsVC(style: .Grouped)
         guest.collectionOfPosts = [post]
         guest.title = "Post"
-        
-        
-//        guest.user = activityObj[""]
         self.navigationController?.pushViewController(guest, animated: true)
         
     }

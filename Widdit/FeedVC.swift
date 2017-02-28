@@ -38,17 +38,10 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
         
         navigationController?.navigationBar.setBottomBorderColor()
         countUsers()
-
         configuration = ImageViewerConfiguration(imageSize: CGSize(width: 10, height: 10), closeButtonAssets: buttonAssets)
-        
-        // Pull to Refresh
         refresher.addTarget(self, action: #selector(loadPosts), forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refresher)
-        
-        
-        // Receive Notification from PostCell if Post is Downed, to update CollectionView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(FeedVC.refresh), name: "downed", object: nil)
-    
         
         tableView.registerClass(FeedFooter.self, forHeaderFooterViewReuseIdentifier: "FeedFooter")
         tableView.registerClass(PostCell.self, forCellReuseIdentifier: "PostCell")
@@ -58,10 +51,6 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
         tableView.estimatedRowHeight = 150.0;
         tableView.separatorStyle = .None
         
-        
-        
-        
-
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -81,8 +70,6 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
         
         if let selectedCategory = selectedCategory {
             
-            
-            
             let closeFeedBtn = UIBarButtonItem(image: UIImage(named: "ic_navbar_back"), style: .Done, target: self, action: #selector(closeFeedBtnTapped))
             closeFeedBtn.tintColor = UIColor.whiteColor()
             navigationItem.leftBarButtonItem = closeFeedBtn
@@ -90,15 +77,13 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
             
         } else {
             let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
-            
             logoNC.frame = titleView.bounds
             titleView.addSubview(logoNC)
-            
             navigationItem.titleView = titleView
         }
-        
     }
     
+//        removed feature
 //    func NCbtnTapped(sender: UIButton) {
 //        if sender.selected == true {
 //            sender.selected = false
@@ -120,9 +105,9 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
         let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_navbar_add"), style: .Done, target: self, action: #selector(newPostButtonTapped))
         rightBarButtonItem.tintColor = UIColor.whiteColor()
         navigationItem.rightBarButtonItem = rightBarButtonItem
-        
+
+//        removed feature
 //        let queryOfAllUsers = PFUser.query()
-        
 //        if worldSelected == false {
 //            if let geoPoint = PFUser.currentUser()!["geoPoint"] as? PFGeoPoint {
 //                queryOfAllUsers!.whereKey("geoPoint", nearGeoPoint: geoPoint, withinMiles: 25)
@@ -131,7 +116,6 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
 //        if self.allUsers == 0 {
 //            self.putLeftBarButtonItem(0)    
 //        }
-//        
 //        
 //        queryOfAllUsers?.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, error: NSError?) in
 //            if let objects = objects {
@@ -181,14 +165,12 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
         if worldSelected == false {
             let alert = SimpleAlert.Controller(title: "Local Users", message: "There are currently \(allUsers) people around you on this app. New Features Coming Soon 😎", style: .Alert)
             alert.addAction(SimpleAlert.Action(title: "Fasho", style: .Default, handler: { (action) in
-                
             }))
             
             presentViewController(alert, animated: true, completion: nil)
         } else {
             let alert = SimpleAlert.Controller(title: "Total Users", message: "There are currently \(allUsers) people total on Widdit. New Features Coming Soon", style: .Alert)
             alert.addAction(SimpleAlert.Action(title: "Fasho", style: .Default, handler: { (action) in
-                
             }))
             
             presentViewController(alert, animated: true, completion: nil)
