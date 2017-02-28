@@ -82,12 +82,16 @@ class SelectCategoryVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         let cell = self.tableView.dequeueReusableCellWithIdentifier("CategoryCell", forIndexPath: indexPath) as! CategoryCell
         let obj = categories[indexPath.row]
         let title = obj["title"] as! String
+        cell.selectionStyle = .Gray
         
         cell.fillCell(title, selectingCategoryForNewPost: selectingCategoryForNewPost)
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.setSelected(false, animated: true)
+        
         let feedVC = FeedVC(style: .Grouped)
         let obj = categories[indexPath.row]
         feedVC.selectedCategory(obj["title"] as! String)

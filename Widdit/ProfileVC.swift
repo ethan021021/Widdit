@@ -34,7 +34,7 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
     var avatars: [PFFile] = []
     var infoSelected = true
     var wdtHeader: WDTHeader!
-    
+    let settingsBtn = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,10 +88,13 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
         tableView.tableHeaderView = wdtHeader
         self.loadPosts()
         
-        let settingsBtn = UIButton()
-        settingsBtn.setImage(UIImage(named: "ic_settings"), forState: .Normal)
+        
+        
+        settingsBtn.setImage((UIImage(named: "ic_settings")!.imageWithRenderingMode(.AlwaysTemplate)), forState: .Normal)
+        
         settingsBtn.addTarget(self, action: #selector(editButtonTapped), forControlEvents: .TouchUpInside)
         settingsBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 50, 50, 0)
+        
         
         tableView.addSubview(settingsBtn)
         settingsBtn.snp_makeConstraints(closure: { (make) in
@@ -120,12 +123,20 @@ class ProfileVC: UIViewController, UITableViewDelegate, UITableViewDataSource, W
             avatars.append(ava)
         }
         
+        
+        
         wdtHeader.setImages(avatars)
     }
     
     override func viewDidAppear(animated: Bool) {
         loadPosts()
         loadAvatars()
+        
+        if avatars.count == 0 {
+            settingsBtn.imageView?.tintColor = UIColor.blackColor()
+        } else {
+            settingsBtn.imageView?.tintColor = UIColor.whiteColor()
+        }
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {

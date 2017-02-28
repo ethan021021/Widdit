@@ -150,12 +150,12 @@ class PostCell: UITableViewCell {
         
         userNameLbl.font = UIFont.WDTAgoraMedium(14)
         userNameLbl.textColor = UIColor.blackColor()
-        
+        userNameLbl.lineBreakMode = .ByCharWrapping
         
         
         
         moreBtn.setBackgroundImage(UIImage(named: "ic_rectangle"), forState: .Normal)
-        moreBtn.titleLabel?.font = UIFont.wddSmallgreenFont()
+        moreBtn.titleLabel?.font = UIFont.systemFontOfSize(14, weight: UIFontWeightSemibold)
         moreBtn.setTitleColor(UIColor.wddGreenColor(), forState: .Normal)
         moreBtn.setTitle("More posts...", forState: .Normal)
         
@@ -188,6 +188,7 @@ class PostCell: UITableViewCell {
         userNameLbl.snp_remakeConstraints(closure: { (make) in
             make.left.equalTo(avaImage.snp_right).offset(6.x2)
             make.top.equalTo(cardView).offset(6.5.x2)
+            make.height.equalTo(18)
         })
         
         timeLbl.snp_remakeConstraints(closure: { (make) in
@@ -264,7 +265,7 @@ class PostCell: UITableViewCell {
     override func updateConstraints() {
         postText.snp_remakeConstraints(closure: { (make) in
             make.top.equalTo(avaImage.snp_bottom).offset(10)
-            if let _ = self.postPhoto.image {
+            if let photoFile = post["photoFile"] as? PFFile  {
                 make.bottom.equalTo(self.postPhoto.snp_top).offset(-20)
             } else {
                 if moreBtn.hidden == true {
@@ -334,13 +335,12 @@ class PostCell: UITableViewCell {
     let placeholderImage = UIImage(color: UIColor.WDTGrayBlueColor(), size: CGSizeMake(CGFloat(320), CGFloat(320)))
     var worldSelected: Bool = true
     func fillCell(post: PFObject) {
-        
+        self.post = post
         let user = post["user"] as! PFUser
         user.fetchIfNeededInBackgroundWithBlock({ (_, _) in
             
             let username = user.username
             self.userNameLbl.text = username
-            self.post = post
             self.user = user
             
             self.postText.text = post["postText"] as! String
@@ -358,6 +358,8 @@ class PostCell: UITableViewCell {
             if let photoFile = post["photoFile"] as? PFFile  {
                 
                 self.postPhoto.kf_setImageWithURL(NSURL(string: photoFile.url!)!, placeholderImage: self.placeholderImage, optionsInfo: nil, progressBlock: nil, completionHandler: { (image, error, cacheType, imageURL) in
+                
+                   // self.updateConstraints()
                 })
             } else {
                 self.postPhoto.image = nil

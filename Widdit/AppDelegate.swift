@@ -89,14 +89,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // call login function
         
-        
         // color of window
         window?.backgroundColor = .whiteColor()
 
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        
         login()
         
         
@@ -111,8 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.tabBar.setSelectIndex(from: self.tabBar.selectedIndex, to: 1)
                         
         }
-        
-        
         
         return true
     }

@@ -204,8 +204,11 @@ class ActivityVC: UIViewController, StatefulViewController, UITableViewDelegate,
         }
         
         let post = activityObj["post"] as! PFObject
-        let guest = MorePostsVC()
+        let guest = MorePostsVC(style: .Grouped)
         guest.collectionOfPosts = [post]
+        guest.title = "Post"
+        
+        
 //        guest.user = activityObj[""]
         self.navigationController?.pushViewController(guest, animated: true)
         

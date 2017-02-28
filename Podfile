@@ -29,7 +29,6 @@ pod 'Instabug'
 pod 'Whisper'
 pod 'RAMAnimatedTabBarController'
 pod 'PermissionScope'
-pod 'SRKControls'
 pod 'SkyFloatingLabelTextField'
 pod 'Presentr', :git => 'https://github.com/icalialabs/Presentr.git', :tag => '0.2.1'
 pod 'MBTwitterScroll'
@@ -40,6 +39,8 @@ pod 'Onboard'
 pod 'NoChat', :git => 'https://github.com/little2s/NoChat', :branch => 'swift2_3'
 pod 'NoChatTG', :git => 'https://github.com/little2s/NoChat', :branch => 'swift2_3'
 pod 'ActiveLabel', :git => 'https://github.com/optonaut/ActiveLabel.swift', :branch => 'swift-2.3'
+#pod 'SwiftLinkPreview', :git => 'https://github.com/LeonardoCardoso/SwiftLinkPreview'
+
 
 post_install do |installer|
     installer.pods_project.targets.each do |target|

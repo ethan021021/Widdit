@@ -31,7 +31,7 @@ class CategoryCell: UITableViewCell {
         contentView.addSubview(numOfPostsLbl)
         
         
-        categoryTitleLbl.font = UIFont.WDTAgoraMedium(14)
+        categoryTitleLbl.font = UIFont.WDTAgoraMedium(18)
         categoryTitleLbl.textColor = UIColor.blackColor()
         categoryTitleLbl.snp_remakeConstraints(closure: { (make) in
             make.left.equalTo(contentView).offset(6.x2)
@@ -69,8 +69,11 @@ class CategoryCell: UITableViewCell {
         activityIndicator.hidden = false
         activityIndicator.startAnimating()
 
+        
+        
         if selectingCategoryForNewPost == false {
             let countCategoryQuery = PFQuery(className: "posts")
+            
             countCategoryQuery.whereKey("hashtags", containedIn: [category])
 //            countCategoryQuery.cachePolicy = .CacheThenNetwork
             countCategoryQuery.countObjectsInBackgroundWithBlock { (num, err) in

@@ -343,13 +343,27 @@ class SignUpMain: SignUp, UITextFieldDelegate {
         view.backgroundColor = UIColor.whiteColor()
         
         
+        let scrollView = UIScrollView()
+        view.addSubview(scrollView)
+        scrollView.snp_makeConstraints { (make) in
+            make.edges.equalTo(view)
+        }
+        
+        let contentView = UIView()
+        scrollView.addSubview(contentView)
+        contentView.snp_makeConstraints { (make) in
+            
+            make.edges.equalTo(scrollView)
+            make.height.equalTo(scrollView)
+        }
+        
         
         avatarBtn.setImage(UIImage(named: "add_avatar"), forState: .Normal)
         avatarBtn.addTarget(self, action: #selector(avatarBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(avatarBtn)
+        contentView.addSubview(avatarBtn)
         avatarBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(6.x2 + 32.x2)
-            make.centerX.equalTo(view)
+            make.top.equalTo(contentView).offset(6.x2 + 32.x2)
+            make.centerX.equalTo(scrollView)
             make.width.equalTo(44.x2)
             make.height.equalTo(44.x2)
         }
@@ -360,7 +374,7 @@ class SignUpMain: SignUp, UITextFieldDelegate {
         addAvatarBtn.setTitleColor(UIColor.wddGreenColor(), forState: .Normal)
         addAvatarBtn.setTitle("Add avatar", forState: .Normal)
         addAvatarBtn.addTarget(self, action: #selector(avatarBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(addAvatarBtn)
+        contentView.addSubview(addAvatarBtn)
         addAvatarBtn.snp_makeConstraints { (make) in
             make.top.equalTo(avatarBtn.snp_bottom).offset(4.5.x2)
             make.centerX.equalTo(view)
@@ -388,7 +402,7 @@ class SignUpMain: SignUp, UITextFieldDelegate {
         usernameTF.selectedLineColor = UIColor.wddSilverColor()
         usernameTF.selectedTitleColor = UIColor.wddSilverColor()
         usernameTF.tintColor = UIColor.WDTTeal()
-        view.addSubview(usernameTF)
+        contentView.addSubview(usernameTF)
         usernameTF.snp_makeConstraints { (make) in
             make.top.equalTo(addAvatarBtn.snp_bottom).offset(19)
             make.left.equalTo(view).offset(10.x2)
@@ -403,7 +417,7 @@ class SignUpMain: SignUp, UITextFieldDelegate {
         passwordTF.delegate = self
         passwordTF.autocapitalizationType = .None
         passwordTF.secureTextEntry = true
-        view.addSubview(passwordTF)
+        contentView.addSubview(passwordTF)
         passwordTF.lineHeight = 1
         passwordTF.selectedLineHeight = 1
         passwordTF.lineColor = UIColor.wddSilverColor()
@@ -422,7 +436,7 @@ class SignUpMain: SignUp, UITextFieldDelegate {
         nameTF.delegate = self
         nameTF.title = "Name"
         nameTF.autocapitalizationType = .None
-        view.addSubview(nameTF)
+        contentView.addSubview(nameTF)
         nameTF.lineHeight = 1
         nameTF.selectedLineHeight = 1
         nameTF.lineColor = UIColor.wddSilverColor()
@@ -448,7 +462,7 @@ class SignUpMain: SignUp, UITextFieldDelegate {
         emailTF.selectedLineColor = UIColor.wddSilverColor()
         emailTF.selectedTitleColor = UIColor.wddSilverColor()
         emailTF.tintColor = UIColor.WDTTeal()
-        view.addSubview(emailTF)
+        contentView.addSubview(emailTF)
         emailTF.snp_makeConstraints { (make) in
             make.top.equalTo(nameTF.snp_bottom).offset(22)
             make.left.equalTo(view).offset(10.x2)
@@ -501,12 +515,21 @@ class SignUpMain: SignUp, UITextFieldDelegate {
         registerBtn.layer.cornerRadius = 12 * 2
         registerBtn.clipsToBounds = true
         registerBtn.addTarget(self, action: #selector(nextBtnTapped), forControlEvents: .TouchUpInside)
-        view.addSubview(registerBtn)
+        contentView.addSubview(registerBtn)
         registerBtn.snp_makeConstraints { (make) in
-            make.bottom.equalTo(view).offset(-7.5.x2)
+            make.top.equalTo(emailTF.snp_bottom).offset(22 + 50)
+//            make.bottom.equalTo(contentView).offset(-7.5.x2)
             make.left.equalTo(view).offset(10.x2)
             make.right.equalTo(view).offset(-10.x2)
             make.height.equalTo(26.x2)
+        }
+        
+        
+        let bottomView = UIView()
+        contentView.addSubview(bottomView)
+        bottomView.snp_makeConstraints { (make) in
+            make.top.equalTo(registerBtn.snp_bottom)
+            make.bottom.equalTo(contentView).offset(-20)
         }
     }
     

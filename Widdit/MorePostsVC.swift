@@ -23,6 +23,7 @@ class MorePostsVC: UITableViewController, WDTLoad {
     var collectionOfPosts = [PFObject]()
     var geoPoint: PFGeoPoint?
     var selectedCategory: String?
+    
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,9 +101,16 @@ class MorePostsVC: UITableViewController, WDTLoad {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        tableView.reloadData()
         if let user = user {
-            navigationItem.title = user.username?.uppercaseString
+            navigationItem.title = "More Posts"
+             
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBarHidden = false
     }
 
     func back(sender: UIBarButtonItem) {

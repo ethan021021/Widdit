@@ -145,8 +145,9 @@ class WelcomeVC: UIViewController {
         view.addSubview(logo)
         logo.snp_makeConstraints { (make) in
             make.top.equalTo(view).offset(47.5)
-            make.left.equalTo(view).offset(63 * 2)
-            make.right.equalTo(view).offset(-63 * 2)
+            make.centerX.equalTo(view)
+//            make.left.equalTo(view).offset(63 * 2)
+//            make.right.equalTo(view).offset(-63 * 2)
             
             
         }
@@ -154,6 +155,8 @@ class WelcomeVC: UIViewController {
         let loginManager: FBSDKLoginManager = FBSDKLoginManager()
         loginManager.logOut()
         
+        let orLbl = UILabel()
+        view.addSubview(orLbl)
         
         let signUpBtn: UIButton = UIButton(type: .Custom)
         signUpBtn.titleLabel?.font = UIFont.WDTAgoraRegular(10.5 * 2)
@@ -162,17 +165,19 @@ class WelcomeVC: UIViewController {
         signUpBtn.addTarget(self, action: #selector(signUpBtnTapped), forControlEvents: .TouchUpInside)
         view.addSubview(signUpBtn)
         signUpBtn.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(99.5 * 2)
+//            make.top.equalTo(logo.snp_bottom).offset(18)
+            make.bottom.equalTo(orLbl.snp_top).offset(-27)
             make.centerX.equalTo(view)
         }
         
-        let orLbl = UILabel()
+        
         orLbl.text = "or"
         orLbl.font = UIFont.WDTAgoraRegular(7 * 2)
         orLbl.textColor = UIColor.whiteColor()
-        view.addSubview(orLbl)
+        
         orLbl.snp_makeConstraints { (make) in
-            make.top.equalTo(view).offset(126.5 * 2)
+//            make.top.equalTo(signUpBtn.snp_bottom).offset(27)
+            make.centerY.equalTo(view)
             make.centerX.equalTo(view)
         }
         
@@ -204,7 +209,7 @@ class WelcomeVC: UIViewController {
         
         facebookBtn.addTarget(self, action: #selector(loginToFacebook), forControlEvents: .TouchUpInside)
         facebookBtn.snp_makeConstraints(closure: { (make) in
-            make.top.equalTo(view).offset(147.5 * 2)
+            make.top.equalTo(orLbl.snp_bottom).offset(27)
             make.centerX.equalTo(view)
         })
         

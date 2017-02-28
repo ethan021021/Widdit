@@ -13,42 +13,13 @@ class WDTPush {
     
     private class func sendPush(toUsername: String, var data: [String: AnyObject]) {
         
-        print(data)
-        
-        
-        
-        //let push = PFPush()
-        
-        let userQuery = PFUser.query()
-        userQuery?.whereKey("username", equalTo: toUsername)
-        userQuery!.findObjectsInBackgroundWithBlock({ (objects: [PFObject]?, err) in
+        data["receiver"] = toUsername
+        PFCloud.callFunctionInBackground("sendPush", withParameters: data) {
+            (response: AnyObject?, error: NSError?) -> Void in
+            let resp2 = response as? String
+            print(resp2)
             
-            
-            if err == nil {
-                if let receiver = objects!.first {
-                    
-                    data["receiver"] = receiver.objectId!
-
-                    PFCloud.callFunctionInBackground("sendPush", withParameters: data) {
-                        (response: AnyObject?, error: NSError?) -> Void in
-                        
-                        
-                        let resp = response as? [String: AnyObject?]
-                        print(resp)
-                        let resp2 = response as? String
-                        print(resp2)
-                        
-                    }
-                }
-            }
-        })
-        
-//        let pushQuery = PFInstallation.query()
-//        pushQuery?.whereKey("user", matchesQuery: userQuery!)
-//        
-//        push.setData(data)
-//        push.setQuery(pushQuery)
-//        push.sendPushInBackground()
+        }
     }
     
     class func sendPushAfterDownTapped(toUsername: String, postId: String) {

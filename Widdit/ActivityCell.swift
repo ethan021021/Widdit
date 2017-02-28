@@ -115,15 +115,18 @@ class ActivityCell: UITableViewCell {
             
             if let whoRepliedLast = activityObject["whoRepliedLast"] as? PFUser {
                 if let _ = activityObject["comeFromTheFeed"] as? Bool {
-                    if PFUser.currentUser()!.username != whoRepliedLast.username {
-                        if activityObject["replyRead"] as? Bool == true {
-                            replyButton.setImage(UIImage(named: "ic_activity_read"), forState: .Normal)
+                    
+                    whoRepliedLast.fetchIfNeededInBackgroundWithBlock({ (_, _) in
+                        if PFUser.currentUser()!.username != whoRepliedLast.username {
+                            if activityObject["replyRead"] as? Bool == true {
+                                self.replyButton.setImage(UIImage(named: "ic_activity_read"), forState: .Normal)
+                            } else {
+                                self.replyButton.setImage(UIImage(named: "ic_activity_unread"), forState: .Normal)
+                            }
                         } else {
-                            replyButton.setImage(UIImage(named: "ic_activity_unread"), forState: .Normal)
+                            self.replyButton.setImage(UIImage(named: "ic_activity_sent"), forState: .Normal)
                         }
-                    } else {
-                        replyButton.setImage(UIImage(named: "ic_activity_sent"), forState: .Normal)
-                    }
+                    })
                 }
             } else {
                 replyButton.setImage(UIImage(named: "ic_reply"), forState: .Normal)
@@ -185,11 +188,13 @@ class ActivityCell: UITableViewCell {
         username.snp_remakeConstraints { (make) in
             make.left.equalTo(avaImg.snp_right).offset(10)
             make.top.equalTo(contentView).offset(7)
+            make.height.equalTo(22)
         }
         
         title.snp_remakeConstraints { (make) in
             make.left.equalTo(username.snp_right)
             make.top.equalTo(contentView).offset(7)
+            make.height.equalTo(18)
         }
         
         postText.snp_remakeConstraints { (make) in

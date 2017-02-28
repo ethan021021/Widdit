@@ -280,6 +280,7 @@ class FeedVC: UITableViewController, WDTLoad, NewPostVCDelegate {
         } else {
             let cell = self.tableView!.dequeueReusableCellWithIdentifier("PostCell", forIndexPath: indexPath) as! PostCell
             let post = self.wdtPost.collectionOfPosts[indexPath.section - 1]
+            print(post)
             let postsCount = self.wdtPost.collectionOfAllPosts.filter({
                 let user1 = post["user"] as! PFUser
                 return user1.username == ($0["user"] as! PFUser).username
