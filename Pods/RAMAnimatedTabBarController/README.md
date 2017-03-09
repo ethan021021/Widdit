@@ -1,4 +1,4 @@
-![header](https://raw.githubusercontent.com/Ramotion/animated-tab-bar/master/header.png)
+[![header](https://raw.githubusercontent.com/Ramotion/animated-tab-bar/master/header.png)](https://business.ramotion.com?utm_source=gthb&utm_medium=special&utm_campaign=animated-tab-bar-logo)
 # RAMAnimatedTabBarController
 [![CocoaPods](https://img.shields.io/cocoapods/p/RAMAnimatedTabBarController.svg)](http://cocoapods.org/pods/RAMAnimatedTabBarController)
 [![CocoaPods](https://img.shields.io/cocoapods/v/RAMAnimatedTabBarController.svg)](http://cocoapods.org/pods/RAMAnimatedTabBarController)
@@ -7,11 +7,13 @@
 [![Twitter](https://img.shields.io/badge/Twitter-@Ramotion-blue.svg?style=flat)](http://twitter.com/Ramotion)
 [![Travis](https://img.shields.io/travis/Ramotion/animated-tab-bar.svg)](https://travis-ci.org/Ramotion/animated-tab-bar)
 
+## About
+This project is maintained by Ramotion, Inc.<br>
+We specialize in the designing and coding of custom UI for Mobile Apps and Websites.<br><br>**Looking for developers for your project?** [[▶︎CONTACT OUR TEAM◀︎](http://business.ramotion.com?utm_source=gthb&utm_medium=special&utm_campaign=animated-tab-bar-contact-us/#Get_in_Touch)]
 
 
-RAMAnimatedTabBarController is a Swift module for adding animation to tabbar items. It has pre-set of animations which we prepare for you, and ability to use any custom animation you want. With this module you can make your tabbar alive like our [shot on dribbble](https://dribbble.com/shots/1766396-Animated-Tab-Bar-Icons?list=searches&tag=ramotion&offset=...):
 
-![Animation](https://raw.githubusercontent.com/Ramotion/animated-tab-bar/master/Screenshots/tab-bar-icons-iphone-ramotion-animation-interface-design.gif)
+[![Animation](https://raw.githubusercontent.com/Ramotion/animated-tab-bar/master/Screenshots/tab-bar-icons-iphone-ramotion-animation-interface-design.gif)](https://dribbble.com/shots/1766396-Animated-Tab-Bar-Icons)
 
 The [iPhone mockup](https://store.ramotion.com/product/iphone-6-mockups?utm_source=gthb&utm_medium=special&utm_campaign=animated-tab-bar) available [here](https://store.ramotion.com/product/iphone-6-mockups?utm_source=gthb&utm_medium=special&utm_campaign=animated-tab-bar).
 
@@ -22,8 +24,8 @@ Screencast from our Demo
 
 ## Requirements
 
-- iOS 8.0+
-- Xcode 6.1
+- iOS 9.0+
+- xCode 8
 
 ## Installation
 
@@ -31,12 +33,14 @@ Just add the RAMAnimatedTabBarController folder to your project.
 
 or use [CocoaPods](https://cocoapods.org) with Podfile:
 ``` ruby
-pod 'RAMAnimatedTabBarController'
+pod 'RAMAnimatedTabBarController', "~> 1.5.3"  swift 2.2
+pod 'RAMAnimatedTabBarController', "~> 2.0.13"  swift 3
 ```
 
 or [Carthage](https://github.com/Carthage/Carthage) users can simply add to their `Cartfile`:
 ```
 github "Ramotion/animated-tab-bar"
+
 ```
 
 
@@ -80,19 +84,19 @@ github "Ramotion/animated-tab-bar"
 
   ``` swift
     // method call when Tab Bar Item is selected
-    override func playAnimation(icon : UIImageView, textLable : UILabel) {
+    override func playAnimation(icon: UIImageView, textLabel: UILabel) {
       // add animation
     }
   ```  
   ``` swift
     // method call when Tab Bar Item is deselected
-    override func deselectAnimation(icon : UIImageView, textLable : UILabel, defaultTextColor : UIColor) {
+    override func deselectAnimation(icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
       // add animation
     }
   ```    
   ``` swift
     // method call when TabBarController did load
-    override func selectedState(icon : UIImageView, textLable : UILabel) {
+    override func selectedState(icon: UIImageView, textLabel: UILabel) {
       // set selected state  
     }
   ```
@@ -102,17 +106,17 @@ github "Ramotion/animated-tab-bar"
 ``` swift
 class RAMBounceAnimation : RAMItemAnimation {
 
-    override func playAnimation(icon : UIImageView, textLable : UILabel) {
+    override func playAnimation(icon: UIImageView, textLabel: UILabel) {
         playBounceAnimation(icon)
-        textLable.textColor = textSelectedColor
+        textLabel.textColor = textSelectedColor
     }
 
-    override func deselectAnimation(icon : UIImageView, textLable : UILabel, defaultTextColor : UIColor) {
-        textLable.textColor = defaultTextColor
+    override func deselectAnimation(icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
+        textLabel.textColor = defaultTextColor
     }
 
-    override func selectedState(icon : UIImageView, textLable : UILabel) {
-        textLable.textColor = textSelectedColor
+    override func selectedState(icon: UIImageView, textLabel: UILabel) {
+        textLabel.textColor = textSelectedColor
     }
 
     func playBounceAnimation(icon : UIImageView) {
@@ -127,9 +131,7 @@ class RAMBounceAnimation : RAMItemAnimation {
 }
 ```
 
-## About
-The project maintained by [app development agency](https://ramotion.com?utm_source=gthb&utm_medium=special&utm_campaign=animated-tab-bar) [Ramotion Inc.](https://ramotion.com?utm_source=gthb&utm_medium=special&utm_campaign=animated-tab-bar)
-See our other [open-source projects](https://github.com/ramotion) or [hire](https://ramotion.com?utm_source=gthb&utm_medium=special&utm_campaign=animated-tab-bar) us to design, develop, and grow your product.
+## Follow us
 
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=https://github.com/ramotion/animated-tab-bar)
 [![Twitter Follow](https://img.shields.io/twitter/follow/ramotion.svg?style=social)](https://twitter.com/ramotion)

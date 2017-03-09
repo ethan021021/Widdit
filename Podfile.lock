@@ -1,171 +1,102 @@
 PODS:
-  - ActiveLabel (0.7.0)
-  - AFImageHelper (3.1.0)
-  - ALCameraViewController (1.2.3)
-  - BetterSegmentedControl (0.4)
-  - Bolts (1.7.0):
-    - Bolts/AppLinks (= 1.7.0)
-    - Bolts/Tasks (= 1.7.0)
-  - Bolts/AppLinks (1.7.0):
+  - ActiveLabel (0.7.1)
+  - ALCameraViewController (1.2.7)
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.7.0)
-  - CircleSlider (0.4.0)
-  - Device (1.0.3)
-  - DGActivityIndicatorView (2.1)
-  - FBSDKCoreKit (4.11.0):
+  - Bolts/Tasks (1.8.4)
+  - CPImageViewer (4.0.0)
+  - Crashlytics (3.8.4):
+    - Fabric (~> 1.6.3)
+  - DGActivityIndicatorView (2.1.1)
+  - Fabric (1.6.11)
+  - FBSDKCoreKit (4.20.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.11.0):
+  - FBSDKLoginKit (4.20.0):
     - FBSDKCoreKit
-  - Fusuma (0.6.0)
-  - ImageViewer (2.0)
-  - Instabug (5.3.2)
-  - IQKeyboardManagerSwift (4.0.5)
-  - Kingfisher (2.5.1)
-  - libPhoneNumber-iOS (0.8.12)
-  - Localytics (4.1.0)
+  - IQKeyboardManagerSwift (4.0.8)
+  - Kingfisher (3.5.1)
   - MBProgressHUD (0.9.2)
-  - MBTwitterScroll (0.1)
-  - NoChat (0.2.1)
-  - NoChatTG (0.2.1):
-    - NoChat (~> 0.1)
-  - Onboard (2.3.0)
-  - Parse (1.13.0):
-    - Bolts/Tasks (~> 1.6)
+  - NoChat (0.3.2)
+  - NSStringALEmail (0.4.0)
+  - Parse (1.14.2):
+    - Bolts/Tasks (~> 1.8)
   - ParseFacebookUtilsV4 (1.11.1):
     - Bolts/Tasks (>= 1.6)
     - FBSDKCoreKit (~> 4.10)
     - FBSDKLoginKit (~> 4.10)
     - FBSDKTVOSKit (~> 4.10)
     - Parse (~> 1.12)
-  - PermissionScope (1.0.2)
-  - Presentr (0.2.0)
-  - RAMAnimatedTabBarController (1.5.3)
-  - SDVersion (3.5)
-  - SevenSwitch (2.0.0)
-  - SimpleAlert (1.3.1)
-  - SinchVerification-Swift (1.4.7)
-  - SkyFloatingLabelTextField (1.2.1)
-  - SlackTextViewController (1.9.3)
-  - SnapKit (0.22.0)
-  - StatefulViewController (1.2)
-  - Whisper (3.1.1)
-  - XCGLogger (3.6.0)
+  - PermissionScope (1.1.1)
+  - PhoneNumberKit (1.2.2):
+    - PhoneNumberKit/PhoneNumberKitCore (= 1.2.2)
+    - PhoneNumberKit/UIKit (= 1.2.2)
+  - PhoneNumberKit/PhoneNumberKitCore (1.2.2)
+  - PhoneNumberKit/UIKit (1.2.2):
+    - PhoneNumberKit/PhoneNumberKitCore
+  - RAMAnimatedTabBarController (2.1.1)
+  - SCLAlertView (0.7.0)
+  - SinchVerification-Swift (2.0.3)
+  - SkyFloatingLabelTextField (2.0.1)
+  - SnapKit (3.2.0)
+  - SwiftLinkPreview (2.0.1)
+  - TPKeyboardAvoiding (1.3.1)
+  - Whisper (4.0.0)
 
 DEPENDENCIES:
-  - ActiveLabel (from `https://github.com/optonaut/ActiveLabel.swift`, branch `swift-2.3`)
-  - AFImageHelper
-  - ALCameraViewController
-  - BetterSegmentedControl (= 0.4)
-  - Bolts
-  - CircleSlider (~> 0.4.0)
-  - Device
-  - DGActivityIndicatorView
-  - Fusuma (from `https://github.com/ytakzk/Fusuma`, branch `swift2.3`)
-  - ImageViewer
-  - Instabug
-  - IQKeyboardManagerSwift
-  - Kingfisher (~> 2.5.0)
-  - libPhoneNumber-iOS (~> 0.8)
-  - Localytics (~> 4.0)
-  - MBProgressHUD (~> 0.9.2)
-  - MBTwitterScroll
-  - NoChat (from `https://github.com/little2s/NoChat`, branch `swift2_3`)
-  - NoChatTG (from `https://github.com/little2s/NoChat`, branch `swift2_3`)
-  - Onboard
-  - ParseFacebookUtilsV4
-  - PermissionScope
-  - Presentr (from `https://github.com/icalialabs/Presentr.git`, tag `0.2.1`)
-  - RAMAnimatedTabBarController
-  - SDVersion
-  - SevenSwitch (~> 2.0)
-  - SimpleAlert
-  - SinchVerification-Swift
-  - SkyFloatingLabelTextField
-  - SlackTextViewController
-  - SnapKit (~> 0.22.0)
-  - StatefulViewController
-  - Whisper
-  - XCGLogger (from `https://github.com/DaveWoodCom/XCGLogger`, branch `swift_2.3`)
-
-EXTERNAL SOURCES:
-  ActiveLabel:
-    :branch: swift-2.3
-    :git: https://github.com/optonaut/ActiveLabel.swift
-  Fusuma:
-    :branch: swift2.3
-    :git: https://github.com/ytakzk/Fusuma
-  NoChat:
-    :branch: swift2_3
-    :git: https://github.com/little2s/NoChat
-  NoChatTG:
-    :branch: swift2_3
-    :git: https://github.com/little2s/NoChat
-  Presentr:
-    :git: https://github.com/icalialabs/Presentr.git
-    :tag: 0.2.1
-  XCGLogger:
-    :branch: swift_2.3
-    :git: https://github.com/DaveWoodCom/XCGLogger
-
-CHECKOUT OPTIONS:
-  ActiveLabel:
-    :commit: 822ae6585d0c4706479b69f62e68a5d26cca0e69
-    :git: https://github.com/optonaut/ActiveLabel.swift
-  Fusuma:
-    :commit: 88befb60f87f04dbaa0e4d024ed0c454791ec1a1
-    :git: https://github.com/ytakzk/Fusuma
-  NoChat:
-    :commit: 60902ab76e9f98f90b5a5a98bd8b5e82134fb199
-    :git: https://github.com/little2s/NoChat
-  NoChatTG:
-    :commit: 60902ab76e9f98f90b5a5a98bd8b5e82134fb199
-    :git: https://github.com/little2s/NoChat
-  Presentr:
-    :git: https://github.com/icalialabs/Presentr.git
-    :tag: 0.2.1
-  XCGLogger:
-    :commit: 19b6b14b6f8bc8d8fec12fa3c8ef1fa88099a7df
-    :git: https://github.com/DaveWoodCom/XCGLogger
+  - ActiveLabel (~> 0.7)
+  - ALCameraViewController (~> 1.2)
+  - CPImageViewer (~> 4.0)
+  - Crashlytics (~> 3.8)
+  - DGActivityIndicatorView (~> 2.1)
+  - Fabric (~> 1.6)
+  - IQKeyboardManagerSwift (~> 4.0)
+  - Kingfisher (~> 3.5)
+  - MBProgressHUD (~> 0.9)
+  - NoChat (~> 0.3)
+  - NSStringALEmail (~> 0.4)
+  - ParseFacebookUtilsV4 (~> 1.11)
+  - PermissionScope (~> 1.1)
+  - PhoneNumberKit (~> 1.2)
+  - RAMAnimatedTabBarController (~> 2.1)
+  - SCLAlertView (~> 0.7)
+  - SinchVerification-Swift (~> 2.0)
+  - SkyFloatingLabelTextField (~> 2.0)
+  - SnapKit (~> 3.2)
+  - SwiftLinkPreview (~> 2.0)
+  - TPKeyboardAvoiding (~> 1.3)
+  - Whisper (~> 4.0)
 
 SPEC CHECKSUMS:
-  ActiveLabel: eb405c5b99275be52fac161f7a55cab1dd672c54
-  AFImageHelper: 39cb3d8bf6fede3662c6a045c57e747f2a633921
-  ALCameraViewController: b890aae2f0b2958346f7ea5ae4f8f2b3ad9d5524
-  BetterSegmentedControl: 982368e9cae749f28b7a2e969a37dcb73c375400
-  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
-  CircleSlider: d124901c030d778122b546a4c2fa2b7d1594a66c
-  Device: bcf333c7c497edabe6df9560fd64f1e255d45b2b
-  DGActivityIndicatorView: 1942ae657a8d247c035f229422b2d15a8adbe5b6
-  FBSDKCoreKit: 686ac982723a14ec9ddb85e2f81235d7706c891b
-  FBSDKLoginKit: bade9fc78277764149ccc5bfaadbf13c83175c6a
-  Fusuma: f52dc89fcfffa0de41b4b23002e1acfd57d4b2a4
-  ImageViewer: 00eae024d0cb2eebb4b228f4669b6c4872afadb9
-  Instabug: 035bf24475ffac1bcb81f8c542774487bc72f528
-  IQKeyboardManagerSwift: 41fd3a45a2cdb2a0e031af697708a95b865068a1
-  Kingfisher: 9b82e0e1f1a296f149a50bbc2214532eaa4df4f1
-  libPhoneNumber-iOS: 3f1889b70403cf7848c0e4136780a0d0aef9016d
-  Localytics: 6b567857273ffa9b76bb6e4c4e11c5f6f2b15a86
+  ActiveLabel: 68625f22775f51c31bb691ca8de20f1e5a3bc825
+  ALCameraViewController: 4a513b8d5ecfdb3f34c50b1d469c373aae1ec7b4
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  CPImageViewer: 7ebd6f707b45d70a3253b2b15f00c31c581a2704
+  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  DGActivityIndicatorView: ff2c76073d79692f724863c8dd38685866a03cb6
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  FBSDKCoreKit: 2d16979b28fe28c2b95af0d275ad5f9703c6c8de
+  FBSDKLoginKit: a9d9391506c687e2304a590bf9312837fce7f375
+  IQKeyboardManagerSwift: c04bc9f68473823f825eb44d958fce98d921bead
+  Kingfisher: 12eeffeef42ea45b68c5e5acfe8ba9005b713ab4
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
-  MBTwitterScroll: 6c69bb2b864423db52b631f42311706b8d0440b6
-  NoChat: 7b25f4af971dd454b76eda972aaa7fa06dffe3a3
-  NoChatTG: ddb65bdbb258880271693e7229013821c89aea4d
-  Onboard: 7f41c4a92e66d53844438434b1e7f892d363e55b
-  Parse: f51c24d2feb412e4b2d6cc73d37cb24e8d0089bc
+  NoChat: aaa980b8b29c0db8c8bd8ecde22e718cc8ad1bf7
+  NSStringALEmail: 90285bc5f48eb792d8ed3d71b278f78dea80a7f6
+  Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
-  PermissionScope: 860828c5516d349b6f49e5491799cfef33c5ccc7
-  Presentr: 2febc599cd0bf31b6f76fd52fbcc4cd170be9073
-  RAMAnimatedTabBarController: 04b624cf8958a0032bf7fa9c0f2c515f59d30b9c
-  SDVersion: 73adb37feaf9ddaca41b88f4095325d4d583af7e
-  SevenSwitch: 4ae92ffcad0ef93b38553b39a25e753c94eb7847
-  SimpleAlert: 05215ee656e1da1428998e76a76bb153a16c7a21
-  SinchVerification-Swift: b22f50bebfa9d685655781bb6d8244560c64e1a5
-  SkyFloatingLabelTextField: 3f6610aded18e778df5cfab3b9e12a11b3e014e9
-  SlackTextViewController: bd2a34c188d4f7dec93cf42388f38551263fac82
-  SnapKit: 0dd2fd157330f1ea11fd84da13e6be8a7a22bae0
-  StatefulViewController: 58a8134ea4a2f43504a9671700385f699450d018
-  Whisper: 74decae53daf8caff5acf8628e24b92d3f05a453
-  XCGLogger: 53a3efe22e228e8b25ed8184bc074c2b06d48490
+  PermissionScope: a30c16e015779ba27c97c124e7539e27b5829de2
+  PhoneNumberKit: ffae8f18fb78c1425c7af973711b0b0fd4f4104f
+  RAMAnimatedTabBarController: 128e0d71dc802766de575a3c59c6fdcc8e2f921b
+  SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
+  SinchVerification-Swift: 567aaf9cb29c55a115faecb6016fea25a7f37688
+  SkyFloatingLabelTextField: 070e749632ffd608d6fd9db3fa488a822524997c
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SwiftLinkPreview: fe67fd50abcae6b89181241d2fabb5e0180d49f8
+  TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
+  Whisper: 08be92623311f8e53201e62e17f6d7b9599a4714
 
-PODFILE CHECKSUM: 5631b0410934143420fa8575b4b7e4d4f9a9dcda
+PODFILE CHECKSUM: 4f7e22ffbd191e1fff6f2ce3d615af31e030c55d
 
-COCOAPODS: 1.1.0.rc.2
+COCOAPODS: 1.2.0

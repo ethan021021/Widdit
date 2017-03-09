@@ -2,486 +2,131 @@
 //  AppDelegate.swift
 //  Widdit
 //
-//  Created by John McCants on 3/19/16.
-//  Copyright © 2016 John McCants. All rights reserved.
+//  Created by JH Lee on 02/03/2017.
+//  Copyright © 2017 Widdit. All rights reserved.
 //
 
 import UIKit
-import CoreData
-import Parse
-import Bolts
-import ParseFacebookUtilsV4
-import XCGLogger
+import UserNotifications
 import IQKeyboardManagerSwift
-import Whisper
-import RAMAnimatedTabBarController
-import Localytics
-
-
-import Instabug
-let log = XCGLogger.defaultInstance()
+import ParseFacebookUtilsV4
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    static var appDelegate:AppDelegate!
     var window: UIWindow?
-    var tabBar: RAMAnimatedTabBarController!
-    var activitySegmentLeft = true
-    var activityVC: ActivityVC!
-    var feedVC: FeedVC?
 
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        log.setup(.Debug, showThreadName: true, showLogLevel: true, showFileNames: true, showLineNumbers: true, writeToFile: "path/to/file", fileLogLevel: .Debug)
-        Localytics.autoIntegrate("72b96ef65da39d05200d320-49029ac8-9635-11e6-d4f8-00dba685b405", launchOptions: launchOptions)
-        AppDelegate.appDelegate = self
-        log.debug("A debug message")
+        //NavigationBar
+        UINavigationBar.appearance().barTintColor = UIColor.WDTPrimaryColor()
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont.WDTLight(size: 16)]
+        
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -60), for: .default)
+        let imgBack = UIImage(named: "common_button_back")
+        UINavigationBar.appearance().backIndicatorImage = imgBack
+        UINavigationBar.appearance().backIndicatorTransitionMaskImage = imgBack
+        
+        //IQKeyboardManager
         IQKeyboardManager.sharedManager().enable = true
         IQKeyboardManager.sharedManager().enableAutoToolbar = false
-
-        //app wide navigation bar changes
-        UINavigationBar.appearance().barTintColor = UIColor.wddTealColor()
-        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
-        //UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.wddBodylightinvertcenterFont()]
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.systemFontOfSize(18)]
-
-        UINavigationBar.appearance().translucent = true
         
-        
-        let image = UIImage(named: "ic_navbar_back")
-        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(0, -66), forBarMetrics: .Default)
-        
-        UINavigationBar.appearance().backIndicatorImage = image
-        UINavigationBar.appearance().backIndicatorTransitionMaskImage = image
-        
-        //app wide bar button item changes
-        UITabBar.appearance().tintColor = UIColor.WDTBlueColor()
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor(), NSFontAttributeName: UIFont.wddBodylightinvertcenterFont()], forState: .Normal)
-        
-        UITabBar.appearance().tintColor = UIColor.redColor()
-        // Sets the default color of the background of the UITabBar
-        UITabBar.appearance().barTintColor = UIColor.whiteColor()
-        
-        //app wide status bar changes
-        UINavigationBar.appearance().barStyle = .Black
-
-        
-        // [Optional] Power your app with Local Datastore. For more info, go to
-        // https://parse.com/docs/ios_guide#localdatastore/iOS
-//        Parse.enableLocalDatastore()
-        
-        
-
-        
+        //Parse
         let configuration = ParseClientConfiguration {
-            $0.applicationId = "CbvFKWpmIJFzo8gKzwPXdM5lN1bGPXu2Ln3lbjGx"
-            $0.clientKey = "H6X4RPx8lay4X1YUCu9gA1kPjI2gFxepr152h5x6"
-            $0.server = "http://159.203.232.104:1337/parse"
+            $0.applicationId = Constants.Parse.APPLICATION_ID
+            $0.clientKey = Constants.Parse.CLIENT_KEY
+            $0.server = Constants.Parse.SERVER
         }
-        Parse.initializeWithConfiguration(configuration)
+        Parse.initialize(with: configuration)
         
         PFUser.enableRevocableSessionInBackground()
-        // [Optional] Track statistics around application opens.
-        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        PFAnalytics.trackAppOpened(launchOptions: launchOptions)
         
-        // call login function
+        //PFFacebookUtils
+        PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
         
-        // color of window
-        window?.backgroundColor = .whiteColor()
-
-        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        login()
+        //Fabric
+        Fabric.with([Crashlytics.self])
         
-        
-        guard let launchOptions = launchOptions else {return true}
-        if let userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] as? [NSObject: AnyObject] {
-            
-            if userInfo["type"] as! String == "down" {
-                AppDelegate.appDelegate.activitySegmentLeft = false
-            } else if userInfo["type"] as! String == "reply" {
-                AppDelegate.appDelegate.activitySegmentLeft = true
+        //StartApplication
+        if let user = PFUser.current() {
+            if let signUpFinished = user["signUpFinished"] as? Bool, signUpFinished {
+                startApplication(false)
+            } else {
+                PFUser.logOut()
             }
-            self.tabBar.setSelectIndex(from: self.tabBar.selectedIndex, to: 1)
-                        
         }
         
         return true
     }
-    
 
-    
-    func delayedAction() {
-        let alert2 = UIAlertController(title: "Ok2", message: "Ok", preferredStyle: .Alert)
-        if let topController = UIApplication.topViewController() {
-            topController.presentViewController(alert2, animated: true, completion: nil)
-        }
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let installation = PFInstallation.current()
+        installation?.setDeviceTokenFrom(deviceToken)
+        installation?.channels = ["global"]
+        installation?.saveEventually()
     }
     
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print(error.localizedDescription)
+    }
     
-    func login() {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
-        // if loged in
-        if let user = PFUser.currentUser(){
-            Instabug.startWithToken("af9c74a8cc68cae2f2be3771fa9910a5", invocationEvent: IBGInvocationEvent.Shake)
-            if let signUpFinished = user["signUpFinished"] as? Bool where signUpFinished == true {
-                
-                let tabBarItem1 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_feed"), selectedImage: UIImage(named: "ic_tabbar_feed_active"))
-                tabBarItem1.animation = RAMBounceAnimation(tag: 0)
-                tabBarItem1.title = "Feed"
-                tabBarItem1.textColor = UIColor.WDTTeal()
-                feedVC = FeedVC(style: .Grouped)
-                feedVC?.loadPosts()
-                let feedNC = UINavigationController(rootViewController: feedVC!)
-                feedNC.tabBarItem = tabBarItem1
-                
-                let tabBarItem2 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_activity"), selectedImage: UIImage(named: "ic_tabbar_activity_active"))
-                tabBarItem2.animation = RAMBounceAnimation(tag: 1)
-                tabBarItem2.title = "Activity"
-                tabBarItem2.textColor = UIColor.WDTTeal()
-                activityVC = ActivityVC()
-                let activityNC = UINavigationController(rootViewController: activityVC)
-                activityNC.tabBarItem = tabBarItem2
-                
-                let tabBarItem3 = RAMAnimatedTabBarItem(title: "", image: UIImage(named: "ic_tabbar_profile"), selectedImage: UIImage(named: "ic_tabbar_profile_active"))
-                tabBarItem3.animation = RAMBounceAnimation(tag: 2)
-                tabBarItem3.title = "Profile"
-                tabBarItem3.textColor = UIColor.WDTTeal()
-                let profileNC = UINavigationController(rootViewController: ProfileVC())
-                profileNC.tabBarItem = tabBarItem3
-                profileNC.navigationBarHidden = true
-
-                let controllers = [feedNC, activityNC, profileNC]
-                tabBar = RAMAnimatedTabBarController(viewControllers: controllers)
-                window?.rootViewController = tabBar
-                tabBarItem1.playAnimation()
-                
-                removeOldCategories()
-                
-            } else {
-                let welcomeNC = UINavigationController(rootViewController: WelcomeVC())
-                window?.rootViewController = welcomeNC
-            }
-        } else {
-            let welcomeNC = UINavigationController(rootViewController: WelcomeVC())
-            window?.rootViewController = welcomeNC
-        }
-    }
-
-
-    
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        let installation = PFInstallation.currentInstallation()
-        installation.setDeviceTokenFromData(deviceToken)
-        installation.channels = ["global"]
-        installation["user"] = PFUser.currentUser()!
-        installation.saveInBackground()
-    }
-
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        processPushNotification(userInfo, application: application)
     }
     
-    func processPushNotification(userInfo: [NSObject : AnyObject], application: UIApplication) {
-        if let topController = UIApplication.topViewController() {
-            
-            if ( application.applicationState != .Active ) {
-                if userInfo["type"] as! String == "down" {
-                    AppDelegate.appDelegate.activitySegmentLeft = false
-                } else if userInfo["type"] as! String == "reply" {
-                    AppDelegate.appDelegate.activitySegmentLeft = true
-                }
-                self.tabBar.setSelectIndex(from: self.tabBar.selectedIndex, to: 1)
-            }
-            
-            let userObjectId = userInfo["who"] as! String
-            let postObjectId = userInfo["post"] as! String
-            let post = PFObject(withoutDataWithClassName: "posts", objectId: postObjectId)
-            
-            let query = PFUser.query()
-            query?.whereKey("objectId", equalTo: userObjectId)
-            
-            query?.getObjectInBackgroundWithId(userObjectId, block: { (userObject: PFObject?, error: NSError?) in
-                if topController.isKindOfClass(ReplyViewController) {
-                    let replyVC = topController as! ReplyViewController
-//                    replyVC.requestMessages()
-                } else {
-                    if let aps = userInfo["aps"] as? NSDictionary {
-                        if let alert = aps["alert"] as? NSDictionary {
-                            if let message = alert["message"] as? String {
-                                let newMessageMurmur = Murmur(title: message)
-                                show(whistle: newMessageMurmur, action: .Show(2.5))
-                            }
-                        } else if let alert = aps["alert"] as? String {
-                            let newMessageMurmur = Murmur(title: alert)
-                            show(whistle: newMessageMurmur, action: .Show(2.5))
-                        }
-                    }
-                }
-            })
-        }
-    }
-
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
-        self.tabBar.setSelectIndex(from: self.tabBar.selectedIndex, to: 0)
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        let installation = PFInstallation.currentInstallation()
-        if (installation.badge != 0) {
-            installation.badge = 0
-            installation.saveEventually()
-        }
         FBSDKAppEvents.activateApp()
         
-        if let feedVC = feedVC where feedVC.requesting == false {
-            feedVC.refresher.beginRefreshingManually()
-            feedVC.loadPosts()
-        }
-        
-    }
-    
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool
-    {
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-    }
-    
-
-    func applicationWillTerminate(application: UIApplication) {
-        
-        let loginManager: FBSDKLoginManager = FBSDKLoginManager()
-        loginManager.logOut()
-    }
-
-    // MARK: - Core Data stack
-
-    lazy var applicationDocumentsDirectory: NSURL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "JohnMcCants.Widdit" in the application's documents Application Support directory.
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1]
-    }()
-
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("Widdit", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
-    }()
-
-    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
-        // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-        // Create the coordinator and store
-        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("SingleViewCoreData.sqlite")
-        var failureReason = "There was an error creating or loading the application's saved data."
-        do {
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-        } catch {
-            // Report any error we got.
-            var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
-
-            dict[NSUnderlyingErrorKey] = error as NSError
-            let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-            // Replace this with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
-            abort()
-        }
-        
-        return coordinator
-    }()
-
-    lazy var managedObjectContext: NSManagedObjectContext = {
-        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
-        let coordinator = self.persistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
-    }()
-
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        if managedObjectContext.hasChanges {
-            do {
-                try managedObjectContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
-                abort()
-            }
-        }
-    }
-    
-    func removeOldCategories() {
-        
-        let categoryQuery = PFQuery(className: "categories")
-        categoryQuery.orderByDescending("updatedAt")
-        categoryQuery.findObjectsInBackgroundWithBlock { (cats, err) in
-            if let cats = cats {
-                for cat in cats {
-                    let catTitle = cat["title"] as! String
-                    let countCategoryQuery = PFQuery(className: "posts")
-                    countCategoryQuery.whereKey("hashtags", containedIn: [catTitle])
-                    countCategoryQuery.countObjectsInBackgroundWithBlock { (num, err) in
-                        if num == 0 {
-                            let categoryQuery = PFQuery(className: "categories")
-                            categoryQuery.whereKey("title", equalTo: catTitle)
-                            categoryQuery.getFirstObjectInBackgroundWithBlock({ (obj, err) in
-                                if let obj = obj {
-                                    obj.deleteInBackground()
-                                }
-                            })
-                        }
-                    }
-                }
+        if let installation = PFInstallation.current() {
+            if(0 < installation.badge) {
+                installation.badge = 0;
+                installation.saveEventually()
             }
         }
     }
 
+    func applicationWillTerminate(_ application: UIApplication) {
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
 
-}
-
-extension NSObject {
-    var theClassName: String {
-        return NSStringFromClass(self.dynamicType)
-    }
-}
-
-extension UIApplication {
-    class func topViewController(base: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController) -> UIViewController? {
-        if let nav = base as? UINavigationController {
-            return topViewController(nav.visibleViewController)
-        }
-        if let tab = base as? UITabBarController {
-            if let selected = tab.selectedViewController {
-                return topViewController(selected)
-            }
-        }
-        if let presented = base?.presentedViewController {
-            return topViewController(presented)
-        }
-        return base
-    }
-}
-
-extension NSTimer {
-    /**
-     Creates and schedules a one-time `NSTimer` instance.
-     
-     - Parameters:
-     - delay: The delay before execution.
-     - handler: A closure to execute after `delay`.
-     
-     - Returns: The newly-created `NSTimer` instance.
-     */
-    class func schedule(delay delay: NSTimeInterval, handler: NSTimer! -> Void) -> NSTimer {
-        let fireDate = delay + CFAbsoluteTimeGetCurrent()
-        let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, 0, 0, 0, handler)
-        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
-        return timer
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
     }
     
-    /**
-     Creates and schedules a repeating `NSTimer` instance.
-     
-     - Parameters:
-     - repeatInterval: The interval (in seconds) between each execution of
-     `handler`. Note that individual calls may be delayed; subsequent calls
-     to `handler` will be based on the time the timer was created.
-     - handler: A closure to execute at each `repeatInterval`.
-     
-     - Returns: The newly-created `NSTimer` instance.
-     */
-    class func schedule(repeatInterval interval: NSTimeInterval, handler: NSTimer! -> Void) -> NSTimer {
-        let fireDate = interval + CFAbsoluteTimeGetCurrent()
-        let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, interval, 0, 0, handler)
-        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
-        return timer
-    }
-    
-    
-    
-}
-
-
-class RAMBounceAnimation : RAMItemAnimation {
-    
-    
-    var tag: Int = 0
-    
-    init(tag: Int) {
-        self.tag = tag
-    }
-    
-    
-    
-    
-    
-    override func playAnimation(icon: UIImageView, textLabel: UILabel) {
-        playBounceAnimation(icon)
-        textLabel.textColor = UIColor.WDTTeal()
-        switch tag {
-        case 0:
-            icon.image = UIImage(named: "ic_tabbar_feed_active")
-        case 1:
-            icon.image = UIImage(named: "ic_tabbar_activity_active")
-        case 2:
-            icon.image = UIImage(named: "ic_tabbar_profile_active")
-        default:
-            break
-        }
-    
-    }
-    
-    override func deselectAnimation(icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
-
-        switch tag {
-        case 0:
-            icon.image = UIImage(named: "ic_tabbar_feed")
-        case 1:
-            icon.image = UIImage(named: "ic_tabbar_activity")
-        case 2:
-            icon.image = UIImage(named: "ic_tabbar_profile")
-        default:
-            break
-        }
-    
-    }
-    
-    override func selectedState(icon: UIImageView, textLabel: UILabel) {
-        textLabel.textColor = textSelectedColor
-    }
-    
-    func playBounceAnimation(icon : UIImageView) {
+    func startApplication(_ animated: Bool) {
+        //Save user on installation
+        let installation = PFInstallation.current()
+        installation?["user"] = PFUser.current()
+        installation?.saveEventually()
         
-        let bounceAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        bounceAnimation.values = [1.0 ,1.4, 0.9, 1.15, 0.95, 1.02, 1.0]
-        bounceAnimation.duration = NSTimeInterval(duration)
-        bounceAnimation.calculationMode = kCAAnimationCubic
+        //Show TabBarController
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let rootNC = window?.rootViewController as! UINavigationController
+        let tabbar = storyboard.instantiateViewController(withIdentifier: String(describing: WDTTabBarController.self)) as! WDTTabBarController
         
-        icon.layer.addAnimation(bounceAnimation, forKey: "bounceAnimation")
-        
+        rootNC.pushViewController(tabbar, animated: animated)
     }
     
 }
-
 

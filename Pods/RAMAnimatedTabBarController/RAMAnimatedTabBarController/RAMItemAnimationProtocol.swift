@@ -24,15 +24,15 @@
 import Foundation
 import UIKit
 
-protocol RAMItemAnimationProtocol {
+public protocol RAMItemAnimationProtocol {
   
-  func playAnimation(icon : UIImageView, textLabel : UILabel)
-  func deselectAnimation(icon : UIImageView, textLabel : UILabel, defaultTextColor : UIColor, defaultIconColor : UIColor)
-  func selectedState(icon : UIImageView, textLabel : UILabel)
+  func playAnimation(_ icon : UIImageView, textLabel : UILabel)
+  func deselectAnimation(_ icon : UIImageView, textLabel : UILabel, defaultTextColor : UIColor, defaultIconColor : UIColor)
+  func selectedState(_ icon : UIImageView, textLabel : UILabel)
 }
 
 /// Base class for UITabBarItems animation
-public class RAMItemAnimation: NSObject, RAMItemAnimationProtocol {
+open class RAMItemAnimation: NSObject, RAMItemAnimationProtocol {
   
   // MARK: constants
   
@@ -46,19 +46,18 @@ public class RAMItemAnimation: NSObject, RAMItemAnimationProtocol {
       static let PositionY = "position.y"
       static let Opacity   = "opacity"
     }
-    
   }
   
   // MARK: properties
   
   /// The duration of the animation
-  @IBInspectable public var duration : CGFloat = 0.5
+  @IBInspectable open var duration : CGFloat = 0.5
   
   ///  The text color in selected state.
-  @IBInspectable public var textSelectedColor: UIColor = UIColor.init(red: 0, green: 0.478431, blue: 1, alpha: 1)
+  @IBInspectable open var textSelectedColor: UIColor = UIColor.init(red: 0, green: 0.478431, blue: 1, alpha: 1)
   
   ///  The icon color in selected state.
-  @IBInspectable public var iconSelectedColor: UIColor!
+  @IBInspectable open var iconSelectedColor: UIColor!
   
    /**
    Start animation, method call when UITabBarItem is selected
@@ -66,7 +65,7 @@ public class RAMItemAnimation: NSObject, RAMItemAnimationProtocol {
    - parameter icon:      animating UITabBarItem icon
    - parameter textLabel: animating UITabBarItem textLabel
    */
-  public func playAnimation(icon : UIImageView, textLabel : UILabel) {
+  open func playAnimation(_ icon : UIImageView, textLabel : UILabel) {
     fatalError("override method in subclass")
   }
   
@@ -78,7 +77,7 @@ public class RAMItemAnimation: NSObject, RAMItemAnimationProtocol {
    - parameter defaultTextColor: default UITabBarItem text color
    - parameter defaultIconColor: default UITabBarItem icon color
    */
-  public func deselectAnimation(icon : UIImageView, textLabel : UILabel, defaultTextColor : UIColor, defaultIconColor : UIColor) {
+  open func deselectAnimation(_ icon : UIImageView, textLabel : UILabel, defaultTextColor : UIColor, defaultIconColor : UIColor) {
     fatalError("override method in subclass")
   }
   
@@ -88,7 +87,7 @@ public class RAMItemAnimation: NSObject, RAMItemAnimationProtocol {
   - parameter icon:      animating UITabBarItem icon
    - parameter textLabel: animating UITabBarItem textLabel 
    */
-  public func selectedState(icon: UIImageView, textLabel : UILabel) {
+  open func selectedState(_ icon: UIImageView, textLabel : UILabel) {
     fatalError("override method in subclass")
   }
 }

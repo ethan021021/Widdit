@@ -20,13 +20,13 @@ struct RegexParser {
 
     static func getElements(from text: String, with pattern: String, range: NSRange) -> [NSTextCheckingResult]{
         guard let elementRegex = regularExpression(for: pattern) else { return [] }
-        return elementRegex.matchesInString(text, options: [], range: range)
+        return elementRegex.matches(in: text, options: [], range: range)
     }
 
     private static func regularExpression(for pattern: String) -> NSRegularExpression? {
         if let regex = cachedRegularExpressions[pattern] {
             return regex
-        } else if let createdRegex = try? NSRegularExpression(pattern: pattern, options: [.CaseInsensitive]) {
+        } else if let createdRegex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
             cachedRegularExpressions[pattern] = createdRegex
             return createdRegex
         } else {

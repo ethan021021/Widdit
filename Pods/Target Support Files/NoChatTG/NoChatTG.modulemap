@@ -1,6 +1,0 @@
-framework module NoChatTG {
-  umbrella header "NoChatTG-umbrella.h"
-
-  export *
-  module * { export * }
-}
