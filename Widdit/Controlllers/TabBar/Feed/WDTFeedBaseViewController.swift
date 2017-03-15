@@ -14,7 +14,8 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var m_tblFeeds: UITableView!
     
-    var animationImageView: UIImageView! 
+    var animationImageView: UIImageView!
+    var animator = CPImageViewerAnimator()
     var m_aryPosts = [PFObject]()
         
     override func viewDidLoad() {
@@ -55,6 +56,20 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
         let cell = Bundle.main.loadNibNamed(String(describing: WDTFeedTableViewCell.self), owner: nil, options: nil)?.first as! WDTFeedTableViewCell
         cell.setViewWithPFObject(m_aryPosts[indexPath.row])
         cell.hideMorePosts(self.hideMorePosts(indexPath.row))
+        
+        cell.m_lblPhotoText.enabledTypes = [.hashtag, .url]
+        cell.m_lblPhotoText.hashtagColor = UIColor.WDTActivityColor()
+        cell.m_lblPhotoText.handleHashtagTap { (hashtag) in
+            let morePostsVC = self.storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+            morePostsVC.category = hashtag
+            self.navigationController?.pushViewController(morePostsVC, animated: true)
+        }
+        cell.m_lblPhotoText.handleURLTap { (url) in
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            }
+        }
+        
         cell.delegate = self
         
         return cell
@@ -125,13 +140,21 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
         animationImageView = cell.m_imgPhoto
         
         let controller = CPImageViewerViewController()
-        controller.transitioningDelegate = CPImageViewerAnimator()
+        controller.transitioningDelegate = animator
         controller.image = animationImageView.image
         present(controller, animated: true, completion: nil)
     }
     
     func onTapUserAvatar(_ objUser: PFUser?) {
         
+    }
+    
+    func onUpdateObject(_ objPost: PFObject) {
+        let index = self.m_aryPosts.index(where: { (post) -> Bool in
+            return post.objectId == objPost.objectId
+        })
+        
+        m_tblFeeds.reloadRows(at: [IndexPath(row: index!, section: 0)], with: .automatic)
     }
 
 }

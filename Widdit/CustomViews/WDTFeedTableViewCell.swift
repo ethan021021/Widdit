@@ -10,12 +10,14 @@ import UIKit
 import ActiveLabel
 import Parse
 import Kingfisher
+import SwiftLinkPreview
 
 protocol WDTFeedTableViewCellDelegate {
     func onClickBtnMore(_ objPost: PFObject)
     func onTapPostPhoto(_ objPost: PFObject)
     func onClickBtnMorePosts(_ objUser: PFUser?)
     func onTapUserAvatar(_ objUser: PFUser?)
+    func onUpdateObject(_ objPost: PFObject)
 }
 
 class WDTFeedTableViewCell: UITableViewCell {
@@ -85,26 +87,47 @@ class WDTFeedTableViewCell: UITableViewCell {
             m_lblLocation.text = ""
         }
         
-        //Photo
-        if let photo = objPost["photoFile"] as? PFFile {
-            m_imgPhoto.kf.setImage(with: URL(string: photo.url!))
-        } else {
-            m_constraintPhotoHeight.priority = 799
-        }
+        var url: String?
         
         //Text
         if let text = objPost["postText"] as? String {
             m_lblPhotoText.text = text;
-            m_lblPhotoText.enabledTypes = [.hashtag, .url]
-            m_lblPhotoText.handleHashtagTap { (hashtag) in
-                
-            }
-            m_lblPhotoText.handleURLTap { (url) in
-                
+        
+            //Get Urls for preview link
+            let matches = getElements(from: text)
+            if matches.count > 0 {
+                let match = matches[0]
+                let nsstring = text as NSString
+                url = nsstring.substring(with: match.range)
+                    .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             }
         } else {
             m_lblPhotoText.text = ""
-        }        
+        }
+        
+        //Photo
+        let photo = objPost["photoUrl"] as? String ?? ""
+        if photo.characters.count > 0 {
+            m_imgPhoto.kf.setImage(with: URL(string: photo))
+            self.m_constraintPhotoHeight.priority = 801
+        } else if url != nil {
+            let sl = SwiftLinkPreview()
+            sl.preview(url, onSuccess: { (result) in
+                if let imageUrl = result[.image] as? String {
+                    objPost["photoUrl"] = imageUrl
+                    objPost.saveInBackground(block: { (success, error) in
+                        if let error = error {
+                            print(error.localizedDescription)
+                        } else {
+                            self.delegate?.onUpdateObject(objPost)
+                        }
+                    })
+                }
+            }, onError: { (error) in
+                print(error.description)
+            })
+        }
+
     }
     
     func hideMorePosts(_ isHide: Bool) {
@@ -142,6 +165,28 @@ class WDTFeedTableViewCell: UITableViewCell {
     func onTapUserAvatar() {
         if let objPost = m_objPost {
             delegate?.onTapUserAvatar(objPost["user"] as? PFUser)
+        }
+    }
+    
+    let urlPattern = "(^|[\\s.:;?\\-\\]<\\(])" +
+        "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
+    "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
+    
+    private var cachedRegularExpressions: [String : NSRegularExpression] = [:]
+    
+    func getElements(from text: String) -> [NSTextCheckingResult]{
+        guard let elementRegex = regularExpression() else { return [] }
+        return elementRegex.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
+    }
+    
+    private func regularExpression() -> NSRegularExpression? {
+        if let regex = cachedRegularExpressions[urlPattern] {
+            return regex
+        } else if let createdRegex = try? NSRegularExpression(pattern: urlPattern, options: [.caseInsensitive]) {
+            cachedRegularExpressions[urlPattern] = createdRegex
+            return createdRegex
+        } else {
+            return nil
         }
     }
     

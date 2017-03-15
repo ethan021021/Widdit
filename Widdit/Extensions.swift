@@ -66,11 +66,26 @@ extension Date {
         var strTimeLeft = ""
         
         if leftSec / 60 < 60 {
-            strTimeLeft = "\(Int(leftSec / 60)) minutes left"
+            let min = Int(leftSec / 60)
+            if min > 1 {
+                strTimeLeft = "\(min) minutes left"
+            } else {
+                strTimeLeft = "1 minute left"
+            }
         } else if leftSec / 3600 < 24 {
-            strTimeLeft = "\(Int(leftSec / 3600)) hours left"
+            let hour = Int(leftSec / 3600)
+            if hour > 1 {
+                strTimeLeft = "\(hour) hours left"
+            } else {
+                strTimeLeft = "1 hour left"
+            }
         } else {
-            strTimeLeft = "\(Int(leftSec / 3600 / 24)) days left"
+            let day = Int(leftSec / 3600 / 24)
+            if day > 1 {
+                strTimeLeft = "\(day) days left"
+            } else {
+                strTimeLeft = "1 day left"
+            }
         }
         
         return strTimeLeft

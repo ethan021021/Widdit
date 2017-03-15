@@ -25,9 +25,9 @@ target 'Widdit' do
     pod 'Kingfisher', '~> 3.5'
     pod 'CPImageViewer', '~> 4.0'
     pod 'ActiveLabel', '~> 0.7'
-    
+    pod 'SwiftLinkPreview', '~> 2.0'
+        
     pod 'Whisper', '~> 4.0'
     pod 'NoChat', '~> 0.3'
-    pod 'SwiftLinkPreview', '~> 2.0'
     
 end
