@@ -26,6 +26,7 @@
 		3F3A31641E6E9AC2009267A6 /* WDTPush.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A31611E6E9AC2009267A6 /* WDTPush.swift */; };
 		3F3A31671E6EB036009267A6 /* WDTFeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3A31651E6EB036009267A6 /* WDTFeedTableViewCell.swift */; };
 		3F3A31681E6EB036009267A6 /* WDTFeedTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F3A31661E6EB036009267A6 /* WDTFeedTableViewCell.xib */; };
+		3F3CFDAB1E7B6FC600AD8FF8 /* WDTCircleSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3CFDAA1E7B6FC600AD8FF8 /* WDTCircleSlider.swift */; };
 		3F78B9BB1E67ACED006DE822 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F78B9BA1E67ACED006DE822 /* AppDelegate.swift */; };
 		3F78B9C01E67ACED006DE822 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F78B9BE1E67ACED006DE822 /* Main.storyboard */; };
 		3F78B9C21E67ACED006DE822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F78B9C11E67ACED006DE822 /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		3F3A31611E6E9AC2009267A6 /* WDTPush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPush.swift; sourceTree = "<group>"; };
 		3F3A31651E6EB036009267A6 /* WDTFeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTFeedTableViewCell.swift; sourceTree = "<group>"; };
 		3F3A31661E6EB036009267A6 /* WDTFeedTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTFeedTableViewCell.xib; sourceTree = "<group>"; };
+		3F3CFDAA1E7B6FC600AD8FF8 /* WDTCircleSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTCircleSlider.swift; sourceTree = "<group>"; };
 		3F78B9B71E67ACED006DE822 /* Widdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Widdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F78B9BA1E67ACED006DE822 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F78B9BF1E67ACED006DE822 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				3F3A31661E6EB036009267A6 /* WDTFeedTableViewCell.xib */,
 				3FEBD97C1E6F08CD00878392 /* JHShadowView.swift */,
 				3FEBD9841E711E6400878392 /* WDTCategoryTableViewCell.swift */,
+				3F3CFDAA1E7B6FC600AD8FF8 /* WDTCircleSlider.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -431,6 +434,7 @@
 				3FF8BA811E6A63A1008A1CEA /* Extensions.swift in Sources */,
 				3F78B9BB1E67ACED006DE822 /* AppDelegate.swift in Sources */,
 				3F3917B11E6CE84E007409D9 /* WDTNoNavigationBaseViewController.swift in Sources */,
+				3F3CFDAB1E7B6FC600AD8FF8 /* WDTCircleSlider.swift in Sources */,
 				3F3A31521E6E5831009267A6 /* WDTTabBarController.swift in Sources */,
 				3FEBD9811E70EDE100878392 /* WDTCategoriesViewController.swift in Sources */,
 				3F2395761E6976CC0038B6AF /* Constants.swift in Sources */,

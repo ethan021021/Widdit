@@ -45,5 +45,6 @@ class Constants {
     struct Integer {
         static let AVATAR_SIZE              = 200
         static let FEED_REGION              = 25.0
+        static let MAX_POST_LENGTH          = 140
     }
 }

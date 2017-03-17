@@ -94,7 +94,7 @@ class WDTFeedTableViewCell: UITableViewCell {
             m_lblPhotoText.text = text;
         
             //Get Urls for preview link
-            let matches = getElements(from: text)
+            let matches = WDTTextParser.getElements(from: text, with: WDTTextParser.urlPattern)
             if matches.count > 0 {
                 let match = matches[0]
                 let nsstring = text as NSString
@@ -165,28 +165,6 @@ class WDTFeedTableViewCell: UITableViewCell {
     func onTapUserAvatar() {
         if let objPost = m_objPost {
             delegate?.onTapUserAvatar(objPost["user"] as? PFUser)
-        }
-    }
-    
-    let urlPattern = "(^|[\\s.:;?\\-\\]<\\(])" +
-        "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
-    "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
-    
-    private var cachedRegularExpressions: [String : NSRegularExpression] = [:]
-    
-    func getElements(from text: String) -> [NSTextCheckingResult]{
-        guard let elementRegex = regularExpression() else { return [] }
-        return elementRegex.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
-    }
-    
-    private func regularExpression() -> NSRegularExpression? {
-        if let regex = cachedRegularExpressions[urlPattern] {
-            return regex
-        } else if let createdRegex = try? NSRegularExpression(pattern: urlPattern, options: [.caseInsensitive]) {
-            cachedRegularExpressions[urlPattern] = createdRegex
-            return createdRegex
-        } else {
-            return nil
         }
     }
     

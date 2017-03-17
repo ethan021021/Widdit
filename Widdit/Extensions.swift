@@ -28,8 +28,12 @@ extension UIColor {
         return UIColor(r: 62, g: 203, b: 204, a: 1)
     }
     
-    class func WDTActivityColor() -> UIColor {
-        return UIColor(r: 119, g: 224, b: 179, a: 1)
+    class func WDTGreenColor() -> UIColor {
+        return UIColor(r: 147, g: 237, b: 199, a: 1)
+    }
+    
+    class func WDTTealColor() -> UIColor {
+        return UIColor(r: 90, g: 212, b: 213, a: 1)
     }
 }
 
@@ -90,6 +94,10 @@ extension Date {
         
         return strTimeLeft
     }
+    
+    func addHours(_ hours: Double) -> Date {
+        return addingTimeInterval(hours * 3600)
+    }
 }
 
 import MBProgressHUD
@@ -109,7 +117,7 @@ extension UIViewController {
     }
     
     func showHud() {
-        let viewActivity = DGActivityIndicatorView(type: .ballRotate, tintColor: UIColor.WDTActivityColor(), size: 70)
+        let viewActivity = DGActivityIndicatorView(type: .ballRotate, tintColor: UIColor.WDTTealColor(), size: 70)
         viewActivity?.startAnimating()
         
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
@@ -156,5 +164,30 @@ extension UIViewController {
         }, cancelled: { (results) -> Void in
             print("thing was cancelled")
         })
+    }
+}
+
+struct WDTTextParser {
+    static let hashtagPattern = "(?:^|\\s|$)#[\\p{L}0-9_]*"
+    static let urlPattern = "(^|[\\s.:;?\\-\\]<\\(])" +
+        "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
+    "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
+    
+    static private var cachedRegularExpressions: [String : NSRegularExpression] = [:]
+    
+    static func getElements(from text: String, with pattern: String) -> [NSTextCheckingResult]{
+        guard let elementRegex = regularExpression(for: pattern) else { return [] }
+        return elementRegex.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
+    }
+    
+    private static func regularExpression(for pattern: String) -> NSRegularExpression? {
+        if let regex = cachedRegularExpressions[pattern] {
+            return regex
+        } else if let createdRegex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) {
+            cachedRegularExpressions[pattern] = createdRegex
+            return createdRegex
+        } else {
+            return nil
+        }
     }
 }

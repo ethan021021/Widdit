@@ -93,6 +93,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/ActiveLabel/ActiveLabel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CPImageViewer/CPImageViewer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CircleSlider/CircleSlider.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DGActivityIndicatorView/DGActivityIndicatorView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
@@ -112,6 +113,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SnapKit/SnapKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftLinkPreview/SwiftLinkPreview.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TPKeyboardAvoiding/TPKeyboardAvoiding.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UITextView+Placeholder/UITextView_Placeholder.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Whisper/Whisper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -119,6 +121,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/ActiveLabel/ActiveLabel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Bolts/Bolts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CPImageViewer/CPImageViewer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CircleSlider/CircleSlider.framework"
   install_framework "$BUILT_PRODUCTS_DIR/DGActivityIndicatorView/DGActivityIndicatorView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKCoreKit/FBSDKCoreKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/FBSDKLoginKit/FBSDKLoginKit.framework"
@@ -138,6 +141,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SnapKit/SnapKit.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SwiftLinkPreview/SwiftLinkPreview.framework"
   install_framework "$BUILT_PRODUCTS_DIR/TPKeyboardAvoiding/TPKeyboardAvoiding.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/UITextView+Placeholder/UITextView_Placeholder.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Whisper/Whisper.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

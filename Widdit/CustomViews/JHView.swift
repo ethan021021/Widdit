@@ -11,7 +11,7 @@ import UIKit
 @IBDesignable class JHView: UIView {
     @IBInspectable var CornerRadius: CGFloat = 0
     @IBInspectable var BorderWidth: CGFloat = 0
-    @IBInspectable var BorderColor = UIColor.clear
+    @IBInspectable var BorderColor: UIColor = UIColor.clear
     
     override func draw(_ rect: CGRect) {
         layer.masksToBounds = true

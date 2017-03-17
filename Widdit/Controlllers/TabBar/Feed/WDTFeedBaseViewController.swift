@@ -43,8 +43,8 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
     */
     
     @IBAction func onClickBtnAddPost(_ sender: Any) {
-        let addPostVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTAddPostViewController.self)) as! WDTAddPostViewController
-        present(addPostVC, animated: true, completion: nil)
+        let addPostNC = storyboard?.instantiateViewController(withIdentifier: "WDTAddPostNavigationController") as! UINavigationController
+        present(addPostNC, animated: true, completion: nil)
     }
     
     //UITableViewDataSource
@@ -58,7 +58,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
         cell.hideMorePosts(self.hideMorePosts(indexPath.row))
         
         cell.m_lblPhotoText.enabledTypes = [.hashtag, .url]
-        cell.m_lblPhotoText.hashtagColor = UIColor.WDTActivityColor()
+        cell.m_lblPhotoText.hashtagColor = UIColor.WDTTealColor()
         cell.m_lblPhotoText.handleHashtagTap { (hashtag) in
             let morePostsVC = self.storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
             morePostsVC.category = hashtag

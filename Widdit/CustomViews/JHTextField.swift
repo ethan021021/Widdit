@@ -11,7 +11,7 @@ import UIKit
 @IBDesignable class JHTextField: UITextField {
     @IBInspectable var CornerRadius: CGFloat = 0
     @IBInspectable var BorderWidth: CGFloat = 0
-    @IBInspectable var BorderColor = UIColor.clear
+    @IBInspectable var BorderColor: UIColor = UIColor.clear
     @IBInspectable var LeftPadding: CGFloat = 10
     
     override func draw(_ rect: CGRect) {

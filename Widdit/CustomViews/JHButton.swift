@@ -11,9 +11,9 @@ import UIKit
 @IBDesignable class JHButton: UIButton {
     @IBInspectable var CornerRadius: CGFloat = 0
     @IBInspectable var BorderWidth: CGFloat = 0
-    @IBInspectable var BorderColor = UIColor.clear
+    @IBInspectable var BorderColor: UIColor = UIColor.clear
     @IBInspectable var TitleLines: Int = 1
-    @IBInspectable var VerticalAlign = false
+    @IBInspectable var VerticalAlign: Bool = false
     
     override func draw(_ rect: CGRect) {
         // Drawing code
