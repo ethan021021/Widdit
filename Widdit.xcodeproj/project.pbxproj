@@ -36,7 +36,6 @@
 		3FEBD9811E70EDE100878392 /* WDTCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD9801E70EDE100878392 /* WDTCategoriesViewController.swift */; };
 		3FEBD9831E70F44900878392 /* WDTMorePostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD9821E70F44900878392 /* WDTMorePostsViewController.swift */; };
 		3FEBD9851E711E6400878392 /* WDTCategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD9841E711E6400878392 /* WDTCategoryTableViewCell.swift */; };
-		3FF8BA771E6A5FDF008A1CEA /* notification.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8BA731E6A5FDF008A1CEA /* notification.mp3 */; };
 		3FF8BA781E6A5FDF008A1CEA /* SFUIText-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8BA741E6A5FDF008A1CEA /* SFUIText-Light.ttf */; };
 		3FF8BA791E6A5FDF008A1CEA /* SFUIText-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8BA751E6A5FDF008A1CEA /* SFUIText-Medium.ttf */; };
 		3FF8BA7A1E6A5FDF008A1CEA /* SFUIText-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8BA761E6A5FDF008A1CEA /* SFUIText-Regular.ttf */; };
@@ -82,7 +81,6 @@
 		3FEBD9801E70EDE100878392 /* WDTCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTCategoriesViewController.swift; sourceTree = "<group>"; };
 		3FEBD9821E70F44900878392 /* WDTMorePostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTMorePostsViewController.swift; sourceTree = "<group>"; };
 		3FEBD9841E711E6400878392 /* WDTCategoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTCategoryTableViewCell.swift; sourceTree = "<group>"; };
-		3FF8BA731E6A5FDF008A1CEA /* notification.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notification.mp3; sourceTree = "<group>"; };
 		3FF8BA741E6A5FDF008A1CEA /* SFUIText-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Light.ttf"; sourceTree = "<group>"; };
 		3FF8BA751E6A5FDF008A1CEA /* SFUIText-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Medium.ttf"; sourceTree = "<group>"; };
 		3FF8BA761E6A5FDF008A1CEA /* SFUIText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Regular.ttf"; sourceTree = "<group>"; };
@@ -240,7 +238,6 @@
 		3FF8BA721E6A5FDF008A1CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3FF8BA731E6A5FDF008A1CEA /* notification.mp3 */,
 				3FF8BA741E6A5FDF008A1CEA /* SFUIText-Light.ttf */,
 				3FF8BA751E6A5FDF008A1CEA /* SFUIText-Medium.ttf */,
 				3FF8BA761E6A5FDF008A1CEA /* SFUIText-Regular.ttf */,
@@ -353,7 +350,6 @@
 				3FF8BA781E6A5FDF008A1CEA /* SFUIText-Light.ttf in Resources */,
 				3FF8BA791E6A5FDF008A1CEA /* SFUIText-Medium.ttf in Resources */,
 				3F78B9C51E67ACED006DE822 /* LaunchScreen.storyboard in Resources */,
-				3FF8BA771E6A5FDF008A1CEA /* notification.mp3 in Resources */,
 				3FF8BA7A1E6A5FDF008A1CEA /* SFUIText-Regular.ttf in Resources */,
 				3F78B9C21E67ACED006DE822 /* Assets.xcassets in Resources */,
 				3F78B9C01E67ACED006DE822 /* Main.storyboard in Resources */,
