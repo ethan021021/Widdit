@@ -24,13 +24,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Blw-I3-Tb6">
-                        <rect key="frame" x="12" y="14.5" width="239" height="20"/>
+                        <rect key="frame" x="12" y="15" width="235" height="19"/>
                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="16"/>
                         <color key="textColor" red="0.71764705880000002" green="0.71764705880000002" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bmL-Vx-UiB">
-                        <rect key="frame" x="263" y="9" width="51" height="31"/>
+                        <rect key="frame" x="259" y="9" width="51" height="31"/>
                         <connections>
                             <action selector="onChangedSwitch:" destination="DJw-3V-PLp" eventType="valueChanged" id="J7o-tA-z67"/>
                         </connections>
@@ -40,11 +40,12 @@
                     <constraint firstItem="Blw-I3-Tb6" firstAttribute="centerY" secondItem="CDM-ty-bfS" secondAttribute="centerY" id="089-vE-YNd"/>
                     <constraint firstItem="bmL-Vx-UiB" firstAttribute="leading" secondItem="Blw-I3-Tb6" secondAttribute="trailing" constant="12" id="8Jv-al-Yk8"/>
                     <constraint firstItem="bmL-Vx-UiB" firstAttribute="centerY" secondItem="CDM-ty-bfS" secondAttribute="centerY" id="Apv-Oq-cuv"/>
-                    <constraint firstAttribute="trailing" secondItem="bmL-Vx-UiB" secondAttribute="trailing" constant="8" id="MNl-rJ-eZ9"/>
+                    <constraint firstAttribute="trailing" secondItem="bmL-Vx-UiB" secondAttribute="trailing" constant="12" id="MNl-rJ-eZ9"/>
                     <constraint firstItem="Blw-I3-Tb6" firstAttribute="leading" secondItem="CDM-ty-bfS" secondAttribute="leading" constant="12" id="rMs-o2-Z59"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="m_swtStatus" destination="bmL-Vx-UiB" id="pZw-Mn-Atz"/>
                 <outlet property="m_txtTitle" destination="Blw-I3-Tb6" id="XvI-f0-f4k"/>
             </connections>
             <point key="canvasLocation" x="-244" y="-283"/>

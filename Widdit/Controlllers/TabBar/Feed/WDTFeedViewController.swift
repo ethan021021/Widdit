@@ -25,7 +25,7 @@ class WDTFeedViewController: WDTFeedBaseViewController {
         navigationItem.titleView = viewTitle
         
         m_ctlRefresh.addTarget(self, action: #selector(loadFeed), for: .valueChanged)
-        m_tblFeeds.addSubview(m_ctlRefresh)
+        tableView.addSubview(m_ctlRefresh)
         
         showHud()
     }
@@ -61,7 +61,7 @@ class WDTFeedViewController: WDTFeedBaseViewController {
                         }
                     })
                     
-                    self.m_tblFeeds.reloadData()
+                    self.tableView.reloadData()
                 })
             }
         }

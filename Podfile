@@ -28,6 +28,7 @@ target 'Widdit' do
     pod 'SwiftLinkPreview', '~> 2.0'
     pod 'UITextView+Placeholder', '~> 1.2'
     pod 'CircleSlider', '~> 0.5'
+    pod 'SJSegmentedScrollView', '~> 1.3'
         
     pod 'Whisper', '~> 4.0'
     pod 'NoChat', '~> 0.3'

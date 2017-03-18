@@ -30,6 +30,8 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_constraintPhotoHeight: NSLayoutConstraint!
     @IBOutlet weak var m_lblPhotoText: ActiveLabel!
     @IBOutlet weak var m_constraintBtnMorePostsHeight: NSLayoutConstraint!
+    @IBOutlet weak var m_btnReply: UIButton!
+    @IBOutlet weak var m_btnDown: UIButton!
     
     var m_objPost: PFObject?
     var delegate: WDTFeedTableViewCellDelegate?
@@ -127,6 +129,10 @@ class WDTFeedTableViewCell: UITableViewCell {
                 print(error.description)
             })
         }
+
+        //if user is current user, disable buttons
+        m_btnReply.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
+        m_btnDown.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
 
     }
     

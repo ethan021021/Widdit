@@ -12,9 +12,6 @@ class WDTSignUpSituationViewController: UIViewController, UITableViewDelegate, U
 
     @IBOutlet weak var m_tblSituation: UITableView!
     
-    let aryUserStituationKeys = ["situationSchool", "situationWork", "situationOpportunity"]
-    let aryUserSituations = ["Currently in school", "Have a job", "Open to new things"]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,20 +42,25 @@ class WDTSignUpSituationViewController: UIViewController, UITableViewDelegate, U
         appDelegate.startApplication(true)
     }
     
-    //UITableViewDataSource
+    // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return aryUserSituations.count
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed(String(describing: WDTProfileSituationTableViewCell.self), owner: nil, options: nil)?.first as! WDTProfileSituationTableViewCell
-        cell.m_txtTitle.text = aryUserSituations[indexPath.row]
-        cell.parseKey = aryUserStituationKeys[indexPath.row]
+        if indexPath.row == 0 {
+            cell.setView(.School)
+        } else if indexPath.row == 1 {
+            cell.setView(.Job)
+        } else {
+            cell.setView(.Open)
+        }
         
         return cell
     }
     
-    //UITableViewDelegate
+    // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
     }

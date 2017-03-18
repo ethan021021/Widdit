@@ -11,24 +11,24 @@ import Parse
 
 class WDTMorePostsViewController: WDTFeedBaseViewController {
 
-    var user: PFUser?
-    var category: String?
+    var m_objUser: PFUser?
+    var m_strCategory: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let user = user {
+        if let user = m_objUser {
             if let name = user["name"] as? String {
                 title = name
             } else {
                 title = user.username
             }
         } else {
-            title = "#\(category!)"
+            title = "#\(m_strCategory!)"
         }
         
-        m_aryPosts = WDTPost.sharedInstance().getPosts(user: user, category: category)
+        m_aryPosts = WDTPost.sharedInstance().getPosts(user: m_objUser, category: m_strCategory)
     }
 
     override func didReceiveMemoryWarning() {

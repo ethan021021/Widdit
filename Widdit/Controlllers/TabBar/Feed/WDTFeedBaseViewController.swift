@@ -10,9 +10,7 @@ import UIKit
 import Parse
 import CPImageViewer
 
-class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CPImageControllerProtocol, WDTFeedTableViewCellDelegate {
-    
-    @IBOutlet weak var m_tblFeeds: UITableView!
+class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtocol, WDTFeedTableViewCellDelegate {
     
     var animationImageView: UIImageView!
     var animator = CPImageViewerAnimator()
@@ -22,8 +20,8 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        m_tblFeeds.rowHeight = UITableViewAutomaticDimension
-        m_tblFeeds.estimatedRowHeight = 44.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 48.0
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,12 +45,12 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
         present(addPostNC, animated: true, completion: nil)
     }
     
-    //UITableViewDataSource
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // MARK: - UITableViewDataSource
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return m_aryPosts.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed(String(describing: WDTFeedTableViewCell.self), owner: nil, options: nil)?.first as! WDTFeedTableViewCell
         cell.setViewWithPFObject(m_aryPosts[indexPath.row])
         cell.hideMorePosts(self.hideMorePosts(indexPath.row))
@@ -61,7 +59,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
         cell.m_lblPhotoText.hashtagColor = UIColor.WDTTealColor()
         cell.m_lblPhotoText.handleHashtagTap { (hashtag) in
             let morePostsVC = self.storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
-            morePostsVC.category = hashtag
+            morePostsVC.m_strCategory = hashtag
             self.navigationController?.pushViewController(morePostsVC, animated: true)
         }
         cell.m_lblPhotoText.handleURLTap { (url) in
@@ -79,7 +77,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
         return true
     }
     
-    //WDTFeedTableViewCellDelegate
+    // MARK: - WDTFeedTableViewCellDelegate
     func onClickBtnMore(_ objPost: PFObject) {
         let alert = UIAlertController(title: "", message: Constants.String.APP_NAME, preferredStyle: .actionSheet)
         
@@ -87,7 +85,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
             let actionEdit = UIAlertAction(title: "Edit", style: .default) { (_) in
                 let addPostVC = self.storyboard?.instantiateViewController(withIdentifier: String(describing: WDTAddPostViewController.self)) as! WDTAddPostViewController
                 addPostVC.m_objPost = objPost
-                self.navigationController?.pushViewController(addPostVC, animated: true)
+                self.present(addPostVC, animated: true, completion: nil)
             }
             alert.addAction(actionEdit)
             
@@ -100,7 +98,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
                             let index = self.m_aryPosts.index(where: { (post) -> Bool in
                                 return post.objectId == objPost.objectId
                             })
-                            self.m_tblFeeds.deleteRows(at: [IndexPath.init(row: index!, section: 0)], with: .automatic)
+                            self.tableView.deleteRows(at: [IndexPath.init(row: index!, section: 0)], with: .automatic)
                         }
                     })
                 })
@@ -127,7 +125,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
     
     func onClickBtnMorePosts(_ objUser: PFUser?) {
         let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
-        morePostsVC.user = objUser
+        morePostsVC.m_objUser = objUser
         navigationController?.pushViewController(morePostsVC, animated: true)
     }
     
@@ -136,7 +134,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
             return post.objectId == objPost.objectId
         })
         
-        let cell = m_tblFeeds.cellForRow(at: IndexPath(row: index!, section: 0)) as! WDTFeedTableViewCell
+        let cell = tableView.cellForRow(at: IndexPath(row: index!, section: 0)) as! WDTFeedTableViewCell
         animationImageView = cell.m_imgPhoto
         
         let controller = CPImageViewerViewController()
@@ -146,7 +144,10 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func onTapUserAvatar(_ objUser: PFUser?) {
+        let profileVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTProfileViewController.self)) as! WDTProfileViewController
+        profileVC.m_objUser = objUser
         
+        navigationController?.pushViewController(profileVC, animated: true)
     }
     
     func onUpdateObject(_ objPost: PFObject) {
@@ -154,7 +155,7 @@ class WDTFeedBaseViewController: UIViewController, UITableViewDelegate, UITableV
             return post.objectId == objPost.objectId
         })
         
-        m_tblFeeds.reloadRows(at: [IndexPath(row: index!, section: 0)], with: .automatic)
+        tableView.reloadRows(at: [IndexPath(row: index!, section: 0)], with: .automatic)
     }
 
 }

@@ -42,7 +42,7 @@ class WDTCategoriesViewController: UIViewController, UITableViewDelegate, UITabl
     }
     */
 
-    //UITableViewDataSource
+    // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return m_aryCategories.count
     }
@@ -54,7 +54,7 @@ class WDTCategoriesViewController: UIViewController, UITableViewDelegate, UITabl
         return cell
     }
     
-    //UITableViewDelegate
+    // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0.1
     }
@@ -67,7 +67,7 @@ class WDTCategoriesViewController: UIViewController, UITableViewDelegate, UITabl
         let objCategory = m_aryCategories[indexPath.row]
         
         let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
-        morePostsVC.category = objCategory["title"] as? String
+        morePostsVC.m_strCategory = objCategory["title"] as? String
         navigationController?.pushViewController(morePostsVC, animated: true)
     }
     

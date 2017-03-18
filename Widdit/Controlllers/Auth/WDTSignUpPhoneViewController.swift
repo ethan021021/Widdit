@@ -52,7 +52,7 @@ class WDTSignUpPhoneViewController: WDTNoNavigationBaseViewController, UITextFie
     }
     */
     
-    //UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {        
         if let letter = string.characters.first {
             strPhoneNumber.append(letter)

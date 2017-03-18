@@ -38,7 +38,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             let photo = objPost["photoUrl"] as? String ?? ""
             if photo.characters.count > 0 {
                 m_imgPost.kf.setImage(with: URL(string: photo))
-                m_btnImageDelete.isHidden = true
+                m_btnImageDelete.isHidden = false
                 isPhoto = true
             }
         }
@@ -150,7 +150,8 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
                 self.m_objPost?["postUrl"] = photoFile?.url
                 self.m_objPost?.saveInBackground()
             })
-            
+        } else {
+            m_objPost?["postUrl"] = ""
         }
         
         showHud()
@@ -200,7 +201,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         present(cameraVC, animated: true, completion: nil)
     }
     
-    //UITextViewDelegate
+    // MARK: - UITextViewDelegate
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let newLength = textView.text.characters.count + text.characters.count - range.length
         
