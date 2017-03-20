@@ -13,22 +13,27 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
 
     var m_objUser: PFUser?
     var m_strCategory: String?
+    var m_objPost: PFObject?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let user = m_objUser {
-            if let name = user["name"] as? String {
+        if let objUser = m_objUser {
+            if let name = objUser["name"] as? String {
                 title = name
             } else {
-                title = user.username
+                title = objUser.username
             }
-        } else {
-            title = "#\(m_strCategory!)"
+            
+            m_aryPosts = WDTPost.sharedInstance().getPosts(user: objUser, category: nil)
+        } else if let strCategory = m_strCategory {
+            title = "#\(strCategory)"
+            m_aryPosts = WDTPost.sharedInstance().getPosts(user: nil, category: strCategory)
+        } else if let objPost = m_objPost {
+            title = ""
+            m_aryPosts = [objPost]
         }
-        
-        m_aryPosts = WDTPost.sharedInstance().getPosts(user: m_objUser, category: m_strCategory)
     }
 
     override func didReceiveMemoryWarning() {

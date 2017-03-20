@@ -18,6 +18,7 @@ protocol WDTFeedTableViewCellDelegate {
     func onClickBtnMorePosts(_ objUser: PFUser?)
     func onTapUserAvatar(_ objUser: PFUser?)
     func onUpdateObject(_ objPost: PFObject)
+    func onClickBtnReply(_ objPost: PFObject)
 }
 
 class WDTFeedTableViewCell: UITableViewCell {
@@ -134,6 +135,13 @@ class WDTFeedTableViewCell: UITableViewCell {
         m_btnReply.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
         m_btnDown.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
 
+        //check down
+        if m_btnDown.isEnabled {
+            m_btnDown.isSelected = WDTActivity.sharedInstance().myDowns.filter({ (down) -> Bool in
+                let localPost = down["post"] as! PFObject
+                return localPost.objectId == objPost.objectId
+            }).count > 0
+        }
     }
     
     func hideMorePosts(_ isHide: Bool) {
@@ -155,11 +163,22 @@ class WDTFeedTableViewCell: UITableViewCell {
     }
     
     @IBAction func onClickBtnReply(_ sender: Any) {
-        
+        if let objPost = m_objPost {
+            delegate?.onClickBtnReply(objPost)
+        }
     }
     
     @IBAction func onClickBtnDown(_ sender: Any) {
+        let btnDown = sender as! UIButton
+        btnDown.isSelected = !btnDown.isSelected
         
+        if let objPost = m_objPost {
+            if btnDown.isSelected {
+                WDTActivity.addActivity(user: (objPost["user"] as! PFUser), post: objPost, type: .Down, completion: { _ in })
+            } else {
+                WDTActivity.deleteActivity(user: (objPost["user"] as! PFUser), post: objPost)
+            }
+        }
     }
     
     func onTapPhoto() {

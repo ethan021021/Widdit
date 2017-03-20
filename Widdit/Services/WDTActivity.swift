@@ -9,12 +9,6 @@
 import Foundation
 import Parse
 
-protocol WDTActivityProtocol {}
-
-
-let sharedActivity = WDTActivity()
-
-
 class WDTActivity {
     
     enum WDTActivityType: String {
@@ -27,6 +21,16 @@ class WDTActivity {
     var downs: [PFObject] = []
     var myDowns: [PFObject] = []
     var chatsAndDowns: [PFObject] = []
+    
+    static var _wdtActivity: WDTActivity? = nil
+    
+    static func sharedInstance() -> WDTActivity {
+        if _wdtActivity == nil {
+            _wdtActivity = WDTActivity()
+        }
+        
+        return _wdtActivity!
+    }
     
     class func isDown(user: PFUser, post: PFObject, completion: @escaping (_ down: PFObject?) -> Void) {
         let didDown = PFQuery(className: "Activity")
@@ -65,8 +69,6 @@ class WDTActivity {
         })
     }
     
-
-    
     class func addActivity(user: PFUser, post: PFObject, type: WDTActivityType, completion:@escaping (_ activityObj: PFObject) -> Void) {
         WDTPush.sendPushAfterDownTapped(toUsername: user.username!, postId: post.objectId!)
         
@@ -75,7 +77,7 @@ class WDTActivity {
                 down["type"] = type.rawValue
                 down.saveInBackground(block: { (success, error) in
                     completion(down)
-                    sharedActivity.requestMyDowns(completion: { (success) in})
+                    WDTActivity.sharedInstance().requestMyDowns(completion: { (success) in})
                 })
             } else {
                 let activityObj = PFObject(className: "Activity")
@@ -87,7 +89,7 @@ class WDTActivity {
                 
                 activityObj.saveInBackground(block: { (success, error) in
                     completion(activityObj)
-                    sharedActivity.requestMyDowns(completion: { (success) in})
+                    WDTActivity.sharedInstance().requestMyDowns(completion: { (success) in})
                 })
             }
         }
@@ -98,7 +100,7 @@ class WDTActivity {
             if let down = down {
                 down["type"] = WDTActivityType.Undown.rawValue
                 down.saveInBackground(block: { (success, error) in
-                    sharedActivity.requestMyDowns(completion: { (success) in})
+                    WDTActivity.sharedInstance().requestMyDowns(completion: { (success) in})
                 })
             }
         }
@@ -161,7 +163,6 @@ class WDTActivity {
         activitiesToMeQuery.whereKey("by", equalTo: currentUser)
         activitiesToMeQuery.whereKey("comeFromTheFeed", equalTo: false)
         activitiesToMeQuery.whereKeyExists("whoRepliedLast")
-        
         
         let activitiesFromMeQuery = PFQuery(className: "Activity")
         activitiesFromMeQuery.whereKey("to", equalTo: currentUser)

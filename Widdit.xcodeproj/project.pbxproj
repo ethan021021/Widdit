@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3F2395761E6976CC0038B6AF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F2395751E6976CC0038B6AF /* Constants.swift */; };
+		3F23B5F41E7ED4BF00175017 /* SFUIText-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F23B5F31E7ED4BF00175017 /* SFUIText-Bold.ttf */; };
+		3F23B6541E7F6F6800175017 /* WDTReplyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F23B6531E7F6F6800175017 /* WDTReplyViewController.swift */; };
+		3F23B6561E7F716F00175017 /* WDTChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F23B6551E7F716F00175017 /* WDTChatViewController.swift */; };
 		3F3917B11E6CE84E007409D9 /* WDTNoNavigationBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3917B01E6CE84E007409D9 /* WDTNoNavigationBaseViewController.swift */; };
 		3F3917B31E6CE8B3007409D9 /* WDTSignUpPhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3917B21E6CE8B3007409D9 /* WDTSignUpPhoneViewController.swift */; };
 		3F3917B51E6CE8C4007409D9 /* WDTSignUpVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3917B41E6CE8C4007409D9 /* WDTSignUpVerificationViewController.swift */; };
@@ -43,7 +46,10 @@
 		3F78B9C01E67ACED006DE822 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F78B9BE1E67ACED006DE822 /* Main.storyboard */; };
 		3F78B9C21E67ACED006DE822 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F78B9C11E67ACED006DE822 /* Assets.xcassets */; };
 		3F78B9C51E67ACED006DE822 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F78B9C31E67ACED006DE822 /* LaunchScreen.storyboard */; };
+		3F7EB66E1E7ECE3400531760 /* WDTActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */; };
+		3F7EB66F1E7ECE3400531760 /* WDTActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */; };
 		3FB848241E7CED9400313A01 /* WDTProfileAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB848231E7CED9400313A01 /* WDTProfileAboutViewController.swift */; };
+		3FB848261E7D15DB00313A01 /* WDTActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */; };
 		3FEBD97D1E6F08CD00878392 /* JHShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD97C1E6F08CD00878392 /* JHShadowView.swift */; };
 		3FEBD97F1E70E04000878392 /* WDTAddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD97E1E70E04000878392 /* WDTAddPostViewController.swift */; };
 		3FEBD9811E70EDE100878392 /* WDTCategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD9801E70EDE100878392 /* WDTCategoriesViewController.swift */; };
@@ -63,6 +69,9 @@
 
 /* Begin PBXFileReference section */
 		3F2395751E6976CC0038B6AF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		3F23B5F31E7ED4BF00175017 /* SFUIText-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIText-Bold.ttf"; sourceTree = "<group>"; };
+		3F23B6531E7F6F6800175017 /* WDTReplyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTReplyViewController.swift; sourceTree = "<group>"; };
+		3F23B6551E7F716F00175017 /* WDTChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTChatViewController.swift; sourceTree = "<group>"; };
 		3F3917B01E6CE84E007409D9 /* WDTNoNavigationBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTNoNavigationBaseViewController.swift; sourceTree = "<group>"; };
 		3F3917B21E6CE8B3007409D9 /* WDTSignUpPhoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTSignUpPhoneViewController.swift; sourceTree = "<group>"; };
 		3F3917B41E6CE8C4007409D9 /* WDTSignUpVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTSignUpVerificationViewController.swift; sourceTree = "<group>"; };
@@ -101,7 +110,10 @@
 		3F78B9C41E67ACED006DE822 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F78B9C61E67ACED006DE822 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F78B9CC1E67AD5A006DE822 /* Widdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widdit.entitlements; sourceTree = "<group>"; };
+		3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTActivityTableViewCell.swift; sourceTree = "<group>"; };
+		3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTActivityTableViewCell.xib; sourceTree = "<group>"; };
 		3FB848231E7CED9400313A01 /* WDTProfileAboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTProfileAboutViewController.swift; sourceTree = "<group>"; };
+		3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTActivitiesViewController.swift; sourceTree = "<group>"; };
 		3FEBD97C1E6F08CD00878392 /* JHShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHShadowView.swift; sourceTree = "<group>"; };
 		3FEBD97E1E70E04000878392 /* WDTAddPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTAddPostViewController.swift; sourceTree = "<group>"; };
 		3FEBD9801E70EDE100878392 /* WDTCategoriesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTCategoriesViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +167,9 @@
 		3F3A31581E6E979A009267A6 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
+				3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */,
+				3F23B6531E7F6F6800175017 /* WDTReplyViewController.swift */,
+				3F23B6551E7F716F00175017 /* WDTChatViewController.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -252,6 +267,8 @@
 				3F3A314E1E6D6610009267A6 /* WDTProfileSituationTableViewCell.xib */,
 				3F3CFDCA1E7CCD5E00AD8FF8 /* WDTProfileTextTableViewCell.swift */,
 				3F3CFDCB1E7CCD5E00AD8FF8 /* WDTProfileTextTableViewCell.xib */,
+				3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */,
+				3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -269,6 +286,7 @@
 		3FF8BA721E6A5FDF008A1CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3F23B5F31E7ED4BF00175017 /* SFUIText-Bold.ttf */,
 				3FF8BA741E6A5FDF008A1CEA /* SFUIText-Light.ttf */,
 				3FF8BA751E6A5FDF008A1CEA /* SFUIText-Medium.ttf */,
 				3FF8BA761E6A5FDF008A1CEA /* SFUIText-Regular.ttf */,
@@ -383,11 +401,13 @@
 				3F3CFDC31E7C487900AD8FF8 /* WDTAccountTableViewCell.xib in Resources */,
 				3FF8BA791E6A5FDF008A1CEA /* SFUIText-Medium.ttf in Resources */,
 				3F3CFDC91E7CCD3100AD8FF8 /* WDTAvatarTableViewCell.xib in Resources */,
+				3F23B5F41E7ED4BF00175017 /* SFUIText-Bold.ttf in Resources */,
 				3F78B9C51E67ACED006DE822 /* LaunchScreen.storyboard in Resources */,
 				3FF8BA7A1E6A5FDF008A1CEA /* SFUIText-Regular.ttf in Resources */,
 				3F3CFDBF1E7C486700AD8FF8 /* WDTAboutTableViewCell.xib in Resources */,
 				3F78B9C21E67ACED006DE822 /* Assets.xcassets in Resources */,
 				3F78B9C01E67ACED006DE822 /* Main.storyboard in Resources */,
+				3F7EB66F1E7ECE3400531760 /* WDTActivityTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -459,11 +479,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F7EB66E1E7ECE3400531760 /* WDTActivityTableViewCell.swift in Sources */,
+				3F23B6561E7F716F00175017 /* WDTChatViewController.swift in Sources */,
 				3F3A31641E6E9AC2009267A6 /* WDTPush.swift in Sources */,
 				3F3A315C1E6E97B3009267A6 /* WDTFeedViewController.swift in Sources */,
 				3F3CFDBB1E7C451D00AD8FF8 /* WDTAboutViewController.swift in Sources */,
 				3F3A31541E6E7232009267A6 /* WDTTabItemAnimation.swift in Sources */,
 				3FF8BA811E6A63A1008A1CEA /* Extensions.swift in Sources */,
+				3FB848261E7D15DB00313A01 /* WDTActivitiesViewController.swift in Sources */,
 				3F78B9BB1E67ACED006DE822 /* AppDelegate.swift in Sources */,
 				3F3917B11E6CE84E007409D9 /* WDTNoNavigationBaseViewController.swift in Sources */,
 				3F3CFDAB1E7B6FC600AD8FF8 /* WDTCircleSlider.swift in Sources */,
@@ -484,6 +507,7 @@
 				3F3A31631E6E9AC2009267A6 /* WDTPost.swift in Sources */,
 				3FB848241E7CED9400313A01 /* WDTProfileAboutViewController.swift in Sources */,
 				3F3CFDBE1E7C486700AD8FF8 /* WDTAboutTableViewCell.swift in Sources */,
+				3F23B6541E7F6F6800175017 /* WDTReplyViewController.swift in Sources */,
 				3FF8BA7F1E6A6050008A1CEA /* WDTWelcomeViewController.swift in Sources */,
 				3F3917B31E6CE8B3007409D9 /* WDTSignUpPhoneViewController.swift in Sources */,
 				3FF8BA891E6AA03A008A1CEA /* WDTTutorialContentViewController.swift in Sources */,

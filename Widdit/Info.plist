@@ -65,6 +65,7 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>SFUIText-Bold.ttf</string>
 		<string>SFUIText-Light.ttf</string>
 		<string>SFUIText-Medium.ttf</string>
 		<string>SFUIText-Regular.ttf</string>

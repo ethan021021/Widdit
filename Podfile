@@ -29,8 +29,6 @@ target 'Widdit' do
     pod 'UITextView+Placeholder', '~> 1.2'
     pod 'CircleSlider', '~> 0.5'
     pod 'SJSegmentedScrollView', '~> 1.3'
-        
-    pod 'Whisper', '~> 4.0'
-    pod 'NoChat', '~> 0.3'
-    
+    pod 'JSQMessagesViewController', '~> 7.3'
+    pod 'Presentr', '~> 1.1'
 end

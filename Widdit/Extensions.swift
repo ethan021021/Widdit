@@ -191,3 +191,12 @@ struct WDTTextParser {
         }
     }
 }
+
+import Presentr
+let presentr: Presentr = {
+    let presentr = Presentr(presentationType: .popup)
+    presentr.presentationType = .custom(width: .default, height: .half, center: .custom(centerPoint: CGPoint(x: UIScreen.main.bounds.size.width / 2, y: UIScreen.main.bounds.size.height * 0.32)))
+    
+    presentr.transitionType = .coverVerticalFromTop
+    return presentr
+}()

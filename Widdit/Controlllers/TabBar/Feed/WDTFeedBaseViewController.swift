@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import CPImageViewer
+import Presentr
 
 class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtocol, WDTFeedTableViewCellDelegate {
     
@@ -158,4 +159,12 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         tableView.reloadRows(at: [IndexPath(row: index!, section: 0)], with: .automatic)
     }
 
+    func onClickBtnReply(_ objPost: PFObject) {
+        let replyVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTReplyViewController.self)) as! WDTReplyViewController
+        replyVC.m_objPost = objPost
+        replyVC.m_objUser = objPost["user"] as? PFUser
+        replyVC.m_isFeedChat = true
+        customPresentViewController(presentr, viewController: replyVC, animated: true, completion: nil)
+    }
+    
 }
