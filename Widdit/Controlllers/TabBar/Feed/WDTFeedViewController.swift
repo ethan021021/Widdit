@@ -88,10 +88,10 @@ class WDTFeedViewController: WDTFeedBaseViewController {
         navigationController?.pushViewController(categoriesVC, animated: true)
     }
     
-    override func hideMorePosts(_ index: Int) -> Bool {
+    override func setMorePosts(_ index: Int) -> Int {
         let post = m_aryPosts[index]
         return WDTPost.sharedInstance().m_aryAllPosts.filter { (tmpPost) -> Bool in
             return (post["user"] as! PFUser).objectId == (tmpPost["user"] as! PFUser).objectId
-            }.count == 1
+            }.count
     }
 }

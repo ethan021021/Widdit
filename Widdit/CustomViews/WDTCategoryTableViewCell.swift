@@ -27,12 +27,6 @@ class WDTCategoryTableViewCell: UITableViewCell {
     
     func setViewWithPFObject(_ objCategory: PFObject) {
         m_lblName.text = "#" + (objCategory["title"] as? String)!
-        m_lblPostCount.text = "+" + String(WDTPost.sharedInstance().m_aryAllPosts.filter({ (post) -> Bool in
-            if let tags = post["hashtags"] as? [String] {
-                return tags.contains(objCategory["title"] as! String)
-            } else {
-                return false
-            }
-        }).count)
+        m_lblPostCount.text = "+" + String(WDTPost.sharedInstance().getPosts(user: nil, category: objCategory["title"] as? String).count)
     }
 }

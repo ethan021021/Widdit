@@ -30,6 +30,7 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_imgPhoto: UIImageView!
     @IBOutlet weak var m_constraintPhotoHeight: NSLayoutConstraint!
     @IBOutlet weak var m_lblPhotoText: ActiveLabel!
+    @IBOutlet weak var m_btnMorePost: UIButton!
     @IBOutlet weak var m_constraintBtnMorePostsHeight: NSLayoutConstraint!
     @IBOutlet weak var m_btnReply: UIButton!
     @IBOutlet weak var m_btnDown: UIButton!
@@ -144,8 +145,10 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
     }
     
-    func hideMorePosts(_ isHide: Bool) {
-        if isHide {
+    func setMorePosts(_ postCount: Int) {
+        if postCount > 1 {
+            m_btnMorePost.setTitle("+\(String(postCount - 1))", for: UIControlState.normal)
+        } else {
             m_constraintBtnMorePostsHeight.constant = 0
         }
     }

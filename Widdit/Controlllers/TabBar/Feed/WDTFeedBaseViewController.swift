@@ -54,7 +54,7 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed(String(describing: WDTFeedTableViewCell.self), owner: nil, options: nil)?.first as! WDTFeedTableViewCell
         cell.setViewWithPFObject(m_aryPosts[indexPath.row])
-        cell.hideMorePosts(self.hideMorePosts(indexPath.row))
+        cell.setMorePosts(self.setMorePosts(indexPath.row))
         
         cell.m_lblPhotoText.enabledTypes = [.hashtag, .url]
         cell.m_lblPhotoText.hashtagColor = UIColor.WDTTealColor()
@@ -74,8 +74,8 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         return cell
     }
     
-    func hideMorePosts(_ index: Int) -> Bool {
-        return true
+    func setMorePosts(_ index: Int) -> Int {
+        return 1
     }
     
     // MARK: - WDTFeedTableViewCellDelegate

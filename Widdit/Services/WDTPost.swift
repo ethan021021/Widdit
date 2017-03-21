@@ -60,7 +60,13 @@ class WDTPost {
             if let _ = error {
                 completion([PFObject]())
             } else {
-                completion(categories!)
+                if let categories = categories {
+                    completion(categories.filter({ (tmpCategory) -> Bool in
+                        return self.getPosts(user: nil, category: tmpCategory["title"] as? String).count > 0
+                    }))
+                } else {
+                    completion([PFObject]())
+                }
             }
         })
     }

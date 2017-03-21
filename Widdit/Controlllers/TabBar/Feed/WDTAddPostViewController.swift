@@ -154,8 +154,18 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             m_objPost?["postUrl"] = ""
         }
         
+        var tags = [String]()
+        let nsstring = m_txtDescription.text as NSString
+        let matches = WDTTextParser.getElements(from: m_txtDescription.text, with: WDTTextParser.hashtagPattern)
+        for match in matches where match.range.length > 2 {
+            let tag = nsstring.substring(with: match.range)
+                    .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) as NSString
+            
+            tags.append(tag.substring(from: 1))
+        }
+        
+        m_objPost?["hashtags"] = tags
         showHud()
-        m_objPost?["hashtags"] = WDTTextParser.getElements(from: m_txtDescription.text, with: WDTTextParser.hashtagPattern)
         m_objPost?.saveInBackground(block: { (success, error) in
             self.hideHud()
             if error == nil {

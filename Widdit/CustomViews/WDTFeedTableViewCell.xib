@@ -24,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="527"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="527.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySk-yO-rG5" customClass="JHShadowView" customModule="Widdit" customModuleProvider="target">
@@ -58,19 +58,19 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kelly Hoffman" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6SS-AE-ewM">
-                                        <rect key="frame" x="56" y="12" width="75" height="14"/>
+                                        <rect key="frame" x="56" y="12" width="81.5" height="14"/>
                                         <fontDescription key="fontDescription" name="SFUIText-Medium" family="SF UI Text" pointSize="12"/>
                                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 hours left" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U7o-9v-jQc">
-                                        <rect key="frame" x="56" y="31" width="51" height="12"/>
+                                        <rect key="frame" x="56" y="31" width="54" height="12"/>
                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="10"/>
                                         <color key="textColor" red="0.71764705882352942" green="0.71764705882352942" blue="0.71764705882352942" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="US, New York" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ene-oF-oED">
-                                        <rect key="frame" x="214" y="31" width="62" height="12"/>
+                                        <rect key="frame" x="211.5" y="31" width="64.5" height="12"/>
                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="10"/>
                                         <color key="textColor" red="0.71764705880000002" green="0.71764705880000002" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -128,21 +128,32 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qop-LG-LhJ" customClass="ActiveLabel" customModule="ActiveLabel">
-                                <rect key="frame" x="12" y="68" width="272" height="356"/>
+                                <rect key="frame" x="12" y="68" width="272" height="351"/>
                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="auz-KD-wEc">
-                                <rect key="frame" x="12" y="436" width="272" height="40"/>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="auz-KD-wEc" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
+                                <rect key="frame" x="224" y="431" width="60" height="35"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="m2e-BO-CnA"/>
+                                    <constraint firstAttribute="width" constant="60" id="aTE-Ei-wTl"/>
+                                    <constraint firstAttribute="height" constant="35" id="m2e-BO-CnA"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
-                                <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="More posts" image="post_button_more_posts">
-                                    <color key="titleColor" red="0.38039215686274508" green="0.81176470588235294" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="SFUIText-Medium" family="SF UI Text" pointSize="14"/>
+                                <state key="normal" title="+3">
+                                    <color key="titleColor" red="0.24313725489999999" green="0.79607843140000001" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="BorderColor">
+                                        <color key="value" red="0.24313725489999999" green="0.79607843140000001" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="BorderWidth">
+                                        <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onClickBtnMorePosts:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="i7d-k9-kTs"/>
                                 </connections>
@@ -226,9 +237,8 @@
                         <constraints>
                             <constraint firstItem="auz-KD-wEc" firstAttribute="top" secondItem="qop-LG-LhJ" secondAttribute="bottom" constant="12" id="0jd-Bh-Doh"/>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="top" secondItem="VLg-Ta-3vT" secondAttribute="top" id="1Wn-J5-T0C"/>
-                            <constraint firstItem="6q6-57-ERv" firstAttribute="centerX" secondItem="auz-KD-wEc" secondAttribute="centerX" id="94f-iy-S6a"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="height" secondItem="lcV-Tb-W0g" secondAttribute="height" id="D3T-Ei-3FI"/>
-                            <constraint firstItem="auz-KD-wEc" firstAttribute="width" secondItem="qop-LG-LhJ" secondAttribute="width" id="Gqr-Lw-dTn"/>
+                            <constraint firstItem="auz-KD-wEc" firstAttribute="trailing" secondItem="qop-LG-LhJ" secondAttribute="trailing" id="HHU-ub-kNY"/>
                             <constraint firstItem="qop-LG-LhJ" firstAttribute="width" secondItem="lcV-Tb-W0g" secondAttribute="width" id="Ll0-m3-5lk"/>
                             <constraint firstItem="lcV-Tb-W0g" firstAttribute="leading" secondItem="VLg-Ta-3vT" secondAttribute="leading" constant="12" id="MzW-9g-tHk"/>
                             <constraint firstItem="lcV-Tb-W0g" firstAttribute="centerX" secondItem="3Er-HK-ar0" secondAttribute="centerX" id="PWT-iW-U7q"/>
@@ -238,10 +248,10 @@
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="centerX" secondItem="VLg-Ta-3vT" secondAttribute="centerX" id="Z1i-e9-b8B"/>
                             <constraint firstItem="6q6-57-ERv" firstAttribute="width" secondItem="VLg-Ta-3vT" secondAttribute="width" id="fEJ-wi-LGl"/>
                             <constraint firstItem="qop-LG-LhJ" firstAttribute="top" secondItem="lcV-Tb-W0g" secondAttribute="bottom" constant="12" id="fqE-Td-mFN"/>
-                            <constraint firstItem="auz-KD-wEc" firstAttribute="centerX" secondItem="qop-LG-LhJ" secondAttribute="centerX" id="juU-m3-JSa"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="centerX" secondItem="lcV-Tb-W0g" secondAttribute="centerX" id="mBa-Lx-NC3"/>
-                            <constraint firstItem="6q6-57-ERv" firstAttribute="top" secondItem="auz-KD-wEc" secondAttribute="bottom" id="oWZ-rC-Sv4"/>
+                            <constraint firstItem="6q6-57-ERv" firstAttribute="top" secondItem="auz-KD-wEc" secondAttribute="bottom" constant="10" id="oWZ-rC-Sv4"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="centerY" secondItem="lcV-Tb-W0g" secondAttribute="centerY" id="ql9-dT-eMn"/>
+                            <constraint firstItem="6q6-57-ERv" firstAttribute="centerX" secondItem="VLg-Ta-3vT" secondAttribute="centerX" id="rHl-Z0-obB"/>
                             <constraint firstAttribute="bottom" secondItem="6q6-57-ERv" secondAttribute="bottom" id="w0y-vp-gsZ"/>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="width" secondItem="VLg-Ta-3vT" secondAttribute="width" id="zeI-CT-2TS"/>
                         </constraints>
@@ -267,6 +277,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="m_btnDown" destination="1YM-oW-ORW" id="Cw8-OJ-DFS"/>
+                <outlet property="m_btnMorePost" destination="auz-KD-wEc" id="hEw-PK-5WZ"/>
                 <outlet property="m_btnReply" destination="ZNo-qX-O31" id="BC3-vE-cbQ"/>
                 <outlet property="m_constraintBtnMorePostsHeight" destination="m2e-BO-CnA" id="5CL-Tq-ESb"/>
                 <outlet property="m_constraintPhotoHeight" destination="lE2-n9-nW8" id="uKX-ni-In5"/>
@@ -283,7 +294,6 @@
     <resources>
         <image name="common_avatar_placeholder" width="65" height="61"/>
         <image name="post_button_more" width="22" height="6"/>
-        <image name="post_button_more_posts" width="17" height="14"/>
         <image name="post_icon_down" width="16" height="16"/>
         <image name="post_icon_reply" width="16" height="16"/>
     </resources>

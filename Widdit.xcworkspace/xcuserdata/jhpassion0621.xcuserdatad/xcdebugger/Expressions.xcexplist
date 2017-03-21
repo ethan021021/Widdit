@@ -3,28 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "WDTWelcomeViewController.(onClickBtnFBLogin(Any) -&gt; ()).(closure #1).(closure #1):WDTWelcomeViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "user?[&quot;phoneNumber&quot;]">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "WDTTabBarController.awakeFromNib() -&gt; ():WDTTabBarController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "WDTSignUpPhoneViewController.textField(UITextField, shouldChangeCharactersIn : _NSRange, replacementString : String) -&gt; Bool:WDTSignUpPhoneViewController.swift">
-      </ContextState>
-      <ContextState
-         contextName = "WDTTutorialViewController.viewDidLoad() -&gt; ():WDTTutorialViewController.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "contentVC.view.frame">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "WDTCategoryTableViewCell.(setViewWithPFObject(PFObject) -&gt; ()).(closure #1):WDTCategoryTableViewCell.swift">
          <PersistentStrings>
             <PersistentString
@@ -42,6 +20,36 @@
                value = "&quot;tabbar_icon_\(textLabel.text)&quot;">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WDTSignUpPhoneViewController.textField(UITextField, shouldChangeCharactersIn : _NSRange, replacementString : String) -&gt; Bool:WDTSignUpPhoneViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "WDTTutorialViewController.viewDidLoad() -&gt; ():WDTTutorialViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "contentVC.view.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WDTAddPostViewController.onClickBtnPost(Any) -&gt; ():WDTAddPostViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "match.range">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WDTWelcomeViewController.(onClickBtnFBLogin(Any) -&gt; ()).(closure #1).(closure #1):WDTWelcomeViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "user?[&quot;phoneNumber&quot;]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WDTTabBarController.awakeFromNib() -&gt; ():WDTTabBarController.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>
