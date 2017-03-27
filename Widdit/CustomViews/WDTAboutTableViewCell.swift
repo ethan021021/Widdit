@@ -16,14 +16,6 @@ class WDTAboutTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
-        m_lblAbout.enabledTypes = [.url]
-        m_lblAbout.hashtagColor = UIColor.WDTTealColor()
-        m_lblAbout.handleURLTap { (url) in
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
-        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

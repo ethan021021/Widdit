@@ -56,17 +56,18 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         cell.setViewWithPFObject(m_aryPosts[indexPath.row])
         cell.setMorePosts(self.setMorePosts(indexPath.row))
         
-        cell.m_lblPhotoText.enabledTypes = [.hashtag, .url]
-        cell.m_lblPhotoText.hashtagColor = UIColor.WDTTealColor()
-        cell.m_lblPhotoText.handleHashtagTap { (hashtag) in
+        cell.m_lblPostText.enabledTypes = [.hashtag, .url]
+        cell.m_lblPostText.hashtagColor = UIColor.WDTTealColor()
+        cell.m_lblPostText.handleHashtagTap { (hashtag) in
             let morePostsVC = self.storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
             morePostsVC.m_strCategory = hashtag
             self.navigationController?.pushViewController(morePostsVC, animated: true)
         }
-        cell.m_lblPhotoText.handleURLTap { (url) in
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
+        cell.m_lblPostText.handleURLTap { (url) in
+            let webNC = self.storyboard?.instantiateViewController(withIdentifier: "WDTWebNavigationController") as! UINavigationController
+            let webVC = webNC.viewControllers[0] as! WDTWebViewController
+            webVC.m_strUrl = url
+            self.present(webNC, animated: true, completion: nil)
         }
         
         cell.delegate = self

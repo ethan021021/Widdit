@@ -29,7 +29,7 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_lblLocation: UILabel!
     @IBOutlet weak var m_imgPhoto: UIImageView!
     @IBOutlet weak var m_constraintPhotoHeight: NSLayoutConstraint!
-    @IBOutlet weak var m_lblPhotoText: ActiveLabel!
+    @IBOutlet weak var m_lblPostText: ActiveLabel!
     @IBOutlet weak var m_btnMorePost: UIButton!
     @IBOutlet weak var m_constraintBtnMorePostsHeight: NSLayoutConstraint!
     @IBOutlet weak var m_btnReply: UIButton!
@@ -95,7 +95,7 @@ class WDTFeedTableViewCell: UITableViewCell {
         
         //Text
         if let text = objPost["postText"] as? String {
-            m_lblPhotoText.text = text;
+            m_lblPostText.text = text;
         
             //Get Urls for preview link
             let matches = WDTTextParser.getElements(from: text, with: WDTTextParser.urlPattern)
@@ -106,7 +106,7 @@ class WDTFeedTableViewCell: UITableViewCell {
                     .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             }
         } else {
-            m_lblPhotoText.text = ""
+            m_lblPostText.text = ""
         }
         
         //Photo

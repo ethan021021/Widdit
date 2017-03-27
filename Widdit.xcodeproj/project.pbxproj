@@ -48,6 +48,7 @@
 		3F78B9C51E67ACED006DE822 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F78B9C31E67ACED006DE822 /* LaunchScreen.storyboard */; };
 		3F7EB66E1E7ECE3400531760 /* WDTActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */; };
 		3F7EB66F1E7ECE3400531760 /* WDTActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */; };
+		3F9910301E88B36F0005B80B /* WDTWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F99102F1E88B36F0005B80B /* WDTWebViewController.swift */; };
 		3FB848241E7CED9400313A01 /* WDTProfileAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB848231E7CED9400313A01 /* WDTProfileAboutViewController.swift */; };
 		3FB848261E7D15DB00313A01 /* WDTActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */; };
 		3FEBD97D1E6F08CD00878392 /* JHShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD97C1E6F08CD00878392 /* JHShadowView.swift */; };
@@ -112,6 +113,7 @@
 		3F78B9CC1E67AD5A006DE822 /* Widdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widdit.entitlements; sourceTree = "<group>"; };
 		3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTActivityTableViewCell.swift; sourceTree = "<group>"; };
 		3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTActivityTableViewCell.xib; sourceTree = "<group>"; };
+		3F99102F1E88B36F0005B80B /* WDTWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTWebViewController.swift; sourceTree = "<group>"; };
 		3FB848231E7CED9400313A01 /* WDTProfileAboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTProfileAboutViewController.swift; sourceTree = "<group>"; };
 		3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTActivitiesViewController.swift; sourceTree = "<group>"; };
 		3FEBD97C1E6F08CD00878392 /* JHShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHShadowView.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */,
 				3F23B6531E7F6F6800175017 /* WDTReplyViewController.swift */,
 				3F23B6551E7F716F00175017 /* WDTChatViewController.swift */,
+				3F99102F1E88B36F0005B80B /* WDTWebViewController.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -484,6 +487,7 @@
 				3F3A31641E6E9AC2009267A6 /* WDTPush.swift in Sources */,
 				3F3A315C1E6E97B3009267A6 /* WDTFeedViewController.swift in Sources */,
 				3F3CFDBB1E7C451D00AD8FF8 /* WDTAboutViewController.swift in Sources */,
+				3F9910301E88B36F0005B80B /* WDTWebViewController.swift in Sources */,
 				3F3A31541E6E7232009267A6 /* WDTTabItemAnimation.swift in Sources */,
 				3FF8BA811E6A63A1008A1CEA /* Extensions.swift in Sources */,
 				3FB848261E7D15DB00313A01 /* WDTActivitiesViewController.swift in Sources */,

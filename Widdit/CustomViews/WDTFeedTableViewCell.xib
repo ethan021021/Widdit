@@ -24,7 +24,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="527.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="527"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ySk-yO-rG5" customClass="JHShadowView" customModule="Widdit" customModuleProvider="target">
@@ -102,8 +102,14 @@
                                     <constraint firstItem="6SS-AE-ewM" firstAttribute="top" secondItem="uT2-Ow-LZ6" secondAttribute="top" id="lHn-BL-7Yn"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qop-LG-LhJ" customClass="ActiveLabel" customModule="ActiveLabel">
+                                <rect key="frame" x="12" y="68" width="272" height="337"/>
+                                <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
+                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Oo-Gk-6il" customClass="JHShadowView" customModule="Widdit" customModuleProvider="target">
-                                <rect key="frame" x="12" y="56" width="272" height="0.0"/>
+                                <rect key="frame" x="12" y="417" width="272" height="0.0"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="ShadowRadius">
@@ -115,7 +121,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lcV-Tb-W0g">
-                                <rect key="frame" x="12" y="56" width="272" height="0.0"/>
+                                <rect key="frame" x="12" y="417" width="272" height="0.0"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lcV-Tb-W0g" secondAttribute="height" multiplier="1:1" priority="799" id="lE2-n9-nW8"/>
@@ -127,14 +133,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qop-LG-LhJ" customClass="ActiveLabel" customModule="ActiveLabel">
-                                <rect key="frame" x="12" y="68" width="272" height="351"/>
-                                <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
-                                <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="auz-KD-wEc" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                <rect key="frame" x="224" y="431" width="60" height="35"/>
+                                <rect key="frame" x="224" y="429" width="60" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="aTE-Ei-wTl"/>
                                     <constraint firstAttribute="height" constant="35" id="m2e-BO-CnA"/>
@@ -207,7 +207,9 @@
                                         <state key="disabled">
                                             <color key="titleColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                         </state>
-                                        <state key="selected" title="I'm Undown"/>
+                                        <state key="selected" title="I'm Undown" image="post_icon_down_selected">
+                                            <color key="titleColor" red="0.24313725489999999" green="0.79607843140000001" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="onClickBtnDown:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="SXs-x3-y0f"/>
                                         </connections>
@@ -235,21 +237,21 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="auz-KD-wEc" firstAttribute="top" secondItem="qop-LG-LhJ" secondAttribute="bottom" constant="12" id="0jd-Bh-Doh"/>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="top" secondItem="VLg-Ta-3vT" secondAttribute="top" id="1Wn-J5-T0C"/>
+                            <constraint firstItem="auz-KD-wEc" firstAttribute="top" secondItem="lcV-Tb-W0g" secondAttribute="bottom" constant="12" id="62H-l7-inV"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="height" secondItem="lcV-Tb-W0g" secondAttribute="height" id="D3T-Ei-3FI"/>
-                            <constraint firstItem="auz-KD-wEc" firstAttribute="trailing" secondItem="qop-LG-LhJ" secondAttribute="trailing" id="HHU-ub-kNY"/>
+                            <constraint firstItem="qop-LG-LhJ" firstAttribute="top" secondItem="3Er-HK-ar0" secondAttribute="bottom" constant="12" id="FDu-7a-4Zu"/>
                             <constraint firstItem="qop-LG-LhJ" firstAttribute="width" secondItem="lcV-Tb-W0g" secondAttribute="width" id="Ll0-m3-5lk"/>
                             <constraint firstItem="lcV-Tb-W0g" firstAttribute="leading" secondItem="VLg-Ta-3vT" secondAttribute="leading" constant="12" id="MzW-9g-tHk"/>
                             <constraint firstItem="lcV-Tb-W0g" firstAttribute="centerX" secondItem="3Er-HK-ar0" secondAttribute="centerX" id="PWT-iW-U7q"/>
                             <constraint firstItem="qop-LG-LhJ" firstAttribute="centerX" secondItem="lcV-Tb-W0g" secondAttribute="centerX" id="SM8-9W-bFh"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="width" secondItem="lcV-Tb-W0g" secondAttribute="width" id="WoP-nC-TYX"/>
-                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="top" secondItem="3Er-HK-ar0" secondAttribute="bottom" id="YhO-r1-Lt4"/>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="centerX" secondItem="VLg-Ta-3vT" secondAttribute="centerX" id="Z1i-e9-b8B"/>
                             <constraint firstItem="6q6-57-ERv" firstAttribute="width" secondItem="VLg-Ta-3vT" secondAttribute="width" id="fEJ-wi-LGl"/>
-                            <constraint firstItem="qop-LG-LhJ" firstAttribute="top" secondItem="lcV-Tb-W0g" secondAttribute="bottom" constant="12" id="fqE-Td-mFN"/>
+                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="top" secondItem="qop-LG-LhJ" secondAttribute="bottom" constant="12" id="iuG-YM-FO5"/>
+                            <constraint firstItem="auz-KD-wEc" firstAttribute="trailing" secondItem="lcV-Tb-W0g" secondAttribute="trailing" id="jAC-Ss-Ugi"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="centerX" secondItem="lcV-Tb-W0g" secondAttribute="centerX" id="mBa-Lx-NC3"/>
-                            <constraint firstItem="6q6-57-ERv" firstAttribute="top" secondItem="auz-KD-wEc" secondAttribute="bottom" constant="10" id="oWZ-rC-Sv4"/>
+                            <constraint firstItem="6q6-57-ERv" firstAttribute="top" secondItem="auz-KD-wEc" secondAttribute="bottom" constant="12" id="oWZ-rC-Sv4"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="centerY" secondItem="lcV-Tb-W0g" secondAttribute="centerY" id="ql9-dT-eMn"/>
                             <constraint firstItem="6q6-57-ERv" firstAttribute="centerX" secondItem="VLg-Ta-3vT" secondAttribute="centerX" id="rHl-Z0-obB"/>
                             <constraint firstAttribute="bottom" secondItem="6q6-57-ERv" secondAttribute="bottom" id="w0y-vp-gsZ"/>
@@ -286,7 +288,7 @@
                 <outlet property="m_lblExpireDate" destination="U7o-9v-jQc" id="G1M-8S-X1z"/>
                 <outlet property="m_lblLocation" destination="Ene-oF-oED" id="hl8-J5-XjP"/>
                 <outlet property="m_lblName" destination="6SS-AE-ewM" id="6kf-Bt-Vp1"/>
-                <outlet property="m_lblPhotoText" destination="qop-LG-LhJ" id="8zC-KS-1YE"/>
+                <outlet property="m_lblPostText" destination="qop-LG-LhJ" id="arA-bP-KKl"/>
             </connections>
             <point key="canvasLocation" x="-315" y="-65"/>
         </tableViewCell>
@@ -295,6 +297,7 @@
         <image name="common_avatar_placeholder" width="65" height="61"/>
         <image name="post_button_more" width="22" height="6"/>
         <image name="post_icon_down" width="16" height="16"/>
+        <image name="post_icon_down_selected" width="15" height="15"/>
         <image name="post_icon_reply" width="16" height="16"/>
     </resources>
 </document>

@@ -57,6 +57,15 @@ class WDTAboutViewController: UITableViewController {
             let cell = Bundle.main.loadNibNamed(String(describing: WDTAboutTableViewCell.self), owner: nil, options: [:])?.first as! WDTAboutTableViewCell
             if let about = m_objUser?["about"] as? String {
                 cell.m_lblAbout.text = about
+                
+                cell.m_lblAbout.enabledTypes = [.url]
+                cell.m_lblAbout.hashtagColor = UIColor.WDTTealColor()
+                cell.m_lblAbout.handleURLTap { (url) in
+                    let webNC = self.storyboard?.instantiateViewController(withIdentifier: "WDTWebNavigationController") as! UINavigationController
+                    let webVC = webNC.viewControllers[0] as! WDTWebViewController
+                    webVC.m_strUrl = url
+                    self.present(webNC, animated: true, completion: nil)
+                }
             } else {
                 cell.m_lblAbout.text = "Tell us about yourself"
                 cell.m_lblAbout.alpha = 0.3
