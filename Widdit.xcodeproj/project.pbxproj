@@ -49,6 +49,7 @@
 		3F7EB66E1E7ECE3400531760 /* WDTActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */; };
 		3F7EB66F1E7ECE3400531760 /* WDTActivityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */; };
 		3F9910301E88B36F0005B80B /* WDTWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F99102F1E88B36F0005B80B /* WDTWebViewController.swift */; };
+		3F9910321E88F8000005B80B /* notification.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F9910311E88F8000005B80B /* notification.mp3 */; };
 		3FB848241E7CED9400313A01 /* WDTProfileAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB848231E7CED9400313A01 /* WDTProfileAboutViewController.swift */; };
 		3FB848261E7D15DB00313A01 /* WDTActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */; };
 		3FEBD97D1E6F08CD00878392 /* JHShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEBD97C1E6F08CD00878392 /* JHShadowView.swift */; };
@@ -114,6 +115,7 @@
 		3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTActivityTableViewCell.swift; sourceTree = "<group>"; };
 		3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTActivityTableViewCell.xib; sourceTree = "<group>"; };
 		3F99102F1E88B36F0005B80B /* WDTWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTWebViewController.swift; sourceTree = "<group>"; };
+		3F9910311E88F8000005B80B /* notification.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notification.mp3; sourceTree = "<group>"; };
 		3FB848231E7CED9400313A01 /* WDTProfileAboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTProfileAboutViewController.swift; sourceTree = "<group>"; };
 		3FB848251E7D15DB00313A01 /* WDTActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTActivitiesViewController.swift; sourceTree = "<group>"; };
 		3FEBD97C1E6F08CD00878392 /* JHShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHShadowView.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 		3FF8BA721E6A5FDF008A1CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3F9910311E88F8000005B80B /* notification.mp3 */,
 				3F23B5F31E7ED4BF00175017 /* SFUIText-Bold.ttf */,
 				3FF8BA741E6A5FDF008A1CEA /* SFUIText-Light.ttf */,
 				3FF8BA751E6A5FDF008A1CEA /* SFUIText-Medium.ttf */,
@@ -402,6 +405,7 @@
 				3F3A31501E6D6610009267A6 /* WDTProfileSituationTableViewCell.xib in Resources */,
 				3FF8BA781E6A5FDF008A1CEA /* SFUIText-Light.ttf in Resources */,
 				3F3CFDC31E7C487900AD8FF8 /* WDTAccountTableViewCell.xib in Resources */,
+				3F9910321E88F8000005B80B /* notification.mp3 in Resources */,
 				3FF8BA791E6A5FDF008A1CEA /* SFUIText-Medium.ttf in Resources */,
 				3F3CFDC91E7CCD3100AD8FF8 /* WDTAvatarTableViewCell.xib in Resources */,
 				3F23B5F41E7ED4BF00175017 /* SFUIText-Bold.ttf in Resources */,
