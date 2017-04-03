@@ -16,8 +16,7 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
     var selectedSegment: SJSegmentTab?
     
     override func viewDidLoad() {
-        // Do any additional setup after loading the view.
-        
+        // Do any additional setup after loading the view.        
         let headerVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTProfileHeaderViewController.self)) as! WDTProfileHeaderViewController
         headerVC.m_objUser = m_objUser
         headerVC.m_parentVC = self

@@ -44,10 +44,13 @@ class WDTChatViewController: JSQMessagesViewController {
         
         inputToolbar.contentView.leftBarButtonItem = nil
         
-        inputToolbar.contentView.textView.becomeFirstResponder()
-        
         showHud()
         getChatHistory()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        inputToolbar.contentView.textView.becomeFirstResponder()
     }
     
     func getChatHistory() {

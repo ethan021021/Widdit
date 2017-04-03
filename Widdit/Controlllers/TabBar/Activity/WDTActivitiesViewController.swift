@@ -115,6 +115,6 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
         let replyVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTReplyViewController.self)) as! WDTReplyViewController
         replyVC.m_objPost = objPost
         replyVC.m_objUser = objUser
-        customPresentViewController(presentr, viewController: replyVC, animated: true, completion: nil)
+        navigationController?.pushViewController(replyVC, animated: true)
     }
 }

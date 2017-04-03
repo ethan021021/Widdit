@@ -11,14 +11,15 @@ import Parse
 
 class WDTReplyViewController: UIViewController {
 
+    @IBOutlet var m_viewTitle: UIView!
     @IBOutlet weak var m_imgAvatar: UIImageView!
     @IBOutlet weak var m_lblUsername: UILabel!
+    @IBOutlet weak var m_lblPostText: UILabel!
     @IBOutlet weak var m_viewChatContainer: UIView!
     
     var m_objPost: PFObject?
     var m_objUser: PFUser?
-    var m_isFeedChat = false
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,6 +49,12 @@ class WDTReplyViewController: UIViewController {
                 make.edges.equalToSuperview()
             })
         }
+        
+        if let objPost = m_objPost {
+            m_lblPostText.text = objPost["postText"] as? String
+        }
+        
+        navigationItem.titleView = m_viewTitle
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,9 +72,5 @@ class WDTReplyViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-    @IBAction func onClickBtnClose(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
     
 }

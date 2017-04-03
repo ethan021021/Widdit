@@ -30,5 +30,4 @@ target 'Widdit' do
     pod 'CircleSlider', '~> 0.5'
     pod 'SJSegmentedScrollView', '~> 1.3'
     pod 'JSQMessagesViewController', '~> 7.3'
-    pod 'Presentr', '~> 1.1'
 end

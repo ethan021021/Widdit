@@ -31,7 +31,7 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
             title = "#\(strCategory)"
             m_aryPosts = WDTPost.sharedInstance().getPosts(user: nil, category: strCategory)
         } else if let objPost = m_objPost {
-            title = ""
+            title = "Post"
             m_aryPosts = [objPost]
         }
     }
@@ -51,5 +51,16 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction override func onClickBtnAddPost(_ sender: Any) {
+        if let strCategory = m_strCategory {
+            let addPostNC = storyboard?.instantiateViewController(withIdentifier: "WDTAddPostNavigationController") as! UINavigationController
+            let addPostVC = addPostNC.viewControllers[0] as! WDTAddPostViewController
+            addPostVC.m_strPlaceholder = "#\(strCategory)"            
+            present(addPostNC, animated: true, completion: nil)
+        } else {
+            super.onClickBtnAddPost(sender)
+        }
+    }
 
 }

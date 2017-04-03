@@ -9,9 +9,11 @@
 import UIKit
 import Parse
 import ALCameraViewController
+import UITextView_Placeholder
 
 class WDTAddPostViewController: UIViewController, UITextViewDelegate {
 
+    var m_strPlaceholder: String?
     var m_objPost: PFObject?
     
     @IBOutlet weak var m_btnPost: UIBarButtonItem!
@@ -31,6 +33,9 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        if let strPlaceholder = m_strPlaceholder {
+            m_txtDescription.placeholder = strPlaceholder
+        }
         
         if let objPost = m_objPost {
             m_txtDescription.text = objPost["postText"] as? String ?? ""
