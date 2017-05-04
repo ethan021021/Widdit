@@ -66,6 +66,7 @@
 		3FF8BA851E6A9BBB008A1CEA /* JHButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA841E6A9BBB008A1CEA /* JHButton.swift */; };
 		3FF8BA891E6AA03A008A1CEA /* WDTTutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA881E6AA03A008A1CEA /* WDTTutorialContentViewController.swift */; };
 		3FF8BA8B1E6AA086008A1CEA /* WDTTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA8A1E6AA086008A1CEA /* WDTTutorialViewController.swift */; };
+		96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */; };
 		A0AA92FF219A442C78EF6ED7 /* Pods_Widdit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A56DC05575FA5C0BF47FFFF6 /* Pods_Widdit.framework */; };
 /* End PBXBuildFile section */
 
@@ -132,6 +133,7 @@
 		3FF8BA841E6A9BBB008A1CEA /* JHButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHButton.swift; sourceTree = "<group>"; };
 		3FF8BA881E6AA03A008A1CEA /* WDTTutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTTutorialContentViewController.swift; sourceTree = "<group>"; };
 		3FF8BA8A1E6AA086008A1CEA /* WDTTutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTTutorialViewController.swift; sourceTree = "<group>"; };
+		96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkPreviewView.swift; sourceTree = "<group>"; };
 		99C5035B241671F3B627B907 /* Pods-Widdit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widdit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Widdit/Pods-Widdit.release.xcconfig"; sourceTree = "<group>"; };
 		A56DC05575FA5C0BF47FFFF6 /* Pods_Widdit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widdit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B641342E17CE113A5F0D8EC8 /* Pods-Widdit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widdit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Widdit/Pods-Widdit.debug.xcconfig"; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				3F3CFDCB1E7CCD5E00AD8FF8 /* WDTProfileTextTableViewCell.xib */,
 				3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */,
 				3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */,
+				96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -361,7 +364,7 @@
 				TargetAttributes = {
 					3F78B9B61E67ACED006DE822 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 7HTV4A5W6Y;
+						DevelopmentTeam = H7P63R6R55;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -507,6 +510,7 @@
 				3F3CFDCC1E7CCD5E00AD8FF8 /* WDTProfileTextTableViewCell.swift in Sources */,
 				3FF8BA851E6A9BBB008A1CEA /* JHButton.swift in Sources */,
 				3F3CFDC81E7CCD3100AD8FF8 /* WDTAvatarTableViewCell.swift in Sources */,
+				96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */,
 				3F3A314F1E6D6610009267A6 /* WDTProfileSituationTableViewCell.swift in Sources */,
 				3F3A314C1E6D62E6009267A6 /* WDTSignUpSituationViewController.swift in Sources */,
 				3FF8BA8B1E6AA086008A1CEA /* WDTTutorialViewController.swift in Sources */,
@@ -653,7 +657,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Widdit/Widdit.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7HTV4A5W6Y;
+				DEVELOPMENT_TEAM = H7P63R6R55;
 				INFOPLIST_FILE = Widdit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.widdit;
@@ -669,7 +673,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Widdit/Widdit.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7HTV4A5W6Y;
+				DEVELOPMENT_TEAM = H7P63R6R55;
 				INFOPLIST_FILE = Widdit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.widdit;
