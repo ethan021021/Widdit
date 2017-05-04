@@ -44,6 +44,11 @@ class WDTFeedTableViewCell: UITableViewCell {
     var m_objPost: PFObject?
     var delegate: WDTFeedTableViewCellDelegate?
     
+    
+    var previewURLString: String?
+    var didTapToLink: ((URL) -> Void)?
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -53,6 +58,22 @@ class WDTFeedTableViewCell: UITableViewCell {
         
         let photoTap = UITapGestureRecognizer(target: self, action: #selector(onTapPhoto))
         m_imgPhoto.addGestureRecognizer(photoTap)
+        
+        m_lblPostText.handleURLTap { [weak self] url in
+            self?.onTapToLink(url: url)
+        }
+        
+        m_linkPreviewView.onTap = { [weak self] in
+            if let urlString = self?.previewURLString, let url = URL(string: urlString) {
+                self?.onTapToLink(url: url)
+            }
+        }
+    }
+    
+    fileprivate func onTapToLink(url: URL?) {
+        if let url = url {
+            self.didTapToLink?(url)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -97,8 +118,6 @@ class WDTFeedTableViewCell: UITableViewCell {
             m_lblLocation.text = ""
         }
         
-        var url: String?
-        
         //Text
         if let text = objPost["postText"] as? String {
             m_lblPostText.text = text;
@@ -108,7 +127,7 @@ class WDTFeedTableViewCell: UITableViewCell {
             if matches.count > 0 {
                 let match = matches[0]
                 let nsstring = text as NSString
-                url = nsstring.substring(with: match.range)
+                previewURLString = nsstring.substring(with: match.range)
                     .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             }
         } else {
@@ -139,11 +158,11 @@ class WDTFeedTableViewCell: UITableViewCell {
             
             m_linkPreviewViewHeightConstraint.priority = 600
             m_linkPreviewViewVerticalOffsetConstraints.forEach { $0.constant = 12 }
-        } else if url != nil {
+        } else if let previewURLString = previewURLString {
             m_linkPreviewViewHeightConstraint.priority = 1000
             
             let sl = SwiftLinkPreview()
-            sl.preview(url, onSuccess: { (result) in
+            sl.preview(previewURLString, onSuccess: { (result) in
                 if let imageUrl = result[.image] as? String,
                     let title = result[.title] as? String,
                     let description = result[.description] as? String,

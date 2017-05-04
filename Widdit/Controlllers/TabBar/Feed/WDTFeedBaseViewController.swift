@@ -62,11 +62,11 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
             morePostsVC.m_strCategory = hashtag
             self.navigationController?.pushViewController(morePostsVC, animated: true)
         }
-        cell.m_lblPostText.handleURLTap { (url) in
-            let webNC = self.storyboard?.instantiateViewController(withIdentifier: "WDTWebNavigationController") as! UINavigationController
+        cell.didTapToLink = { [weak self] url in
+            let webNC = self?.storyboard?.instantiateViewController(withIdentifier: "WDTWebNavigationController") as! UINavigationController
             let webVC = webNC.viewControllers[0] as! WDTWebViewController
             webVC.m_strUrl = url
-            self.present(webNC, animated: true, completion: nil)
+            self?.present(webNC, animated: true, completion: nil)
         }
         
         cell.delegate = self
