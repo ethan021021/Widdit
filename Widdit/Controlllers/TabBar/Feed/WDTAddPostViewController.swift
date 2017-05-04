@@ -152,11 +152,11 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             let photoData = UIImageJPEGRepresentation(m_imgPost.image!, 0.5)
             let photoFile = PFFile(name: "postPhoto.jpg", data: photoData!)
             photoFile?.saveInBackground(block: { (success, error) in
-                self.m_objPost?["postUrl"] = photoFile?.url
+                self.m_objPost?["photoUrl"] = photoFile?.url
                 self.m_objPost?.saveInBackground()
             })
         } else {
-            m_objPost?["postUrl"] = ""
+            m_objPost?["photoUrl"] = ""
         }
         
         var tags = [String]()
