@@ -39,7 +39,6 @@ class WDTFeedViewController: WDTFeedBaseViewController {
     func loadFeed() {
         PFGeoPoint.geoPointForCurrentLocation { (geoPoint, error) in
             if let error = error {
-                self.alert(msg: "Geolocation: \(error.localizedDescription)")
                 print(error.localizedDescription)
                 self.hideHud()
             } else {
@@ -94,15 +93,6 @@ class WDTFeedViewController: WDTFeedBaseViewController {
         return WDTPost.sharedInstance().m_aryAllPosts.filter { (tmpPost) -> Bool in
             return (post["user"] as! PFUser).objectId == (tmpPost["user"] as! PFUser).objectId
             }.count
-    }
-    
-    
-    fileprivate func alert(msg: String) {
-        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-        
-        present(alert, animated: true, completion: nil)
     }
     
 }
