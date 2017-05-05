@@ -138,7 +138,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             let location = CLLocation(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
             
             geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
-                self.alert(msg: "Geolocation")
+                self.alert(msg: "Geolocation \(error)")
                 if let placemarks = placemarks {
                     if placemarks.count > 0 {
                         let placemark = placemarks.last
@@ -167,10 +167,10 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             let photoData = UIImageJPEGRepresentation(m_imgPost.image!, 0.5)
             let photoFile = PFFile(name: "postPhoto.jpg", data: photoData!)
             photoFile?.saveInBackground(block: { (success, error) in
-                self.alert(msg: "Save photo")
+                self.alert(msg: "Save photo \(success) \(error)")
                 self.m_objPost?["postUrl"] = photoFile?.url
                 self.m_objPost?.saveInBackground(block: { (success, error) in
-                    self.alert(msg: "Save post 1")
+                    self.alert(msg: "Save post 1 \(success) \(error)")
                     removeTask()
                 })
             })
@@ -191,7 +191,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         m_objPost?["hashtags"] = tags
 
         m_objPost?.saveInBackground(block: { (success, error) in
-            self.alert(msg: "Save post 2")
+            self.alert(msg: "Save post 2 \(success) \(error)")
             if error == nil {
                 self.addNewCategories() {
                     removeTask()
@@ -271,11 +271,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
     
     
     fileprivate func alert(msg: String) {
-        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-        
-        present(alert, animated: true, completion: nil)
+        print("ALERT: \(msg)")
     }
     
 }
