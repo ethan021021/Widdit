@@ -40,7 +40,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         if let objPost = m_objPost {
             m_txtDescription.text = objPost["postText"] as? String ?? ""
             
-            let photo = objPost["photoUrl"] as? String ?? ""
+            let photo = objPost["postUrl"] as? String ?? ""
             if photo.characters.count > 0 {
                 m_imgPost.kf.setImage(with: URL(string: photo))
                 m_btnImageDelete.isHidden = false
@@ -166,13 +166,13 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             let photoData = UIImageJPEGRepresentation(m_imgPost.image!, 0.5)
             let photoFile = PFFile(name: "postPhoto.jpg", data: photoData!)
             photoFile?.saveInBackground(block: { (success, error) in
-                self.m_objPost?["photoUrl"] = photoFile?.url
+                self.m_objPost?["postUrl"] = photoFile?.url
                 self.m_objPost?.saveInBackground(block: { (success, error) in
                     removeTask()
                 })
             })
         } else {
-            m_objPost?["photoUrl"] = ""
+            m_objPost?["postUrl"] = ""
         }
         
         var tags = [String]()

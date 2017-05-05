@@ -135,7 +135,7 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
         
         //Photo
-        let photo = objPost["photoUrl"] as? String ?? ""
+        let photo = objPost["postUrl"] as? String ?? ""
         if photo.characters.count > 0 {
             m_imgPhoto.kf.setImage(with: URL(string: photo))
             self.m_imgPhotoTopEdgeConstraint.constant = 12
