@@ -19,10 +19,15 @@ class WDTChatViewController: JSQMessagesViewController {
     var outgoingBubbleImageData: JSQMessagesBubbleImage?
     var incomingBubbleImageData: JSQMessagesBubbleImage?
     
+    var senderAvatar: UIImage?
+    var recipientAvatar: UIImage?
+    
     var m_aryMessages = [JSQMessageData]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupToolbar()
 
         // Do any additional setup after loading the view.
         let objUser = PFUser.current()!
@@ -34,18 +39,45 @@ class WDTChatViewController: JSQMessagesViewController {
             senderDisplayName = objUser.username
         }
         
-        collectionView.collectionViewLayout.incomingAvatarViewSize = .zero
-        collectionView.collectionViewLayout.outgoingAvatarViewSize = .zero
+        if let avatarFile = objUser["ava"] as? PFFile {
+            if let data = try? avatarFile.getData() {
+                senderAvatar = UIImage(data: data)
+            }
+        }
+        
+        if let avatarFile = m_objUser?["ava"] as? PFFile {
+            if let data = try? avatarFile.getData() {
+                recipientAvatar = UIImage(data: data)
+            }
+        }
+        
         collectionView.collectionViewLayout.messageBubbleFont = UIFont.WDTRegular(size: 16)
         
-        let bubbleFactory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageData = bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor(r: 90, g: 212, b: 213, a: 1))
-        incomingBubbleImageData = bubbleFactory?.incomingMessagesBubbleImage(with: UIColor(r: 239, g: 239, b: 239, a: 1))
+        outgoingBubbleImageData = JSQMessagesBubbleImageFactory(bubble: UIImage.jsq_bubbleRegularTailless(),
+                                                                capInsets: .zero)?
+            .outgoingMessagesBubbleImage(with: UIColor(r: 71, g: 211, b: 214, a: 1))
+        incomingBubbleImageData = JSQMessagesBubbleImageFactory(bubble: UIImage.jsq_bubbleRegularTailless(),
+                                                                capInsets: .zero)?
+            .incomingMessagesBubbleImage(with: UIColor(r: 249, g: 249, b: 249, a: 1))
         
         inputToolbar.contentView.leftBarButtonItem = nil
         
         showHud()
         getChatHistory()
+    }
+    
+    fileprivate func setupToolbar() {
+        self.inputToolbar.maximumHeight = 256
+        self.inputToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        self.inputToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        self.inputToolbar.clipsToBounds = false
+        self.inputToolbar.layer.shadowColor = UIColor(r: 206, g: 209, b: 210, a: 1).cgColor
+        self.inputToolbar.layer.shadowOffset = CGSize(width: 0, height: -1)
+        self.inputToolbar.layer.shadowRadius = 3
+        self.inputToolbar.layer.shadowOpacity = 0.5
+        self.inputToolbar.contentView.backgroundColor = .white
+        self.inputToolbar.contentView.textView.layer.borderWidth = 0
+        self.inputToolbar.contentView.textView.backgroundColor = .clear
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -176,6 +208,17 @@ class WDTChatViewController: JSQMessagesViewController {
         }
     }
     
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
+        let objMessage = m_aryMessages[indexPath.item]
+        if objMessage.senderId() == senderId {
+            return JSQMessagesAvatarImageFactory.avatarImage(with: senderAvatar ?? UIImage(named: "common_avatar_placeholder"),
+                                                             diameter: 30)
+        } else {
+            return JSQMessagesAvatarImageFactory.avatarImage(with: recipientAvatar ?? UIImage(named: "common_avatar_placeholder"),
+                                                             diameter: 30)
+        }
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         
@@ -183,7 +226,7 @@ class WDTChatViewController: JSQMessagesViewController {
         if objMessage.senderId() == senderId {
             cell.textView.textColor = UIColor.white
         } else {
-            cell.textView.textColor = UIColor(r: 51, g: 51, b: 51, a: 1)
+            cell.textView.textColor = UIColor(r: 68, g: 74, b: 89, a: 1)
         }
         
         return cell
