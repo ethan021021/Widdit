@@ -197,7 +197,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tpt-uf-raG" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="189" width="280" height="40"/>
+                                                <rect key="frame" x="20" y="189" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -232,7 +232,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lw-gA-DDh" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="279" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="278.5" width="280" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="9dT-ha-cWy"/>
                                                 </constraints>
@@ -594,6 +594,9 @@
                                                     <outlet property="delegate" destination="Smt-0j-3Iy" id="m2W-TR-iKy"/>
                                                 </connections>
                                             </collectionView>
+                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kik-b7-cqe">
+                                                <rect key="frame" x="150" y="194" width="20" height="20"/>
+                                            </activityIndicatorView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8dS-z5-ETg">
                                                 <rect key="frame" x="45" y="273" width="230" height="249"/>
                                                 <subviews>
@@ -639,9 +642,11 @@
                                             <constraint firstAttribute="trailing" secondItem="SXh-gs-afI" secondAttribute="trailing" constant="20" id="Erz-za-XiE"/>
                                             <constraint firstItem="SXh-gs-afI" firstAttribute="leading" secondItem="WM9-nZ-FYP" secondAttribute="leading" constant="20" id="Hei-Ne-4P3"/>
                                             <constraint firstItem="yf8-Ov-upJ" firstAttribute="leading" secondItem="WM9-nZ-FYP" secondAttribute="leading" constant="20" id="Itb-9H-muN"/>
+                                            <constraint firstItem="kik-b7-cqe" firstAttribute="centerX" secondItem="SXh-gs-afI" secondAttribute="centerX" id="Jod-Ec-bAQ"/>
                                             <constraint firstItem="8dS-z5-ETg" firstAttribute="centerX" secondItem="WM9-nZ-FYP" secondAttribute="centerX" id="TGd-sl-c18"/>
                                             <constraint firstItem="SXh-gs-afI" firstAttribute="top" secondItem="yf8-Ov-upJ" secondAttribute="bottom" constant="20" id="Zy0-oI-sdg"/>
                                             <constraint firstAttribute="bottom" secondItem="8dS-z5-ETg" secondAttribute="bottom" constant="15" id="fRk-gk-cVj"/>
+                                            <constraint firstItem="kik-b7-cqe" firstAttribute="centerY" secondItem="SXh-gs-afI" secondAttribute="centerY" id="gPe-9p-RfV"/>
                                             <constraint firstItem="yf8-Ov-upJ" firstAttribute="centerX" secondItem="WM9-nZ-FYP" secondAttribute="centerX" id="qcN-Os-b5u"/>
                                         </constraints>
                                     </view>
@@ -679,6 +684,7 @@
                     <connections>
                         <outlet property="m_btnPost" destination="NCB-By-Feg" id="Xxa-9Z-iGf"/>
                         <outlet property="m_imagesCollectionView" destination="SXh-gs-afI" id="3Uv-Px-6i2"/>
+                        <outlet property="m_imagesLoadingIndicator" destination="kik-b7-cqe" id="OZb-hz-9f8"/>
                         <outlet property="m_lblLength" destination="xfS-Th-5km" id="CcA-6M-yIR"/>
                         <outlet property="m_lblSliderValue" destination="wIy-zU-ESL" id="cM8-qH-eeb"/>
                         <outlet property="m_txtDescription" destination="YkF-J0-t6T" id="6to-3C-Vuc"/>
@@ -1444,7 +1450,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpV-h0-1vF">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="536"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="535"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_avatar_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="GZX-xO-P0h">
                                                 <rect key="frame" x="116" y="16" width="88" height="88"/>
@@ -1494,7 +1500,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Hh-jK-YmO" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="237" width="280" height="40"/>
+                                                <rect key="frame" x="20" y="237" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1523,7 +1529,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ejU-K8-EBs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="307" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="306.5" width="280" height="39"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1552,7 +1558,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aIY-Cm-tfQ" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="376" width="280" height="40"/>
+                                                <rect key="frame" x="20" y="375.5" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1581,7 +1587,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0A-rc-Ruf" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="466" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="465" width="280" height="50"/>
                                                 <color key="backgroundColor" red="0.46666666666666667" green="0.8784313725490196" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="zci-h1-wRX"/>

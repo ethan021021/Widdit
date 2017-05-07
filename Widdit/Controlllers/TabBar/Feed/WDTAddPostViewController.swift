@@ -11,6 +11,8 @@ import Parse
 import ALCameraViewController
 import UITextView_Placeholder
 import DKImagePickerController
+import Kingfisher
+
 
 class WDTAddPostViewController: UIViewController, UITextViewDelegate {
 
@@ -22,6 +24,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var m_txtDescription: UITextView!
     @IBOutlet weak var m_lblLength: UILabel!
     @IBOutlet weak var m_imagesCollectionView: UICollectionView!
+    @IBOutlet weak var m_imagesLoadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var m_lblSliderValue: UILabel!
     @IBOutlet weak var m_viewSliderContainer: UIView!
     
@@ -30,8 +33,22 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
     var geoPoint: PFGeoPoint?
     var photos: [UIImage] = []
     
+    var isLoadPhotos = false {
+        didSet {
+            self.m_imagesCollectionView.isUserInteractionEnabled = !isLoadPhotos
+            if isLoadPhotos {
+                self.m_imagesLoadingIndicator.startAnimating()
+                self.m_imagesLoadingIndicator.isHidden = false
+            } else {
+                self.m_imagesLoadingIndicator.stopAnimating()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        isLoadPhotos = false
 
         // Do any additional setup after loading the view.
         if let strPlaceholder = m_strPlaceholder {
@@ -41,10 +58,31 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         if let objPost = m_objPost {
             m_txtDescription.text = objPost["postText"] as? String ?? ""
             
-            let photo = objPost["postUrl"] as? String ?? ""
-            if photo.characters.count > 0 {
-//                m_imgPost.kf.setImage(with: URL(string: photo))
-//                m_btnImageDelete.isHidden = false
+            let photoURLs = (objPost["photoURLs"] as? [String] ?? [])
+            if photoURLs.count > 0 {
+                isLoadPhotos = true
+                var photosLoaded = 0
+                photoURLs.forEach { path in
+                    guard let url = URL(string: path) else { return }
+                    
+                    KingfisherManager.shared.retrieveImage(with: url,
+                                                           options: nil,
+                                                           progressBlock: nil,
+                                                           completionHandler:
+                    { [weak self] (image, error, _, _) in
+                        if let image = image {
+                            objc_sync_enter(self)
+                            self?.photos.append(image)
+                            self?.m_imagesCollectionView.reloadData()
+                            objc_sync_exit(self)
+                        }
+                        
+                        photosLoaded += 1
+                        if photosLoaded >= photoURLs.count {
+                            self?.isLoadPhotos = false
+                        }
+                    })
+                }
             }
         } else if let hashtag = m_hashtag {
             m_txtDescription.text = hashtag + " "
@@ -163,18 +201,40 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         }
         
         if photos.count > 0 {
-            tasksCount += photos.count
+            tasksCount += 1
             
-//            let photoData = UIImageJPEGRepresentation(m_imgPost.image!, 0.5)
-//            let photoFile = PFFile(name: "postPhoto.jpg", data: photoData!)
-//            photoFile?.saveInBackground(block: { (success, error) in
-//                self.m_objPost?["postUrl"] = photoFile?.url
-//                self.m_objPost?.saveInBackground(block: { (success, error) in
-//                    removeTask()
-//                })
-//            })
+            var photoTasksCount = 0
+            
+            var photosToSave: [String] = []
+            
+            func removePhotoTask() {
+                photoTasksCount -= 1
+                
+                if photoTasksCount <= 0 {
+                    self.m_objPost?["photoURLs"] = photosToSave
+                    self.m_objPost?.saveInBackground(block: { (success, error) in
+                        removeTask()
+                    })
+                }
+            }
+            
+            photos.forEach { photo in
+                if let photoData = UIImageJPEGRepresentation(photo, 0.5) {
+                    if let photoFile = PFFile(name: "postPhoto.jpg", data: photoData) {
+                        photoTasksCount += 1
+                        
+                        photoFile.saveInBackground(block: { (success, error) in
+                            if let url = photoFile.url {
+                                photosToSave.append(url)
+                            }
+                            
+                            removePhotoTask()
+                        })
+                    }
+                }
+            }
         } else {
-            m_objPost?["postUrl"] = ""
+            m_objPost?["photoURLs"] = [String]()
         }
         
         var tags = [String]()
