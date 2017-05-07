@@ -226,7 +226,7 @@ class WDTChatViewController: JSQMessagesViewController {
         if objMessage.senderId() == senderId {
             cell.textView.textColor = UIColor.white
         } else {
-            cell.textView.textColor = UIColor(r: 51, g: 51, b: 51, a: 1)
+            cell.textView.textColor = UIColor(r: 68, g: 74, b: 89, a: 1)
         }
         
         return cell
