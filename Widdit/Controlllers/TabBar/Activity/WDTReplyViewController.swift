@@ -112,7 +112,9 @@ class WDTReplyViewController: UIViewController {
                 if pendingRequests <= 0 {
                     self.m_lblPostDowns.text = "\(totalDowns)"
                     
-                    self.m_viewPostInfoHeightConstraint.constant = 18
+                    if totalDowns > 0 {
+                        self.m_viewPostInfoHeightConstraint.constant = 18
+                    }
                 }
             }
             
@@ -139,7 +141,9 @@ class WDTReplyViewController: UIViewController {
                     let replies = query.countObjects(nil)
                     self.m_lblPostReplies.text = "\(replies)"
                     
-                    self.m_viewPostInfoHeightConstraint.constant = 18
+                    if replies > 0 {
+                        self.m_viewPostInfoHeightConstraint.constant = 18
+                    }
                 }
             }
         }
