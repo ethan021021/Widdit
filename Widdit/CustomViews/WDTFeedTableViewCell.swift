@@ -136,53 +136,58 @@ class WDTFeedTableViewCell: UITableViewCell {
         
         //Photo
         let photo = objPost["postUrl"] as? String ?? ""
-        if photo.characters.count > 0 {
+        let photoIsExists = photo.characters.count > 0
+        if photoIsExists {
             m_imgPhoto.kf.setImage(with: URL(string: photo))
             self.m_imgPhotoTopEdgeConstraint.constant = 12
             self.m_constraintPhotoHeight.priority = 801
         }
         
         // Link preview
-        if let imageUrl = objPost["linkPhotoUrl"] as? String,
-            let title = objPost["linkTitle"] as? String,
-            let description = objPost["linkDescription"] as? String,
-            let site = objPost["linkSite"] as? String {
-            
-            m_linkPreviewView.linkImageView.kf.setImage(with: URL(string: imageUrl), placeholder: nil, completionHandler: { [weak self] (image, error, _, _) in                
-                self?.m_linkPreviewViewHeightConstraint.priority = 200
-                self?.delegate?.onUpdateObject(objPost)
-            })
-            m_linkPreviewView.linkTitleLabel.text = title
-            m_linkPreviewView.linkDescriptionLabel.text = description
-            m_linkPreviewView.linkSiteLabel.text = site
-            
-            m_linkPreviewViewHeightConstraint.priority = 600
-            m_linkPreviewViewVerticalOffsetConstraints.forEach { $0.constant = 12 }
-        } else if let previewURLString = previewURLString {
-            m_linkPreviewViewHeightConstraint.priority = 1000
-            
-            let sl = SwiftLinkPreview()
-            sl.preview(previewURLString, onSuccess: { (result) in
-                if let imageUrl = result[.image] as? String,
-                    let title = result[.title] as? String,
-                    let description = result[.description] as? String,
-                    let site = result[.canonicalUrl] as? String {
-                    
-                    objPost["linkPhotoUrl"] = imageUrl
-                    objPost["linkTitle"] = title
-                    objPost["linkDescription"] = description
-                    objPost["linkSite"] = site
-                    objPost.saveInBackground(block: { (success, error) in
-                        if let error = error {
-                            print(error.localizedDescription)
-                        } else {
-                            self.delegate?.onUpdateObject(objPost)
-                        }
-                    })
-                }
-            }, onError: { (error) in
-                print(error.description)
-            })
+        if !photoIsExists {
+            if let imageUrl = objPost["linkPhotoUrl"] as? String,
+                let title = objPost["linkTitle"] as? String,
+                let description = objPost["linkDescription"] as? String,
+                let site = objPost["linkSite"] as? String {
+                
+                m_linkPreviewView.linkImageView.kf.setImage(with: URL(string: imageUrl), placeholder: nil, completionHandler: { [weak self] (image, error, _, _) in                
+                    self?.m_linkPreviewViewHeightConstraint.priority = 200
+                    self?.delegate?.onUpdateObject(objPost)
+                })
+                m_linkPreviewView.linkTitleLabel.text = title
+                m_linkPreviewView.linkDescriptionLabel.text = description
+                m_linkPreviewView.linkSiteLabel.text = site
+                
+                m_linkPreviewViewHeightConstraint.priority = 600
+                m_linkPreviewViewVerticalOffsetConstraints.forEach { $0.constant = 12 }
+            } else if let previewURLString = previewURLString {
+                m_linkPreviewViewHeightConstraint.priority = 1000
+                
+                let sl = SwiftLinkPreview()
+                sl.preview(previewURLString, onSuccess: { (result) in
+                    if let imageUrl = result[.image] as? String,
+                        let title = result[.title] as? String,
+                        let description = result[.description] as? String,
+                        let site = result[.canonicalUrl] as? String {
+                        
+                        objPost["linkPhotoUrl"] = imageUrl
+                        objPost["linkTitle"] = title
+                        objPost["linkDescription"] = description
+                        objPost["linkSite"] = site
+                        objPost.saveInBackground(block: { (success, error) in
+                            if let error = error {
+                                print(error.localizedDescription)
+                            } else {
+                                self.delegate?.onUpdateObject(objPost)
+                            }
+                        })
+                    }
+                }, onError: { (error) in
+                    print(error.description)
+                })
+            } else {
+                m_linkPreviewViewHeightConstraint.priority = 1000
+            }
         } else {
             m_linkPreviewViewHeightConstraint.priority = 1000
         }
