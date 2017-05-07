@@ -14,6 +14,7 @@ import UITextView_Placeholder
 class WDTAddPostViewController: UIViewController, UITextViewDelegate {
 
     var m_strPlaceholder: String?
+    var m_hashtag: String?
     var m_objPost: PFObject?
     
     @IBOutlet weak var m_btnPost: UIBarButtonItem!
@@ -46,6 +47,8 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
                 m_btnImageDelete.isHidden = false
                 isPhoto = true
             }
+        } else if let hashtag = m_hashtag {
+            m_txtDescription.text = hashtag + " "
         }
         
         m_lblLength.text = "\(m_txtDescription.text.characters.count) / \(Constants.Integer.MAX_POST_LENGTH)"

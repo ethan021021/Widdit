@@ -56,7 +56,7 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
         if let strCategory = m_strCategory {
             let addPostNC = storyboard?.instantiateViewController(withIdentifier: "WDTAddPostNavigationController") as! UINavigationController
             let addPostVC = addPostNC.viewControllers[0] as! WDTAddPostViewController
-            addPostVC.m_strPlaceholder = "#\(strCategory)"            
+            addPostVC.m_hashtag = "#\(strCategory)"
             present(addPostNC, animated: true, completion: nil)
         } else {
             super.onClickBtnAddPost(sender)
