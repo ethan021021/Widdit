@@ -11,9 +11,8 @@ import Parse
 
 class WDTReplyViewController: UIViewController {
 
-    @IBOutlet var m_viewTitle: UIView!
-    @IBOutlet weak var m_imgAvatar: UIImageView!
-    @IBOutlet weak var m_lblUsername: UILabel!
+    var m_imgAvatar: UIImageView!
+    var m_lblUsername: UILabel!
     @IBOutlet weak var m_lblPostText: UILabel!
     @IBOutlet weak var m_lblPostDowns: UILabel!
     @IBOutlet weak var m_lblPostReplies: UILabel!
@@ -29,6 +28,8 @@ class WDTReplyViewController: UIViewController {
         
         setTabBarHidden(true)
         
+        setupNavigationBar()
+        
         m_viewPostInfoHeightConstraint.constant = 0
 
         // Do any additional setup after loading the view.
@@ -41,10 +42,12 @@ class WDTReplyViewController: UIViewController {
                     }
                     
                     if let strName = objUser["name"] as? String {
-                        self.m_lblUsername.text = strName
+                        self.m_lblUsername.text = strName.uppercased()
                     } else {
-                        self.m_lblUsername.text = objUser.username
+                        self.m_lblUsername.text = objUser.username?.uppercased()
                     }
+                    
+                    self.m_lblUsername.sizeToFit()
                     
                     if let user = user as? PFUser,
                        let postText = self.m_objPost?["postText"] as? String {
@@ -64,8 +67,27 @@ class WDTReplyViewController: UIViewController {
                 make.edges.equalToSuperview()
             })
         }
+    }
+    
+    
+    fileprivate func setupNavigationBar() {
+        let titleView = UILabel()
+        titleView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        titleView.font = UIFont.systemFont(ofSize: 16)
+        titleView.textColor = .white
         
-        navigationItem.titleView = m_viewTitle
+        navigationItem.titleView = titleView
+        
+        self.m_lblUsername = titleView
+        
+        let avatarView = UIImageView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        avatarView.layer.cornerRadius = 18
+        avatarView.clipsToBounds = true
+        avatarView.contentMode = .scaleAspectFill
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: avatarView)
+        
+        self.m_imgAvatar = avatarView
     }
     
     

@@ -436,50 +436,15 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <outlet property="m_imgAvatar" destination="6bm-4z-pGj" id="Vjn-D2-yW7"/>
                         <outlet property="m_lblPostDowns" destination="IAb-6g-pww" id="9zk-cr-3fz"/>
                         <outlet property="m_lblPostReplies" destination="dJO-zL-wbH" id="Pw0-oZ-LEc"/>
                         <outlet property="m_lblPostText" destination="1Rh-nC-JGY" id="EF7-ik-7Ac"/>
-                        <outlet property="m_lblUsername" destination="gwp-DG-GjT" id="F9j-Z0-YxE"/>
                         <outlet property="m_viewChatContainer" destination="IxY-kd-E8h" id="Wca-aQ-6F8"/>
                         <outlet property="m_viewPostInfo" destination="ove-OE-EzG" id="7so-We-mtB"/>
                         <outlet property="m_viewPostInfoHeightConstraint" destination="ulk-1k-VyT" id="XXB-AP-Fa1"/>
-                        <outlet property="m_viewTitle" destination="ZIh-lA-mQJ" id="g14-In-Yrx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="17L-Ua-U7Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="ZIh-lA-mQJ">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6bm-4z-pGj">
-                            <rect key="frame" x="109" y="2" width="22" height="22"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="22" id="3xU-ma-OSg"/>
-                                <constraint firstAttribute="width" secondItem="6bm-4z-pGj" secondAttribute="height" multiplier="1:1" id="qxU-xj-aIU"/>
-                            </constraints>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                    <integer key="value" value="11"/>
-                                </userDefinedRuntimeAttribute>
-                            </userDefinedRuntimeAttributes>
-                        </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwp-DG-GjT">
-                            <rect key="frame" x="0.0" y="44" width="240" height="0.0"/>
-                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="16"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="gwp-DG-GjT" firstAttribute="width" secondItem="ZIh-lA-mQJ" secondAttribute="width" id="0ie-yO-Jzr"/>
-                        <constraint firstItem="6bm-4z-pGj" firstAttribute="centerX" secondItem="ZIh-lA-mQJ" secondAttribute="centerX" id="XRx-j5-das"/>
-                        <constraint firstItem="gwp-DG-GjT" firstAttribute="centerX" secondItem="ZIh-lA-mQJ" secondAttribute="centerX" id="cKN-nk-kLk"/>
-                        <constraint firstItem="6bm-4z-pGj" firstAttribute="top" secondItem="ZIh-lA-mQJ" secondAttribute="top" constant="2" id="dgS-ts-OUh"/>
-                        <constraint firstAttribute="bottom" secondItem="gwp-DG-GjT" secondAttribute="bottom" id="ohM-lP-rD8"/>
-                    </constraints>
-                </view>
             </objects>
             <point key="canvasLocation" x="2752.5" y="2656.6901408450703"/>
         </scene>
@@ -591,7 +556,7 @@
                                                 <rect key="frame" x="45" y="255" width="230" height="249"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIy-zU-ESL">
-                                                        <rect key="frame" x="100.5" y="5" width="29.5" height="14"/>
+                                                        <rect key="frame" x="101" y="5" width="29.5" height="14"/>
                                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                         <color key="textColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -1454,7 +1419,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add avatar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9V-zK-f9z">
-                                                <rect key="frame" x="131" y="124" width="58.5" height="14"/>
+                                                <rect key="frame" x="131.5" y="124" width="58.5" height="14"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                 <color key="textColor" red="0.38039215686274508" green="0.81176470588235294" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
