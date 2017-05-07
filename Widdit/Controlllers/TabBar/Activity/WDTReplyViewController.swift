@@ -22,6 +22,8 @@ class WDTReplyViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setTabBarHidden(true)
 
         // Do any additional setup after loading the view.
         
@@ -56,10 +58,25 @@ class WDTReplyViewController: UIViewController {
         
         navigationItem.titleView = m_viewTitle
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        setTabBarHidden(false)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    fileprivate func setTabBarHidden(_ hidden: Bool) {
+        if let wdt_tabBarController = tabBarController as? WDTTabBarController {
+            wdt_tabBarController.animationTabBarHidden(hidden)
+        } else {
+            tabBarController?.hideTabBarAnimated(hide: hidden)
+        }
     }
     
 
