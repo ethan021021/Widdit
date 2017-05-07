@@ -19,6 +19,9 @@ class WDTChatViewController: JSQMessagesViewController {
     var outgoingBubbleImageData: JSQMessagesBubbleImage?
     var incomingBubbleImageData: JSQMessagesBubbleImage?
     
+    var senderAvatar: UIImage?
+    var recipientAvatar: UIImage?
+    
     var m_aryMessages = [JSQMessageData]()
     
     override func viewDidLoad() {
@@ -34,8 +37,18 @@ class WDTChatViewController: JSQMessagesViewController {
             senderDisplayName = objUser.username
         }
         
-        collectionView.collectionViewLayout.incomingAvatarViewSize = .zero
-        collectionView.collectionViewLayout.outgoingAvatarViewSize = .zero
+        if let avatarFile = objUser["ava"] as? PFFile {
+            if let data = try? avatarFile.getData() {
+                senderAvatar = UIImage(data: data)
+            }
+        }
+        
+        if let avatarFile = m_objUser?["ava"] as? PFFile {
+            if let data = try? avatarFile.getData() {
+                recipientAvatar = UIImage(data: data)
+            }
+        }
+        
         collectionView.collectionViewLayout.messageBubbleFont = UIFont.WDTRegular(size: 16)
         
         let bubbleFactory = JSQMessagesBubbleImageFactory()
@@ -173,6 +186,17 @@ class WDTChatViewController: JSQMessagesViewController {
             return outgoingBubbleImageData
         } else {
             return incomingBubbleImageData
+        }
+    }
+    
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
+        let objMessage = m_aryMessages[indexPath.item]
+        if objMessage.senderId() == senderId {
+            return JSQMessagesAvatarImageFactory.avatarImage(with: senderAvatar ?? UIImage(named: "common_avatar_placeholder"),
+                                                             diameter: 30)
+        } else {
+            return JSQMessagesAvatarImageFactory.avatarImage(with: recipientAvatar ?? UIImage(named: "common_avatar_placeholder"),
+                                                             diameter: 30)
         }
     }
     
