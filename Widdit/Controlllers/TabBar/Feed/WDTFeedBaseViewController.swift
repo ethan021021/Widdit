@@ -84,9 +84,10 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         
         if (objPost["user"] as? PFUser)?.objectId == PFUser.current()?.objectId {
             let actionEdit = UIAlertAction(title: "Edit", style: .default) { (_) in
-                let addPostVC = self.storyboard?.instantiateViewController(withIdentifier: String(describing: WDTAddPostViewController.self)) as! WDTAddPostViewController
+                let addPostNC = self.storyboard?.instantiateViewController(withIdentifier: "WDTAddPostNavigationController") as! UINavigationController
+                let addPostVC = addPostNC.viewControllers[0] as! WDTAddPostViewController
                 addPostVC.m_objPost = objPost
-                self.present(addPostVC, animated: true, completion: nil)
+                self.present(addPostNC, animated: true, completion: nil)
             }
             alert.addAction(actionEdit)
             
