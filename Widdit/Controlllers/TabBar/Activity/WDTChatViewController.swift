@@ -26,6 +26,8 @@ class WDTChatViewController: JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupToolbar()
 
         // Do any additional setup after loading the view.
         let objUser = PFUser.current()!
@@ -62,6 +64,20 @@ class WDTChatViewController: JSQMessagesViewController {
         
         showHud()
         getChatHistory()
+    }
+    
+    fileprivate func setupToolbar() {
+        self.inputToolbar.maximumHeight = 256
+        self.inputToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
+        self.inputToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
+        self.inputToolbar.clipsToBounds = false
+        self.inputToolbar.layer.shadowColor = UIColor(r: 206, g: 209, b: 210, a: 1).cgColor
+        self.inputToolbar.layer.shadowOffset = CGSize(width: 0, height: -1)
+        self.inputToolbar.layer.shadowRadius = 3
+        self.inputToolbar.layer.shadowOpacity = 0.5
+        self.inputToolbar.contentView.backgroundColor = .white
+        self.inputToolbar.contentView.textView.layer.borderWidth = 0
+        self.inputToolbar.contentView.textView.backgroundColor = .clear
     }
     
     override func viewDidAppear(_ animated: Bool) {
