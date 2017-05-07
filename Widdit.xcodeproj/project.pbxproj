@@ -66,6 +66,7 @@
 		3FF8BA851E6A9BBB008A1CEA /* JHButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA841E6A9BBB008A1CEA /* JHButton.swift */; };
 		3FF8BA891E6AA03A008A1CEA /* WDTTutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA881E6AA03A008A1CEA /* WDTTutorialContentViewController.swift */; };
 		3FF8BA8B1E6AA086008A1CEA /* WDTTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA8A1E6AA086008A1CEA /* WDTTutorialViewController.swift */; };
+		96B2AEED1EBF8DAD00C02531 /* WDTPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */; };
 		96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */; };
 		A0AA92FF219A442C78EF6ED7 /* Pods_Widdit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A56DC05575FA5C0BF47FFFF6 /* Pods_Widdit.framework */; };
 /* End PBXBuildFile section */
@@ -133,6 +134,7 @@
 		3FF8BA841E6A9BBB008A1CEA /* JHButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHButton.swift; sourceTree = "<group>"; };
 		3FF8BA881E6AA03A008A1CEA /* WDTTutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTTutorialContentViewController.swift; sourceTree = "<group>"; };
 		3FF8BA8A1E6AA086008A1CEA /* WDTTutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTTutorialViewController.swift; sourceTree = "<group>"; };
+		96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPhotoCell.swift; sourceTree = "<group>"; };
 		96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkPreviewView.swift; sourceTree = "<group>"; };
 		99C5035B241671F3B627B907 /* Pods-Widdit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widdit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Widdit/Pods-Widdit.release.xcconfig"; sourceTree = "<group>"; };
 		A56DC05575FA5C0BF47FFFF6 /* Pods_Widdit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widdit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -277,6 +279,7 @@
 				3F7EB66C1E7ECE3400531760 /* WDTActivityTableViewCell.swift */,
 				3F7EB66D1E7ECE3400531760 /* WDTActivityTableViewCell.xib */,
 				96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */,
+				96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -491,6 +494,7 @@
 			files = (
 				3F7EB66E1E7ECE3400531760 /* WDTActivityTableViewCell.swift in Sources */,
 				3F23B6561E7F716F00175017 /* WDTChatViewController.swift in Sources */,
+				96B2AEED1EBF8DAD00C02531 /* WDTPhotoCell.swift in Sources */,
 				3F3A31641E6E9AC2009267A6 /* WDTPush.swift in Sources */,
 				3F3A315C1E6E97B3009267A6 /* WDTFeedViewController.swift in Sources */,
 				3F3CFDBB1E7C451D00AD8FF8 /* WDTAboutViewController.swift in Sources */,
