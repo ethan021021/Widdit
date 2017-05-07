@@ -10,6 +10,7 @@ import UIKit
 import Parse
 import ALCameraViewController
 import UITextView_Placeholder
+import DKImagePickerController
 
 class WDTAddPostViewController: UIViewController, UITextViewDelegate {
 
@@ -20,15 +21,14 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var m_btnPost: UIBarButtonItem!
     @IBOutlet weak var m_txtDescription: UITextView!
     @IBOutlet weak var m_lblLength: UILabel!
-    @IBOutlet weak var m_imgPost: UIImageView!
-    @IBOutlet weak var m_btnImageDelete: UIButton!
+    @IBOutlet weak var m_imagesCollectionView: UICollectionView!
     @IBOutlet weak var m_lblSliderValue: UILabel!
     @IBOutlet weak var m_viewSliderContainer: UIView!
     
     let slider = WDTCircleSlider()
     
     var geoPoint: PFGeoPoint?
-    var isPhoto = false
+    var photos: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,9 +43,8 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             
             let photo = objPost["postUrl"] as? String ?? ""
             if photo.characters.count > 0 {
-                m_imgPost.kf.setImage(with: URL(string: photo))
-                m_btnImageDelete.isHidden = false
-                isPhoto = true
+//                m_imgPost.kf.setImage(with: URL(string: photo))
+//                m_btnImageDelete.isHidden = false
             }
         } else if let hashtag = m_hashtag {
             m_txtDescription.text = hashtag + " "
@@ -163,17 +162,17 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
             m_objPost?["hoursexpired"] = Date().addHours(Double(slider.value))
         }
         
-        if isPhoto {
-            tasksCount += 1
+        if photos.count > 0 {
+            tasksCount += photos.count
             
-            let photoData = UIImageJPEGRepresentation(m_imgPost.image!, 0.5)
-            let photoFile = PFFile(name: "postPhoto.jpg", data: photoData!)
-            photoFile?.saveInBackground(block: { (success, error) in
-                self.m_objPost?["postUrl"] = photoFile?.url
-                self.m_objPost?.saveInBackground(block: { (success, error) in
-                    removeTask()
-                })
-            })
+//            let photoData = UIImageJPEGRepresentation(m_imgPost.image!, 0.5)
+//            let photoFile = PFFile(name: "postPhoto.jpg", data: photoData!)
+//            photoFile?.saveInBackground(block: { (success, error) in
+//                self.m_objPost?["postUrl"] = photoFile?.url
+//                self.m_objPost?.saveInBackground(block: { (success, error) in
+//                    removeTask()
+//                })
+//            })
         } else {
             m_objPost?["postUrl"] = ""
         }
@@ -234,24 +233,37 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    @IBAction func onClickBtnImageDelete(_ sender: Any) {
-        m_btnImageDelete.isHidden = true
-        m_imgPost.image = UIImage(named: "post_image_placeholder")
-        isPhoto = false
-    }
     
-    @IBAction func onTapPostImage(_ sender: Any) {
-        let cameraVC = CameraViewController(croppingEnabled: true, allowsLibraryAccess: true) { (image, asset) in
-            if let image = image {
-                self.m_imgPost.image = image
-                self.m_btnImageDelete.isHidden = false
-                self.isPhoto = true
+    fileprivate func showPhotoPicker() {
+        let pickerController = DKImagePickerController()
+        pickerController.maxSelectableCount = 6 - photos.count
+        pickerController.assetType = .allPhotos
+        
+        pickerController.didSelectAssets = { (assets: [DKAsset]) in
+            var pendingAssets = assets.count
+            
+            func removePendingAsset() {
+                pendingAssets -= 1
+                
+                if pendingAssets <= 0 {
+                    self.m_imagesCollectionView.reloadData()
+                }
             }
             
-            self.dismiss(animated: true, completion: nil)
+            assets.forEach {
+                $0.fetchOriginalImageWithCompleteBlock({ [weak self] (image, _) in
+                    if let image = image {
+                        objc_sync_enter(self)
+                        self?.photos.append(image)
+                        objc_sync_exit(self)
+                    }
+                    
+                    removePendingAsset()
+                })
+            }
         }
         
-        present(cameraVC, animated: true, completion: nil)
+        self.present(pickerController, animated: true, completion: nil)
     }
     
     // MARK: - UITextViewDelegate
@@ -265,6 +277,63 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         } else {
             m_lblLength.text = "\(newLength) / \(Constants.Integer.MAX_POST_LENGTH)"
             return true
+        }
+    }
+    
+}
+
+
+extension WDTAddPostViewController: UICollectionViewDataSource {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return photos.count >= 6 ? photos.count : photos.count + 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! WDTPhotoCell
+        
+        if photos.count >= 6 {
+            cell.imageView.image = photos[indexPath.item]
+            cell.isPlaceholder = false
+        } else if indexPath.item == photos.count {
+            cell.imageView.image = UIImage(named: "post_image_placeholder")
+            cell.isPlaceholder = true
+        } else {
+            cell.imageView.image = photos[indexPath.item]
+            cell.isPlaceholder = false
+        }
+        
+        cell.onDelete = {
+            collectionView.performBatchUpdates({
+                let needToInsert = self.photos.count >= 6
+                
+                self.photos.remove(at: indexPath.item)
+                collectionView.deleteItems(at: [indexPath])
+                
+                if needToInsert {
+                    collectionView.insertItems(at: [indexPath])
+                }
+            }, completion: { [weak collectionView] _ in
+                collectionView?.reloadData()
+            })
+        }
+        
+        return cell
+    }
+    
+}
+
+extension WDTAddPostViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if photos.count < 6 {
+            if indexPath.item == photos.count {
+                showPhotoPicker()
+            }
         }
     }
     
