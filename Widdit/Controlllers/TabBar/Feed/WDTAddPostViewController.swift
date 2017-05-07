@@ -40,7 +40,7 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         if let objPost = m_objPost {
             m_txtDescription.text = objPost["postText"] as? String ?? ""
             
-            let photo = objPost["photoUrl"] as? String ?? ""
+            let photo = objPost["postUrl"] as? String ?? ""
             if photo.characters.count > 0 {
                 m_imgPost.kf.setImage(with: URL(string: photo))
                 m_btnImageDelete.isHidden = false
@@ -112,6 +112,18 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
     @IBAction func onClickBtnPost(_ sender: Any) {
         view.endEditing(true)
         
+        showHud()
+        
+        var tasksCount = 1
+        
+        func removeTask() {
+            tasksCount -= 1
+            if tasksCount <= 0 {
+                self.hideHud()
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
         if m_objPost == nil {
             m_objPost = PFObject(className: "posts")
         }
@@ -149,11 +161,15 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         }
         
         if isPhoto {
+            tasksCount += 1
+            
             let photoData = UIImageJPEGRepresentation(m_imgPost.image!, 0.5)
             let photoFile = PFFile(name: "postPhoto.jpg", data: photoData!)
             photoFile?.saveInBackground(block: { (success, error) in
                 self.m_objPost?["postUrl"] = photoFile?.url
-                self.m_objPost?.saveInBackground()
+                self.m_objPost?.saveInBackground(block: { (success, error) in
+                    removeTask()
+                })
             })
         } else {
             m_objPost?["postUrl"] = ""
@@ -170,18 +186,33 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         }
         
         m_objPost?["hashtags"] = tags
-        showHud()
+
         m_objPost?.saveInBackground(block: { (success, error) in
-            self.hideHud()
             if error == nil {
-                self.addNewCategories()
-                self.dismiss(animated: true, completion: nil)
+                self.addNewCategories() {
+                    removeTask()
+                }
+            } else {
+                removeTask()
             }
         })
     }
     
-    func addNewCategories() {
+    func addNewCategories(completion: @escaping () -> Void) {
         let categories = m_objPost?["hashtags"] as! [String]
+        
+        var tasksCount = categories.count
+        
+        func removeTask() {
+            tasksCount -= 1
+            if tasksCount <= 0 {
+                completion()
+            }
+        }
+        
+        if categories.count == 0 {
+            removeTask()
+        }
         
         for category in categories {
             let categoriesQuery = PFQuery(className: "categories")
@@ -190,7 +221,11 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
                 if objCategory == nil {
                     let newCategory = PFObject(className: "categories")
                     newCategory["title"] = category
-                    newCategory.saveInBackground()
+                    newCategory.saveInBackground(block: { (success, error) in
+                        removeTask()
+                    })
+                } else {
+                    removeTask()
                 }
             })
         }
