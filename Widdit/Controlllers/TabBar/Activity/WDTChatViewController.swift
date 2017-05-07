@@ -51,9 +51,12 @@ class WDTChatViewController: JSQMessagesViewController {
         
         collectionView.collectionViewLayout.messageBubbleFont = UIFont.WDTRegular(size: 16)
         
-        let bubbleFactory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageData = bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor(r: 90, g: 212, b: 213, a: 1))
-        incomingBubbleImageData = bubbleFactory?.incomingMessagesBubbleImage(with: UIColor(r: 239, g: 239, b: 239, a: 1))
+        outgoingBubbleImageData = JSQMessagesBubbleImageFactory(bubble: UIImage.jsq_bubbleRegularTailless(),
+                                                                capInsets: .zero)?
+            .outgoingMessagesBubbleImage(with: UIColor(r: 71, g: 211, b: 214, a: 1))
+        incomingBubbleImageData = JSQMessagesBubbleImageFactory(bubble: UIImage.jsq_bubbleRegularTailless(),
+                                                                capInsets: .zero)?
+            .incomingMessagesBubbleImage(with: UIColor(r: 249, g: 249, b: 249, a: 1))
         
         inputToolbar.contentView.leftBarButtonItem = nil
         
