@@ -17,6 +17,7 @@ class WDTActivity {
     }
 
     let currentUser = PFUser.current()!
+    var post: PFObject?
     var chats: [PFObject] = []
     var downs: [PFObject] = []
     var myDowns: [PFObject] = []
@@ -107,12 +108,15 @@ class WDTActivity {
     }
     
     func requestMyDowns(completion: @escaping (_ success: Bool) -> Void) {
-        
         let activitiesQuery = PFQuery(className: "Activity")
         activitiesQuery.whereKey("by", equalTo: currentUser)
         activitiesQuery.whereKey("type", equalTo: "down")
         activitiesQuery.includeKey("post")
         activitiesQuery.addDescendingOrder("createdAt")
+        
+        if let post = post {
+            activitiesQuery.whereKey("post", equalTo: post)
+        }
         
         activitiesQuery.findObjectsInBackground(block: { (myDowns, error) in
             if let myDowns = myDowns {
@@ -139,6 +143,10 @@ class WDTActivity {
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
         activitiesQuery.addDescendingOrder("createdAt")
+        
+        if let post = post {
+            activitiesQuery.whereKey("post", equalTo: post)
+        }
         
         activitiesQuery.findObjectsInBackground(block: { (downs, error) in
             if let downs = downs {
