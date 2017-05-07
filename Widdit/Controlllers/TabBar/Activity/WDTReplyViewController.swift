@@ -12,7 +12,7 @@ import Parse
 class WDTReplyViewController: UIViewController {
 
     var m_imgAvatar: UIImageView!
-    var m_lblUsername: UILabel!
+    @IBOutlet weak var m_lblUsername: UILabel!
     @IBOutlet weak var m_lblPostText: UILabel!
     @IBOutlet weak var m_lblPostDowns: UILabel!
     @IBOutlet weak var m_lblPostReplies: UILabel!
@@ -71,14 +71,7 @@ class WDTReplyViewController: UIViewController {
     
     
     fileprivate func setupNavigationBar() {
-        let titleView = UILabel()
-        titleView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        titleView.font = UIFont.systemFont(ofSize: 16)
-        titleView.textColor = .white
-        
-        navigationItem.titleView = titleView
-        
-        self.m_lblUsername = titleView
+        navigationItem.titleView = m_lblUsername
         
         let avatarView = UIImageView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
         avatarView.layer.cornerRadius = 18

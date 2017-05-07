@@ -367,7 +367,7 @@
                                                 <color key="textColor" red="0.80784313725490198" green="0.81960784313725488" blue="0.82352941176470584" alpha="1" colorSpace="deviceRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_icon_reply" translatesAutoresizingMaskIntoConstraints="NO" id="uXn-ux-ira">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_icon_reply_selected" translatesAutoresizingMaskIntoConstraints="NO" id="uXn-ux-ira">
                                                 <rect key="frame" x="47" y="0.0" width="18" height="18"/>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJO-zL-wbH">
@@ -439,12 +439,20 @@
                         <outlet property="m_lblPostDowns" destination="IAb-6g-pww" id="9zk-cr-3fz"/>
                         <outlet property="m_lblPostReplies" destination="dJO-zL-wbH" id="Pw0-oZ-LEc"/>
                         <outlet property="m_lblPostText" destination="1Rh-nC-JGY" id="EF7-ik-7Ac"/>
+                        <outlet property="m_lblUsername" destination="f6q-Km-B5y" id="r13-FW-i3G"/>
                         <outlet property="m_viewChatContainer" destination="IxY-kd-E8h" id="Wca-aQ-6F8"/>
                         <outlet property="m_viewPostInfo" destination="ove-OE-EzG" id="7so-We-mtB"/>
                         <outlet property="m_viewPostInfoHeightConstraint" destination="ulk-1k-VyT" id="XXB-AP-Fa1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="17L-Ua-U7Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" id="f6q-Km-B5y">
+                    <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="SFUIText-Medium" family="SF UI Text" pointSize="15"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </objects>
             <point key="canvasLocation" x="2752.5" y="2656.6901408450703"/>
         </scene>
@@ -502,7 +510,7 @@
                                                         </connections>
                                                     </textView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 / 140" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xfS-Th-5km">
-                                                        <rect key="frame" x="238.5" y="102" width="31.5" height="12"/>
+                                                        <rect key="frame" x="237" y="102" width="33" height="12"/>
                                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="10"/>
                                                         <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -556,7 +564,7 @@
                                                 <rect key="frame" x="45" y="255" width="230" height="249"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIy-zU-ESL">
-                                                        <rect key="frame" x="101" y="5" width="29.5" height="14"/>
+                                                        <rect key="frame" x="99.5" y="5" width="31" height="14"/>
                                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                         <color key="textColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -1153,7 +1161,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="296" height="62"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj3-NM-jM2">
-                                                    <rect key="frame" x="12" y="23" width="76" height="17"/>
+                                                    <rect key="frame" x="12" y="23" width="81" height="17"/>
                                                     <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
                                                     <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1419,7 +1427,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add avatar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9V-zK-f9z">
-                                                <rect key="frame" x="131.5" y="124" width="58.5" height="14"/>
+                                                <rect key="frame" x="129.5" y="124" width="61" height="14"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                 <color key="textColor" red="0.38039215686274508" green="0.81176470588235294" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1698,7 +1706,7 @@
                                 <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cza-OP-tR1">
-                                        <rect key="frame" x="252" y="9.5" width="60" height="31"/>
+                                        <rect key="frame" x="252" y="9" width="60" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="4Pb-Oj-VSv"/>
                                         </constraints>
@@ -1716,7 +1724,7 @@
                                         <color key="currentPageIndicatorTintColor" red="0.019607843140000001" green="0.85098039219999999" blue="0.85882352939999995" alpha="1" colorSpace="calibratedRGB"/>
                                     </pageControl>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dmr-fg-X77" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                        <rect key="frame" x="212" y="0.5" width="100" height="50"/>
+                                        <rect key="frame" x="212" y="0.0" width="100" height="51"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="djc-bB-CYI"/>
                                         </constraints>
@@ -1736,7 +1744,7 @@ Location</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qYi-a5-h3a" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                        <rect key="frame" x="212" y="0.5" width="100" height="50"/>
+                                        <rect key="frame" x="212" y="0.0" width="100" height="51"/>
                                         <fontDescription key="fontDescription" name="SFUIText-Medium" family="SF UI Text" pointSize="16"/>
                                         <state key="normal">
                                             <string key="title">Enable 
@@ -1864,8 +1872,8 @@ asd</string>
         <image name="icon_splash" width="152" height="108"/>
         <image name="post_button_add" width="20" height="20"/>
         <image name="post_button_delete" width="32" height="32"/>
-        <image name="post_icon_down_selected" width="15" height="15"/>
-        <image name="post_icon_reply" width="16" height="16"/>
+        <image name="post_icon_down_selected" width="18" height="18"/>
+        <image name="post_icon_reply_selected" width="18" height="18"/>
         <image name="post_image_placeholder" width="76" height="76"/>
         <image name="post_image_slider" width="186" height="186"/>
         <image name="profile_button_settings" width="18" height="18"/>
