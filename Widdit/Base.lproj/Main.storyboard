@@ -197,7 +197,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tpt-uf-raG" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="189" width="280" height="40"/>
+                                                <rect key="frame" x="20" y="189" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -232,7 +232,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lw-gA-DDh" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="279" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="278.5" width="280" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="9dT-ha-cWy"/>
                                                 </constraints>
@@ -601,7 +601,7 @@
                                                 <rect key="frame" x="45" y="273" width="230" height="249"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIy-zU-ESL">
-                                                        <rect key="frame" x="99.5" y="5" width="31" height="14"/>
+                                                        <rect key="frame" x="100" y="5" width="31" height="14"/>
                                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                         <color key="textColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -944,7 +944,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y0R-xd-AB2">
-                                        <rect key="frame" x="134.5" y="229" width="51.5" height="24"/>
+                                        <rect key="frame" x="134" y="229" width="51.5" height="24"/>
                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1031,6 +1031,98 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K4p-EG-hJu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4354" y="2657"/>
+        </scene>
+        <!--Followers-->
+        <scene sceneID="P6B-zF-fr5">
+            <objects>
+                <viewController title="Followers" id="CKD-dX-C9h" customClass="WDTFollowersViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="s4t-c8-Naq"/>
+                        <viewControllerLayoutGuide type="bottom" id="4Jt-oP-afh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="o7e-ht-Iph">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bBR-dO-TTr">
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FollowerCell" id="4Du-57-H1F" customClass="WDTFollowerCell" customModule="Widdit" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Du-57-H1F" id="77t-d1-uPS">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9RA-KT-RGA">
+                                                    <rect key="frame" x="25" y="19.5" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="9RA-KT-RGA" secondAttribute="height" multiplier="1:1" id="9qO-Bn-uuV"/>
+                                                        <constraint firstAttribute="width" constant="40" id="fsr-Me-CLa"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_button_delete" translatesAutoresizingMaskIntoConstraints="NO" id="zb1-dY-Skn">
+                                                    <rect key="frame" x="15" y="9.5" width="10" height="10"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="10" id="64t-sO-bFL"/>
+                                                        <constraint firstAttribute="width" constant="10" id="dNM-h7-A3V"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eqB-kz-faK">
+                                                    <rect key="frame" x="80" y="31.5" width="135" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" red="0.26666666666666666" green="0.29019607843137252" blue="0.34901960784313724" alpha="1" colorSpace="deviceRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yesterday" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K6d-fY-pCc">
+                                                    <rect key="frame" x="223" y="31" width="64" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="deviceRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="9RA-KT-RGA" firstAttribute="leading" secondItem="77t-d1-uPS" secondAttribute="leading" constant="25" id="4bb-OP-J4s"/>
+                                                <constraint firstItem="eqB-kz-faK" firstAttribute="leading" secondItem="9RA-KT-RGA" secondAttribute="trailing" constant="15" id="6go-IV-5Dx"/>
+                                                <constraint firstItem="9RA-KT-RGA" firstAttribute="top" secondItem="zb1-dY-Skn" secondAttribute="top" constant="10" id="Azb-d0-Jzc"/>
+                                                <constraint firstItem="K6d-fY-pCc" firstAttribute="leading" secondItem="eqB-kz-faK" secondAttribute="trailing" constant="8" id="KBg-kz-Wux"/>
+                                                <constraint firstItem="9RA-KT-RGA" firstAttribute="leading" secondItem="zb1-dY-Skn" secondAttribute="leading" constant="10" id="WDf-fp-K1A"/>
+                                                <constraint firstAttribute="trailing" secondItem="K6d-fY-pCc" secondAttribute="trailing" id="chs-i0-wOo"/>
+                                                <constraint firstItem="K6d-fY-pCc" firstAttribute="centerY" secondItem="77t-d1-uPS" secondAttribute="centerY" id="e3C-mn-6fG"/>
+                                                <constraint firstItem="9RA-KT-RGA" firstAttribute="centerY" secondItem="77t-d1-uPS" secondAttribute="centerY" id="jWq-OT-Njv"/>
+                                                <constraint firstItem="eqB-kz-faK" firstAttribute="centerY" secondItem="77t-d1-uPS" secondAttribute="centerY" id="sii-vc-NUF"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="K6d-fY-pCc" id="jBk-e8-TLj"/>
+                                            <outlet property="newFollowerIndicatorView" destination="zb1-dY-Skn" id="WUa-CC-1gM"/>
+                                            <outlet property="userAvatarView" destination="9RA-KT-RGA" id="YUv-ka-heO"/>
+                                            <outlet property="usernameLabel" destination="eqB-kz-faK" id="o1N-vm-k64"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="CKD-dX-C9h" id="8cC-m5-KAn"/>
+                                    <outlet property="delegate" destination="CKD-dX-C9h" id="eDc-ZR-je0"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bBR-dO-TTr" firstAttribute="leading" secondItem="o7e-ht-Iph" secondAttribute="leading" id="O7c-GO-POg"/>
+                            <constraint firstItem="4Jt-oP-afh" firstAttribute="top" secondItem="bBR-dO-TTr" secondAttribute="bottom" id="P9X-RZ-4wF"/>
+                            <constraint firstAttribute="trailing" secondItem="bBR-dO-TTr" secondAttribute="trailing" id="YXL-cZ-knL"/>
+                            <constraint firstItem="bBR-dO-TTr" firstAttribute="top" secondItem="s4t-c8-Naq" secondAttribute="bottom" id="c1n-Q3-0KQ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="bBR-dO-TTr" id="UVe-Ne-tn5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ogj-Lh-pk4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5167.5" y="2656.6901408450703"/>
         </scene>
         <!--Settings-->
         <scene sceneID="qU3-aS-stM">
@@ -1329,7 +1421,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAS-Ns-XtB">
-                                <rect key="frame" x="111.5" y="170" width="99" height="17"/>
+                                <rect key="frame" x="111" y="170" width="99" height="17"/>
                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1464,7 +1556,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpV-h0-1vF">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="536"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="535"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_avatar_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="GZX-xO-P0h">
                                                 <rect key="frame" x="116" y="16" width="88" height="88"/>
@@ -1479,7 +1571,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add avatar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9V-zK-f9z">
-                                                <rect key="frame" x="129.5" y="124" width="61" height="14"/>
+                                                <rect key="frame" x="130" y="124" width="61" height="14"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                 <color key="textColor" red="0.38039215686274508" green="0.81176470588235294" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1514,7 +1606,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Hh-jK-YmO" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="237" width="280" height="40"/>
+                                                <rect key="frame" x="20" y="237" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1543,7 +1635,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ejU-K8-EBs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="307" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="306.5" width="280" height="39"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1572,7 +1664,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aIY-Cm-tfQ" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="376" width="280" height="40"/>
+                                                <rect key="frame" x="20" y="375.5" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1601,7 +1693,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0A-rc-Ruf" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="466" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="465" width="280" height="50"/>
                                                 <color key="backgroundColor" red="0.46666666666666667" green="0.8784313725490196" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="zci-h1-wRX"/>
