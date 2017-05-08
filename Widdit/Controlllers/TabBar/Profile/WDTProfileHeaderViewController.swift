@@ -19,6 +19,7 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var m_btnSettings: UIButton!
     @IBOutlet weak var m_lblName: UILabel!
     @IBOutlet weak var m_pgControl: UIPageControl!
+    @IBOutlet weak var m_btnFollow: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,9 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view.
         m_btnSettings.isHidden = m_objUser?.objectId != PFUser.current()?.objectId
         m_btnBack.isHidden = m_objUser?.objectId == PFUser.current()?.objectId
+//        m_btnFollow.isHidden = m_objUser?.objectId == PFUser.current()?.objectId
+        
+        updateFollowingStatus()
         
         if let userName = m_objUser?["name"] as? String {
             m_lblName.text = userName
@@ -116,6 +120,24 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    fileprivate func updateFollowingStatus() {
+        if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
+            UserManager.isFollow(user: user, completion: { [weak self] isFollow in
+                self?.m_btnFollow.isHidden = false
+                if isFollow {
+                    self?.m_btnFollow.setImage(UIImage(named: "post_icon_down_selected"), for: .normal)
+                    self?.m_btnFollow.setTitle("Unfollow", for: .normal)
+                } else {
+                    self?.m_btnFollow.setImage(UIImage(named: "post_icon_down"), for: .normal)
+                    self?.m_btnFollow.setTitle("Follow", for: .normal)
+                }
+            })
+        } else {
+            m_btnFollow.isHidden = true
+        }
+    }
+    
 
     /*
     // MARK: - Navigation
@@ -157,6 +179,22 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         m_parentVC?.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func onClickBtnFollow(_ sender: Any) {
+        if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
+            UserManager.isFollow(user: user, completion: { isFollow in
+                if isFollow {
+                    UserManager.unfollow(user: user, completion: { [weak self] in
+                        self?.updateFollowingStatus()
+                    })
+                } else {
+                    UserManager.follow(user: user, completion: { [weak self] in
+                        self?.updateFollowingStatus()
+                    })
+                }
+            })
+        }
+    }
+    
     // MARK: - UIScrollViewDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let width = view.frame.size.width
@@ -166,3 +204,79 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
     }
     
 }
+
+
+final class UserManager {
+
+    /// Gets all users that follow me
+    class func getFollowers(completion: @escaping ([PFUser]) -> Void) {
+        if let query = PFUser.query(), let me = PFUser.current() {
+            query.includeKey("followers")
+            query.whereKey("followers", equalTo: me)
+            query.findObjectsInBackground(block: { (users, error) in
+                if let users = users as? [PFUser] {
+                    completion(users)
+                } else {
+                    completion([])
+                }
+            })
+        } else {
+            completion([])
+        }
+    }
+    
+    /// Gets all of users I follow
+    class func getFollowing(completion: @escaping ([PFUser]) -> Void) {
+        if let me = PFUser.current() {
+            me.fetchIfNeededInBackground { me, error in
+                if let followers = me?["followers"] as? [PFUser] {
+                    completion(followers)
+                } else {
+                    completion([])
+                }
+            }
+        } else {
+            completion([])
+        }
+    }
+    
+    class func follow(user: PFUser, completion: @escaping () -> Void) {
+        UserManager.getFollowing { followers in
+            if let me = PFUser.current() {
+                let resultFollowers = followers + [user]
+                me["followers"] = resultFollowers
+                me.saveInBackground(block: { (success, error) in
+                    completion()
+                    // Send push
+                })
+            } else {
+                completion()
+            }
+        }
+    }
+    
+    class func unfollow(user: PFUser, completion: @escaping() -> Void) {
+        UserManager.getFollowing { followers in
+            if let me = PFUser.current() {
+                let resultFollowers = followers.filter { $0.objectId != user.objectId }
+                me["followers"] = resultFollowers
+                me.saveInBackground(block: { (success, error) in
+                    completion()
+                    // Send push
+                })
+            } else {
+                completion()
+            }
+        }
+    }
+    
+    /// Returns true if you have follow the user
+    class func isFollow(user: PFUser, completion: @escaping (Bool) -> Void) {
+        UserManager.getFollowing { followers in
+            let isFollow = followers.contains(where: { $0.objectId == user.objectId })
+            completion(isFollow)
+        }
+    }
+
+}
+
