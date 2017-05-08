@@ -31,14 +31,14 @@ final class WDTFollowerCell: UITableViewCell {
     }
 
     
-    func setUser(_ user: PFUser, isNew: Bool) {
+    func setUser(_ user: PFUser, date: Date, isNew: Bool) {
         usernameLabel.text =  user["name"] as? String ?? user.username
         
         if let avaFile = user["ava"] as? PFFile, let url = avaFile.url {
             self.userAvatarView.kf.setImage(with: URL(string: url))
         }
         
-        dateLabel.text = nil
+        dateLabel.text = "\(date)" // TODO: Date diference
         
         newFollowerIndicatorView.isHidden = !isNew
     }

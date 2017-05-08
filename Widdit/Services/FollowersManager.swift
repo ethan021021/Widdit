@@ -9,117 +9,148 @@
 import Parse
 
 
+final class Follow {
+
+    var follower: PFUser
+    var user: PFUser
+    var date: Date
+    var watched: Bool
+    
+    init?(pfObject: PFObject) {
+        if let follower = pfObject["follower"] as? PFUser,
+            let user = pfObject["user"] as? PFUser,
+            let date = pfObject["date"] as? Date,
+            let watched = pfObject["watched"] as? Bool {
+            
+            self.follower = follower
+            self.user = user
+            self.date = date
+            self.watched = watched
+        } else {
+            return nil
+        }
+    }
+    
+    init(follower: PFUser, user: PFUser, date: Date, watched: Bool) {
+        self.follower = follower
+        self.user = user
+        self.date = date
+        self.watched = watched
+    }
+    
+    
+    var pfObject: PFObject {
+        let object = PFObject(className: "Follow")
+        object["follower"] = follower
+        object["user"] = user
+        object["date"] = date
+        object["watched"] = watched
+        return object
+    }
+
+}
+
+
 final class FollowersManager {
     
     /// Gets all users that follow me
-    class func getFollowers(completion: @escaping ([PFUser]) -> Void) {
-        if let query = PFUser.query(), let me = PFUser.current() {
-            query.includeKey("followers")
-            query.whereKey("followers", equalTo: me)
-            query.findObjectsInBackground(block: { (users, error) in
-                if let users = users as? [PFUser] {
-                    completion(users)
-                } else {
-                    completion([])
-                }
-            })
-        } else {
-            completion([])
-        }
-    }
-    
-    class func getWatchedFollowers(completion: @escaping ([PFUser]) -> Void) {
+    class func getFollows(completion: @escaping ([Follow]) -> Void) {
         if let me = PFUser.current() {
-            me.fetchIfNeededInBackground { me, error in
-                if let followers = me?["watchedFollowers"] as? [PFUser] {
-                    completion(followers)
-                } else {
-                    completion([])
+            let query = PFQuery(className: "Follow")
+            query.includeKey("follower")
+            query.includeKey("user")
+            query.whereKey("user", equalTo: me)
+            query.findObjectsInBackground(block: { (follows, error) in
+                if let follows = (follows?.flatMap { Follow(pfObject: $0) }) {
+                    completion(follows)
                 }
-            }
+            })
         } else {
             completion([])
         }
     }
     
-    class func getUnwatchedFollowers(completion: @escaping ([PFUser]) -> Void) {
-        FollowersManager.getFollowers { followers in
-            FollowersManager.getWatchedFollowers(completion: { watchedFollowers in
-                let unwatchedFollowers = followers.filter { follower in
-                    return !watchedFollowers.contains(where: {
-                        return $0.objectId == follower.objectId
-                    })
-                }
-                completion(unwatchedFollowers)
-            })
+    class func getWatchedFollows(completion: @escaping ([Follow]) -> Void) {
+        FollowersManager.getFollowing { follows in
+            let watched = follows.filter { $0.watched }
+            completion(watched)
+        }
+    }
+    
+    class func getUnwatchedFollows(completion: @escaping ([Follow]) -> Void) {
+        FollowersManager.getFollowing { follows in
+            let watched = follows.filter { $0.watched }
+            completion(watched)
         }
     }
     
     /// Gets all of users I follow
-    class func getFollowing(completion: @escaping ([PFUser]) -> Void) {
+    class func getFollowing(completion: @escaping ([Follow]) -> Void) {
         if let me = PFUser.current() {
-            me.fetchIfNeededInBackground { me, error in
-                if let followers = me?["followers"] as? [PFUser] {
-                    completion(followers)
-                } else {
-                    completion([])
+            let query = PFQuery(className: "Follow")
+            query.includeKey("follower")
+            query.includeKey("user")
+            query.whereKey("follower", equalTo: me)
+            query.findObjectsInBackground(block: { (follows, error) in
+                if let follows = (follows?.flatMap { Follow(pfObject: $0) }) {
+                    completion(follows)
                 }
-            }
+            })
         } else {
             completion([])
         }
     }
     
     class func follow(user: PFUser, completion: @escaping () -> Void) {
-        FollowersManager.getFollowing { followers in
-            if let me = PFUser.current() {
-                let resultFollowers = followers + [user]
-                me["followers"] = resultFollowers
-                me.saveInBackground(block: { (success, error) in
-                    completion()
-                    
-                    if let username = user.username {
-                        WDTPush.sendPushAfterFollowing(to: username)
-                    }
-                })
-            } else {
+        if let me = PFUser.current() {
+            let followObject = Follow(follower: me, user: user, date: Date(), watched: false)
+            followObject.pfObject.saveInBackground(block: { (success, error) in
                 completion()
-            }
+                
+                if let username = user.username {
+                    WDTPush.sendPushAfterFollowing(to: username)
+                }
+            })
+        } else {
+            completion()
         }
     }
     
     class func unfollow(user: PFUser, completion: @escaping() -> Void) {
-        FollowersManager.getFollowing { followers in
-            if let me = PFUser.current() {
-                let resultFollowers = followers.filter { $0.objectId != user.objectId }
-                me["followers"] = resultFollowers
-                me.saveInBackground(block: { (success, error) in
+        if let me = PFUser.current() {
+            let query = PFQuery(className: "Follow")
+            query.includeKey("follower")
+            query.includeKey("user")
+            query.whereKey("follower", equalTo: me)
+            query.whereKey("user", equalTo: user)
+            query.getFirstObjectInBackground(block: { (object, _) in
+                object?.deleteInBackground(block: { (_, _) in
                     completion()
                 })
-            } else {
-                completion()
-            }
+            })
+        } else {
+            completion()
         }
     }
     
     /// Returns true if you have follow the user
     class func isFollow(user: PFUser, completion: @escaping (Bool) -> Void) {
         FollowersManager.getFollowing { followers in
-            let isFollow = followers.contains(where: { $0.objectId == user.objectId })
+            let isFollow = followers.contains(where: { $0.user.objectId == user.objectId })
             completion(isFollow)
         }
     }
     
-    class func addWatchedFollowers(_ followers: [PFUser], completion: @escaping () -> Void) {
-        FollowersManager.getWatchedFollowers { followers in
-            if let me = PFUser.current() {
-                let resultFollowers = followers + followers
-                me["watchedFollowers"] = resultFollowers
-                me.saveInBackground(block: { (success, error) in
-                    completion()
-                })
-            } else {
-                completion()
+    class func setAllFollowsWatched() {
+        FollowersManager.getUnwatchedFollows { follows in
+            follows
+            .map { f -> Follow in
+                let rf = f
+                rf.watched = true
+                return rf
+            }
+            .forEach { f in
+                f.pfObject.saveInBackground()
             }
         }
     }

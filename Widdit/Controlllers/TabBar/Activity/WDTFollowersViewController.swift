@@ -15,11 +15,11 @@ final class WDTFollowersViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     
-    var followers: (all: [PFUser], unwatched: [PFUser]) = ([], []) {
+    var follows: [Follow] = [] {
         didSet {
             tableView.reloadData()
             
-            FollowersManager.addWatchedFollowers(followers.unwatched, completion: {})
+            FollowersManager.setAllFollowsWatched()
         }
     }
     
@@ -32,11 +32,9 @@ final class WDTFollowersViewController: UIViewController {
         super.viewWillAppear(animated)
         
         showHud()
-        FollowersManager.getFollowers { [weak self] allFollowers in
-            FollowersManager.getUnwatchedFollowers(completion: { [weak self] unwatchedFollowers in
-                self?.hideHud()
-                self?.followers = (all: allFollowers, unwatched: unwatchedFollowers)
-            })
+        FollowersManager.getFollows { [weak self] allFollows in
+            self?.hideHud()
+            self?.follows = allFollows
         }
     }
 
@@ -49,16 +47,15 @@ extension WDTFollowersViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return followers.all.count
+        return follows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FollowerCell", for: indexPath) as! WDTFollowerCell
         
-        let user = self.followers.all[indexPath.row]
-        let isNew = followers.unwatched.contains(where: { $0.objectId == user.objectId })
+        let follow = self.follows[indexPath.row]
         
-        cell.setUser(user, isNew: isNew)
+        cell.setUser(follow.user, date: follow.date, isNew: !follow.watched)
         
         return cell
     }
@@ -68,10 +65,10 @@ extension WDTFollowersViewController: UITableViewDataSource {
 extension WDTFollowersViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let user = followers.all[indexPath.row]
+        let follow = follows[indexPath.row]
         
         let profileVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTProfileViewController.self)) as! WDTProfileViewController
-        profileVC.m_objUser = user
+        profileVC.m_objUser = follow.user
         
         navigationController?.pushViewController(profileVC, animated: true)
     }
