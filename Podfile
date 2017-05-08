@@ -32,4 +32,5 @@ target 'Widdit' do
     pod 'JSQMessagesViewController', '~> 7.3'
     pod 'DKImagePickerController'
     pod 'NYTPhotoViewer', '~> 1.1.0'
+    pod 'MTDates'
 end

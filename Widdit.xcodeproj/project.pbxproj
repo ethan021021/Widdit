@@ -71,6 +71,7 @@
 		96E06E371EC0BAF000C7F83D /* FollowersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E361EC0BAF000C7F83D /* FollowersManager.swift */; };
 		96E06E391EC0BBA600C7F83D /* WDTFollowersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E381EC0BBA600C7F83D /* WDTFollowersViewController.swift */; };
 		96E06E3B1EC0BC7A00C7F83D /* WDTFollowerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E3A1EC0BC7A00C7F83D /* WDTFollowerCell.swift */; };
+		96E06E3E1EC0E40700C7F83D /* FlexButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E3D1EC0E40700C7F83D /* FlexButton.swift */; };
 		A0AA92FF219A442C78EF6ED7 /* Pods_Widdit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A56DC05575FA5C0BF47FFFF6 /* Pods_Widdit.framework */; };
 /* End PBXBuildFile section */
 
@@ -142,6 +143,7 @@
 		96E06E361EC0BAF000C7F83D /* FollowersManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersManager.swift; sourceTree = "<group>"; };
 		96E06E381EC0BBA600C7F83D /* WDTFollowersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTFollowersViewController.swift; sourceTree = "<group>"; };
 		96E06E3A1EC0BC7A00C7F83D /* WDTFollowerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTFollowerCell.swift; sourceTree = "<group>"; };
+		96E06E3D1EC0E40700C7F83D /* FlexButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexButton.swift; sourceTree = "<group>"; };
 		99C5035B241671F3B627B907 /* Pods-Widdit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widdit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Widdit/Pods-Widdit.release.xcconfig"; sourceTree = "<group>"; };
 		A56DC05575FA5C0BF47FFFF6 /* Pods_Widdit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Widdit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B641342E17CE113A5F0D8EC8 /* Pods-Widdit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Widdit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Widdit/Pods-Widdit.debug.xcconfig"; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */,
 				96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */,
 				96E06E3A1EC0BC7A00C7F83D /* WDTFollowerCell.swift */,
+				96E06E3D1EC0E40700C7F83D /* FlexButton.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -545,6 +548,7 @@
 				3F3917B51E6CE8C4007409D9 /* WDTSignUpVerificationViewController.swift in Sources */,
 				3FEBD97D1E6F08CD00878392 /* JHShadowView.swift in Sources */,
 				3FEBD97F1E70E04000878392 /* WDTAddPostViewController.swift in Sources */,
+				96E06E3E1EC0E40700C7F83D /* FlexButton.swift in Sources */,
 				3F3A31621E6E9AC2009267A6 /* WDTActivity.swift in Sources */,
 				3F3CFDC21E7C487900AD8FF8 /* WDTAccountTableViewCell.swift in Sources */,
 				3FF8BA831E6A9BA9008A1CEA /* JHTextField.swift in Sources */,

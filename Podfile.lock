@@ -29,6 +29,7 @@ PODS:
   - JSQSystemSoundPlayer (2.0.1)
   - Kingfisher (3.6.1)
   - MBProgressHUD (0.9.2)
+  - MTDates (1.0.3)
   - NSStringALEmail (0.4.0)
   - NYTPhotoViewer (1.1.0):
     - NYTPhotoViewer/AnimatedGifSupport (= 1.1.0)
@@ -75,6 +76,7 @@ DEPENDENCIES:
   - JSQMessagesViewController (~> 7.3)
   - Kingfisher (~> 3.5)
   - MBProgressHUD (~> 0.9)
+  - MTDates
   - NSStringALEmail (~> 0.4)
   - NYTPhotoViewer (~> 1.1.0)
   - ParseFacebookUtilsV4 (~> 1.11)
@@ -108,6 +110,7 @@ SPEC CHECKSUMS:
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   Kingfisher: 2f31cb75f3e98d3d4c406cbdcd9b263e956cfa67
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MTDates: c65affdfb7b34001c5c9e3fe0beac4b1b8334a58
   NSStringALEmail: 90285bc5f48eb792d8ed3d71b278f78dea80a7f6
   NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
@@ -124,6 +127,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: eb8faf2458837cd28a821be877fa62404a1e4f70
+PODFILE CHECKSUM: f877dd3c413ec380a967d80033e64c24baf29dd8
 
 COCOAPODS: 1.2.1

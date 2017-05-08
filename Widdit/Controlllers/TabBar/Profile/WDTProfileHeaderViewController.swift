@@ -27,8 +27,8 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view.
         m_btnSettings.isHidden = m_objUser?.objectId != PFUser.current()?.objectId
         m_btnBack.isHidden = m_objUser?.objectId == PFUser.current()?.objectId
-//        m_btnFollow.isHidden = m_objUser?.objectId == PFUser.current()?.objectId
         
+        m_btnFollow.isHidden = true
         updateFollowingStatus()
         
         if let userName = m_objUser?["name"] as? String {
@@ -124,7 +124,6 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
     fileprivate func updateFollowingStatus() {
         if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
             FollowersManager.isFollow(user: user, completion: { [weak self] isFollow in
-                self?.m_btnFollow.isHidden = false
                 if isFollow {
                     self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
                     self?.m_btnFollow.setTitle("Following", for: .normal)
@@ -132,6 +131,7 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
                     self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
                     self?.m_btnFollow.setTitle("Follow", for: .normal)
                 }
+                self?.m_btnFollow.isHidden = false
             })
         } else {
             m_btnFollow.isHidden = true

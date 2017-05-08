@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C2A0B976D89A1106FBAACFB95C8CC96D"
+               BlueprintIdentifier = "A4948B3288A317D031D18FEB5A61FCE8"
                BuildableName = "SinchVerification.framework"
                BlueprintName = "SinchVerification-Swift"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C2A0B976D89A1106FBAACFB95C8CC96D"
+            BlueprintIdentifier = "A4948B3288A317D031D18FEB5A61FCE8"
             BuildableName = "SinchVerification.framework"
             BlueprintName = "SinchVerification-Swift"
             ReferencedContainer = "container:Pods.xcodeproj">
