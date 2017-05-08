@@ -94,4 +94,5 @@ class WDTFeedViewController: WDTFeedBaseViewController {
             return (post["user"] as! PFUser).objectId == (tmpPost["user"] as! PFUser).objectId
             }.count
     }
+    
 }

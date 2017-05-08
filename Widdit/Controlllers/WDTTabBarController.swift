@@ -59,3 +59,16 @@ class WDTTabBarController: RAMAnimatedTabBarController {
     */
 
 }
+
+
+extension UITabBarController {
+    func hideTabBarAnimated(hide: Bool) {
+        UIView.animate(withDuration: 0.3, animations: {
+            if hide {
+                self.tabBar.transform = CGAffineTransform(translationX: 0, y: 50)
+            } else {
+                self.tabBar.transform = CGAffineTransform.identity
+            }
+        })
+    }
+}
