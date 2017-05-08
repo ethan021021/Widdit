@@ -60,6 +60,7 @@ final class FollowersManager {
             query.includeKey("follower")
             query.includeKey("user")
             query.whereKey("user", equalTo: me)
+            query.addAscendingOrder("date")
             query.findObjectsInBackground(block: { (follows, error) in
                 if let follows = (follows?.flatMap { Follow(pfObject: $0) }) {
                     completion(follows)
@@ -91,6 +92,7 @@ final class FollowersManager {
             query.includeKey("follower")
             query.includeKey("user")
             query.whereKey("follower", equalTo: me)
+            query.addAscendingOrder("date")
             query.findObjectsInBackground(block: { (follows, error) in
                 if let follows = (follows?.flatMap { Follow(pfObject: $0) }) {
                     completion(follows)

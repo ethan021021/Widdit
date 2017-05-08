@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import MTDates
 
 
 final class WDTFollowerCell: UITableViewCell {
@@ -15,7 +16,7 @@ final class WDTFollowerCell: UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var userAvatarView: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var newFollowerIndicatorView: UIImageView!
+    @IBOutlet weak var newFollowerIndicatorView: UIView!
     
     
     override func awakeFromNib() {
@@ -28,6 +29,7 @@ final class WDTFollowerCell: UITableViewCell {
         super.layoutSubviews()
         
         userAvatarView.layer.cornerRadius = userAvatarView.frame.width * 0.5
+        newFollowerIndicatorView.layer.cornerRadius = userAvatarView.frame.width * 0.5
     }
 
     
@@ -38,7 +40,8 @@ final class WDTFollowerCell: UITableViewCell {
             self.userAvatarView.kf.setImage(with: URL(string: url))
         }
         
-        dateLabel.text = "\(date)" // TODO: Date diference
+        let minutes = (date as NSDate).mt_minutes(until: Date())
+        dateLabel.text = "\(date)" // TODO: Date difference
         
         newFollowerIndicatorView.isHidden = !isNew
     }
