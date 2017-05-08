@@ -28,6 +28,7 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_lblExpireDate: UILabel!
     @IBOutlet weak var m_lblLocation: UILabel!
     @IBOutlet weak var m_imgPhoto: UIImageView!
+    @IBOutlet weak var m_imgManyPhotosIndicator: UIImageView!
     @IBOutlet weak var m_constraintPhotoHeight: NSLayoutConstraint!
     @IBOutlet weak var m_imgPhotoTopEdgeConstraint: NSLayoutConstraint!
     @IBOutlet weak var m_lblPostText: ActiveLabel!
@@ -134,13 +135,21 @@ class WDTFeedTableViewCell: UITableViewCell {
             m_lblPostText.text = ""
         }
         
-        //Photo
-        let photo = objPost["postUrl"] as? String ?? ""
-        let photoIsExists = photo.characters.count > 0
+        //Photos
+        let photoURLs = objPost["photoURLs"] as? [String] ?? []
+        let photoIsExists = photoURLs.count > 0
         if photoIsExists {
-            m_imgPhoto.kf.setImage(with: URL(string: photo))
+            m_imgPhoto.kf.setImage(with: URL(string: photoURLs[0]))
             self.m_imgPhotoTopEdgeConstraint.constant = 12
             self.m_constraintPhotoHeight.priority = 801
+            
+            if photoURLs.count > 1 {
+                m_imgManyPhotosIndicator.isHidden = false
+            } else {
+                m_imgManyPhotosIndicator.isHidden = true
+            }
+        } else {
+            m_imgManyPhotosIndicator.isHidden = true
         }
         
         // Link preview

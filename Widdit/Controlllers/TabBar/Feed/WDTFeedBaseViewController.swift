@@ -9,6 +9,8 @@
 import UIKit
 import Parse
 import CPImageViewer
+import NYTPhotoViewer
+import Kingfisher
 
 class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtocol, WDTFeedTableViewCellDelegate {
     
@@ -132,17 +134,19 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     }
     
     func onTapPostPhoto(_ objPost: PFObject) {
-        let index = self.m_aryPosts.index(where: { (post) -> Bool in
-            return post.objectId == objPost.objectId
+        let photoURLs = objPost["photoURLs"] as? [String] ?? []
+        let photos = photoURLs.map { _ in NYTPhotoObject() }
+        let controller = PhotosViewController(photos: photos)
+        controller.rightBarButtonItem = nil
+        
+        self.present(controller, animated: true, completion: nil)
+        
+        loadPhotos(for: photoURLs,
+                   loaded:
+        { image, index in
+            photos[index].image = image
+            controller.updateImage(for: photos[index])
         })
-        
-        let cell = tableView.cellForRow(at: IndexPath(row: index!, section: 0)) as! WDTFeedTableViewCell
-        animationImageView = cell.m_imgPhoto
-        
-        let controller = CPImageViewerViewController()
-        controller.transitioningDelegate = animator
-        controller.image = animationImageView.image
-        present(controller, animated: true, completion: nil)
     }
     
     func onTapUserAvatar(_ objUser: PFUser?) {
@@ -165,6 +169,77 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         replyVC.m_objPost = objPost
         replyVC.m_objUser = objPost["user"] as? PFUser
         navigationController?.pushViewController(replyVC, animated: true)
+    }
+    
+    
+    
+    
+    
+    fileprivate func loadPhotos(for photoURLs: [String],
+                                loaded: @escaping (UIImage?, Int) -> Void,
+                                completion: (() -> Void)? = nil) {
+        if photoURLs.count > 0 {
+            var photosLoaded = 0
+            for (index, path) in photoURLs.enumerated() {
+                guard let url = URL(string: path) else {
+                    photosLoaded += 1
+                    
+                    if photosLoaded >= photoURLs.count {
+                        completion?()
+                    }
+                    return
+                }
+                
+                KingfisherManager.shared.retrieveImage(with: url,
+                                                       options: nil,
+                                                       progressBlock: nil,
+                                                       completionHandler:
+                    { (image, _, _, _) in
+                        loaded(image, index)
+                        
+                        photosLoaded += 1
+                        if photosLoaded >= photoURLs.count {
+                            completion?()
+                        }
+                })
+            }
+        } else {
+            completion?()
+        }
+    }
+    
+    fileprivate final class NYTPhotoObject: NSObject, NYTPhoto {
+    
+        var image: UIImage?
+        var imageData: Data?
+        var placeholderImage: UIImage?
+        var attributedCaptionTitle: NSAttributedString?
+        var attributedCaptionCredit: NSAttributedString?
+        var attributedCaptionSummary: NSAttributedString?
+        
+        init(image: UIImage? = nil, imageData: Data? = nil, attributedCaptionTitle: NSAttributedString? = nil) {
+            self.image = image
+            self.imageData = imageData
+            self.attributedCaptionTitle = attributedCaptionTitle
+            
+            super.init()
+        }
+    
+    }
+    
+    
+    final class PhotosViewController: NYTPhotosViewController {
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            UIApplication.shared.isStatusBarHidden = true
+        }
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            UIApplication.shared.isStatusBarHidden = false
+        }
+        override var prefersStatusBarHidden: Bool {
+            return true
+        }
     }
     
 }
