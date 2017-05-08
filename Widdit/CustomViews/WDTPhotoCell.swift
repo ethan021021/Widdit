@@ -23,6 +23,14 @@ final class WDTPhotoCell: UICollectionViewCell {
     var onDelete: (() -> Void)?
     
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        imageView.layer.cornerRadius = 8
+        imageView.clipsToBounds = true
+    }
+    
+    
     @IBAction func delete() {
         onDelete?()
     }

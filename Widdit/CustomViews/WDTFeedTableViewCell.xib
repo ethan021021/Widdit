@@ -134,10 +134,10 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_icon_photos_many" translatesAutoresizingMaskIntoConstraints="NO" id="2OP-bW-FBl">
-                                <rect key="frame" x="248" y="178.5" width="28" height="28"/>
+                                <rect key="frame" x="240" y="174.5" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="s3J-aX-2S9"/>
-                                    <constraint firstAttribute="width" constant="28" id="zhu-9a-KZU"/>
+                                    <constraint firstAttribute="height" constant="40" id="s3J-aX-2S9"/>
+                                    <constraint firstAttribute="width" constant="40" id="zhu-9a-KZU"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kfa-Qi-tUq" customClass="JHShadowView" customModule="Widdit" customModuleProvider="target">
@@ -352,8 +352,8 @@
                             <constraint firstItem="qop-LG-LhJ" firstAttribute="centerX" secondItem="lcV-Tb-W0g" secondAttribute="centerX" id="SM8-9W-bFh"/>
                             <constraint firstItem="7Oo-Gk-6il" firstAttribute="width" secondItem="lcV-Tb-W0g" secondAttribute="width" id="WoP-nC-TYX"/>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="centerX" secondItem="VLg-Ta-3vT" secondAttribute="centerX" id="Z1i-e9-b8B"/>
-                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="trailing" secondItem="2OP-bW-FBl" secondAttribute="trailing" constant="8" id="bFr-Rx-yG4"/>
-                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="top" secondItem="2OP-bW-FBl" secondAttribute="top" constant="-8" id="eCT-QX-5h5"/>
+                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="trailing" secondItem="2OP-bW-FBl" secondAttribute="trailing" constant="4" id="bFr-Rx-yG4"/>
+                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="top" secondItem="2OP-bW-FBl" secondAttribute="top" constant="-4" id="eCT-QX-5h5"/>
                             <constraint firstItem="6q6-57-ERv" firstAttribute="width" secondItem="VLg-Ta-3vT" secondAttribute="width" id="fEJ-wi-LGl"/>
                             <constraint firstItem="kfa-Qi-tUq" firstAttribute="height" secondItem="pQO-x0-cIF" secondAttribute="height" id="gM8-Q1-QMe"/>
                             <constraint firstItem="kfa-Qi-tUq" firstAttribute="centerY" secondItem="pQO-x0-cIF" secondAttribute="centerY" id="gyX-P1-TVj"/>
