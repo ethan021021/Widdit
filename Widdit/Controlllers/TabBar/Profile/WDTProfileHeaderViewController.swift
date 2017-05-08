@@ -225,6 +225,33 @@ final class UserManager {
         }
     }
     
+    class func getWatchedFollowers(completion: @escaping ([PFUser]) -> Void) {
+        if let me = PFUser.current() {
+            me.fetchIfNeededInBackground { me, error in
+                if let followers = me?["watchedFollowers"] as? [PFUser] {
+                    completion(followers)
+                } else {
+                    completion([])
+                }
+            }
+        } else {
+            completion([])
+        }
+    }
+    
+    class func getUnwatchedFollowers(completion: @escaping ([PFUser]) -> Void) {
+        UserManager.getFollowers { followers in
+            UserManager.getWatchedFollowers(completion: { watchedFollowers in
+                let unwatchedFollowers = followers.filter { follower in
+                    return !watchedFollowers.contains(where: {
+                        return $0.objectId == follower.objectId
+                    })
+                }
+                completion(unwatchedFollowers)
+            })
+        }
+    }
+    
     /// Gets all of users I follow
     class func getFollowing(completion: @escaping ([PFUser]) -> Void) {
         if let me = PFUser.current() {
@@ -277,6 +304,20 @@ final class UserManager {
         UserManager.getFollowing { followers in
             let isFollow = followers.contains(where: { $0.objectId == user.objectId })
             completion(isFollow)
+        }
+    }
+    
+    class func addWatchedFollowers(_ followers: [PFUser], completion: @escaping () -> Void) {
+        UserManager.getWatchedFollowers { followers in
+            if let me = PFUser.current() {
+                let resultFollowers = followers + followers
+                me["watchedFollowers"] = resultFollowers
+                me.saveInBackground(block: { (success, error) in
+                    completion()
+                })
+            } else {
+                completion()
+            }
         }
     }
 
