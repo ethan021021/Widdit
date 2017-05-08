@@ -59,6 +59,19 @@ class WDTFeedViewController: WDTFeedBaseViewController {
                         } else {
                             return acc + [current]
                         }
+                    }).sorted(by: { (post1, post2) -> Bool in
+                        if let followers = PFUser.current()?["followers"] as? [PFUser] {
+                            if let post1User = post1["user"] as? PFUser, let post2User = post2["user"] as? PFUser {
+                                if let post1UserId = post1User.objectId, let post2UserId = post2User.objectId {
+                                    return followers.contains(where: { user -> Bool in
+                                        return user.objectId == post1UserId
+                                    }) && !followers.contains(where: { user -> Bool in
+                                        return user.objectId == post2UserId
+                                    })
+                                }
+                            }
+                        }
+                        return false
                     })
                     
                     self.tableView.reloadData()
