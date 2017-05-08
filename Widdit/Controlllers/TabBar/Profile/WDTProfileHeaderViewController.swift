@@ -123,7 +123,7 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
     
     fileprivate func updateFollowingStatus() {
         if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
-            UserManager.isFollow(user: user, completion: { [weak self] isFollow in
+            FollowersManager.isFollow(user: user, completion: { [weak self] isFollow in
                 self?.m_btnFollow.isHidden = false
                 if isFollow {
                     self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
@@ -181,13 +181,13 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
     
     @IBAction func onClickBtnFollow(_ sender: Any) {
         if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
-            UserManager.isFollow(user: user, completion: { isFollow in
+            FollowersManager.isFollow(user: user, completion: { isFollow in
                 if isFollow {
-                    UserManager.unfollow(user: user, completion: { [weak self] in
+                    FollowersManager.unfollow(user: user, completion: { [weak self] in
                         self?.updateFollowingStatus()
                     })
                 } else {
-                    UserManager.follow(user: user, completion: { [weak self] in
+                    FollowersManager.follow(user: user, completion: { [weak self] in
                         self?.updateFollowingStatus()
                     })
                 }
@@ -203,123 +203,5 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         m_pgControl.currentPage = Int(nPage)
     }
     
-}
-
-
-final class UserManager {
-
-    /// Gets all users that follow me
-    class func getFollowers(completion: @escaping ([PFUser]) -> Void) {
-        if let query = PFUser.query(), let me = PFUser.current() {
-            query.includeKey("followers")
-            query.whereKey("followers", equalTo: me)
-            query.findObjectsInBackground(block: { (users, error) in
-                if let users = users as? [PFUser] {
-                    completion(users)
-                } else {
-                    completion([])
-                }
-            })
-        } else {
-            completion([])
-        }
-    }
-    
-    class func getWatchedFollowers(completion: @escaping ([PFUser]) -> Void) {
-        if let me = PFUser.current() {
-            me.fetchIfNeededInBackground { me, error in
-                if let followers = me?["watchedFollowers"] as? [PFUser] {
-                    completion(followers)
-                } else {
-                    completion([])
-                }
-            }
-        } else {
-            completion([])
-        }
-    }
-    
-    class func getUnwatchedFollowers(completion: @escaping ([PFUser]) -> Void) {
-        UserManager.getFollowers { followers in
-            UserManager.getWatchedFollowers(completion: { watchedFollowers in
-                let unwatchedFollowers = followers.filter { follower in
-                    return !watchedFollowers.contains(where: {
-                        return $0.objectId == follower.objectId
-                    })
-                }
-                completion(unwatchedFollowers)
-            })
-        }
-    }
-    
-    /// Gets all of users I follow
-    class func getFollowing(completion: @escaping ([PFUser]) -> Void) {
-        if let me = PFUser.current() {
-            me.fetchIfNeededInBackground { me, error in
-                if let followers = me?["followers"] as? [PFUser] {
-                    completion(followers)
-                } else {
-                    completion([])
-                }
-            }
-        } else {
-            completion([])
-        }
-    }
-    
-    class func follow(user: PFUser, completion: @escaping () -> Void) {
-        UserManager.getFollowing { followers in
-            if let me = PFUser.current() {
-                let resultFollowers = followers + [user]
-                me["followers"] = resultFollowers
-                me.saveInBackground(block: { (success, error) in
-                    completion()
-                    
-                    if let username = user.username {
-                        WDTPush.sendPushAfterFollowing(to: username)
-                    }
-                })
-            } else {
-                completion()
-            }
-        }
-    }
-    
-    class func unfollow(user: PFUser, completion: @escaping() -> Void) {
-        UserManager.getFollowing { followers in
-            if let me = PFUser.current() {
-                let resultFollowers = followers.filter { $0.objectId != user.objectId }
-                me["followers"] = resultFollowers
-                me.saveInBackground(block: { (success, error) in
-                    completion()
-                })
-            } else {
-                completion()
-            }
-        }
-    }
-    
-    /// Returns true if you have follow the user
-    class func isFollow(user: PFUser, completion: @escaping (Bool) -> Void) {
-        UserManager.getFollowing { followers in
-            let isFollow = followers.contains(where: { $0.objectId == user.objectId })
-            completion(isFollow)
-        }
-    }
-    
-    class func addWatchedFollowers(_ followers: [PFUser], completion: @escaping () -> Void) {
-        UserManager.getWatchedFollowers { followers in
-            if let me = PFUser.current() {
-                let resultFollowers = followers + followers
-                me["watchedFollowers"] = resultFollowers
-                me.saveInBackground(block: { (success, error) in
-                    completion()
-                })
-            } else {
-                completion()
-            }
-        }
-    }
-
 }
 
