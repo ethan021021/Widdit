@@ -126,10 +126,10 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
             UserManager.isFollow(user: user, completion: { [weak self] isFollow in
                 self?.m_btnFollow.isHidden = false
                 if isFollow {
-                    self?.m_btnFollow.setImage(UIImage(named: "post_icon_down_selected"), for: .normal)
-                    self?.m_btnFollow.setTitle("Unfollow", for: .normal)
+                    self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
+                    self?.m_btnFollow.setTitle("Following", for: .normal)
                 } else {
-                    self?.m_btnFollow.setImage(UIImage(named: "post_icon_down"), for: .normal)
+                    self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
                     self?.m_btnFollow.setTitle("Follow", for: .normal)
                 }
             })
@@ -247,7 +247,10 @@ final class UserManager {
                 me["followers"] = resultFollowers
                 me.saveInBackground(block: { (success, error) in
                     completion()
-                    // Send push
+                    
+                    if let username = user.username {
+                        WDTPush.sendPushAfterFollowing(to: username)
+                    }
                 })
             } else {
                 completion()
@@ -262,7 +265,6 @@ final class UserManager {
                 me["followers"] = resultFollowers
                 me.saveInBackground(block: { (success, error) in
                     completion()
-                    // Send push
                 })
             } else {
                 completion()
