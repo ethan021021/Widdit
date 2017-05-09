@@ -55,7 +55,7 @@ extension WDTFollowersViewController: UITableViewDataSource {
         
         let follow = self.follows[indexPath.row]
         
-        cell.setUser(follow.user, date: follow.date, isNew: !follow.watched)
+        cell.setUser(follow.follower, date: follow.date, isNew: !follow.watched)
         
         return cell
     }
