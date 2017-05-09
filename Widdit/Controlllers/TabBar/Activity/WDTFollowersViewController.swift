@@ -70,7 +70,7 @@ extension WDTFollowersViewController: UITableViewDelegate {
         let profileVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTProfileViewController.self)) as! WDTProfileViewController
         profileVC.m_objUser = follow.user
         
-        navigationController?.pushViewController(profileVC, animated: true)
+        navigationController?.pushViewController(profileVC, animated: true) ?? present(profileVC, animated: true, completion: nil)
     }
 
 }

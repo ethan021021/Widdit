@@ -10,9 +10,7 @@
 #endif
 #endif
 
-#import "NSDate+MTDates.h"
-#import "NSDateComponents+MTDates.h"
 
-FOUNDATION_EXPORT double MTDatesVersionNumber;
-FOUNDATION_EXPORT const unsigned char MTDatesVersionString[];
+FOUNDATION_EXPORT double RelativeFormatterVersionNumber;
+FOUNDATION_EXPORT const unsigned char RelativeFormatterVersionString[];
 

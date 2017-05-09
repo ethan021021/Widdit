@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '16CF5BC88CB2836010ED5E5B0425CA9A'
-               BlueprintName = 'MTDates'
+               BlueprintIdentifier = 'B7CE5CC814C705D21DF5B854D852D384'
+               BlueprintName = 'RelativeFormatter'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'MTDates.framework'>
+               BuildableName = 'RelativeFormatter.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

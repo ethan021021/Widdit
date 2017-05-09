@@ -13,7 +13,7 @@ class WDTAboutViewController: UITableViewController {
 
     var m_objUser: PFUser?
     
-    let arySections = ["ABOUT", "SITUATION", "VERIFICATION"]
+    let arySections = ["ABOUT", "SITUATION", "VERIFICATION", "FOllOWERS"]
     
     let aryAccounts = [
         [
@@ -28,7 +28,8 @@ class WDTAboutViewController: UITableViewController {
             ["icon": "profile_icon_phone", "text": "Phone"],
             ["icon": "profile_icon_email", "text": "E-mail"],
             ["icon": "profile_icon_facebook", "text": "Facebook"]
-        ]
+        ],
+        [""]
     ]
     
     override func viewDidLoad() {
@@ -53,7 +54,13 @@ class WDTAboutViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if indexPath.section == 3 {
+            let cell = Bundle.main.loadNibNamed(String(describing: WDTAboutTableViewCell.self), owner: nil, options: [:])?.first as! WDTAboutTableViewCell
+            
+            cell.m_lblAbout.text = "Followers"
+            
+            return cell
+        } else if indexPath.section == 0 {
             let cell = Bundle.main.loadNibNamed(String(describing: WDTAboutTableViewCell.self), owner: nil, options: [:])?.first as! WDTAboutTableViewCell
             if let about = m_objUser?["about"] as? String {
                 cell.m_lblAbout.text = about
@@ -148,6 +155,15 @@ class WDTAboutViewController: UITableViewController {
         }
         
         return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 3 {
+            if let controller = storyboard?.instantiateViewController(withIdentifier: "WDTFollowersViewController") {
+                navigationController?.pushViewController(controller,
+                                                         animated: true)
+            }
+        }
     }
 
 }

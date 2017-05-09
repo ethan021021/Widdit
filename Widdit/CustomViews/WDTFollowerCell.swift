@@ -8,7 +8,7 @@
 
 import UIKit
 import Parse
-import MTDates
+import RelativeFormatter
 
 
 final class WDTFollowerCell: UITableViewCell {
@@ -40,8 +40,8 @@ final class WDTFollowerCell: UITableViewCell {
             self.userAvatarView.kf.setImage(with: URL(string: url))
         }
         
-        let minutes = (date as NSDate).mt_minutes(until: Date())
-        dateLabel.text = "\(date)" // TODO: Date difference
+        let relativeDate = date.relativeFormatted(false, precision: .minute)
+        dateLabel.text = "\(relativeDate)"
         
         newFollowerIndicatorView.isHidden = !isNew
     }
