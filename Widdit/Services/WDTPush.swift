@@ -55,4 +55,25 @@ class WDTPush {
         let data = ["alert": "\(username) \(message)", "badge": "Increment", "sound": "notification.mp3", "who": userObjectId, "post": postId, "type": "reply"]
         WDTPush.sendPush(toUsername: toUsername, data: data as [String : AnyObject])
     }
+    
+    class func sendPushAfterFollowing(to user: String) {
+        guard let username = PFUser.current()?.username else {
+            print("username is not set")
+            return
+        }
+        
+        guard let userObjectId = PFUser.current()?.objectId else {
+            return
+        }
+        
+        let data = [
+            "alert": "\(username) is following you!",
+            "badge": "Increment",
+            "sound": "notification.mp3",
+            "who": userObjectId,
+            "type": "following"
+        ]
+        
+        WDTPush.sendPush(toUsername: user, data: data as [String : AnyObject])
+    }
 }

@@ -53,6 +53,7 @@ PODS:
   - PhoneNumberKit/UIKit (1.2.2):
     - PhoneNumberKit/PhoneNumberKitCore
   - RAMAnimatedTabBarController (2.1.1)
+  - RelativeFormatter (0.8.3)
   - SCLAlertView (0.7.0)
   - SinchVerification-Swift (2.0.3)
   - SJSegmentedScrollView (1.3.5)
@@ -81,6 +82,7 @@ DEPENDENCIES:
   - PermissionScope (~> 1.1)
   - PhoneNumberKit (~> 1.2)
   - RAMAnimatedTabBarController (~> 2.1)
+  - RelativeFormatter
   - SCLAlertView (~> 0.7)
   - SinchVerification-Swift (~> 2.0)
   - SJSegmentedScrollView (~> 1.3)
@@ -115,6 +117,7 @@ SPEC CHECKSUMS:
   PermissionScope: a30c16e015779ba27c97c124e7539e27b5829de2
   PhoneNumberKit: ffae8f18fb78c1425c7af973711b0b0fd4f4104f
   RAMAnimatedTabBarController: 128e0d71dc802766de575a3c59c6fdcc8e2f921b
+  RelativeFormatter: 13508ccd19bbab46ca95cf847a0db6e80601c9a4
   SCLAlertView: 8a14ffc40590c619e183eed2298b854385f30be1
   SinchVerification-Swift: 567aaf9cb29c55a115faecb6016fea25a7f37688
   SJSegmentedScrollView: 20e4c2e5489329e06c483f8824dbb55d055e9ffa
@@ -124,6 +127,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: eb8faf2458837cd28a821be877fa62404a1e4f70
+PODFILE CHECKSUM: e08c4fb447950194191a70a11cdd7091f7efc19f
 
 COCOAPODS: 1.2.1

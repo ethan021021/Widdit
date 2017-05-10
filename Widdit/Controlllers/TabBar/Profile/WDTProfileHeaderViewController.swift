@@ -19,6 +19,7 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var m_btnSettings: UIButton!
     @IBOutlet weak var m_lblName: UILabel!
     @IBOutlet weak var m_pgControl: UIPageControl!
+    @IBOutlet weak var m_btnFollow: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,9 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view.
         m_btnSettings.isHidden = m_objUser?.objectId != PFUser.current()?.objectId
         m_btnBack.isHidden = m_objUser?.objectId == PFUser.current()?.objectId
+        
+        m_btnFollow.isHidden = true
+        updateFollowingStatus()
         
         if let userName = m_objUser?["name"] as? String {
             m_lblName.text = userName
@@ -116,6 +120,24 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    fileprivate func updateFollowingStatus() {
+        if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
+            FollowersManager.isFollow(user: user, completion: { [weak self] isFollow in
+                if isFollow {
+                    self?.m_btnFollow.setImage(UIImage(named: "profile_button_following"), for: .normal)
+                    self?.m_btnFollow.setTitle("Following", for: .normal)
+                } else {
+                    self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
+                    self?.m_btnFollow.setTitle("Follow", for: .normal)
+                }
+                self?.m_btnFollow.isHidden = false
+            })
+        } else {
+            m_btnFollow.isHidden = true
+        }
+    }
+    
 
     /*
     // MARK: - Navigation
@@ -157,6 +179,22 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         m_parentVC?.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func onClickBtnFollow(_ sender: Any) {
+        if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
+            FollowersManager.isFollow(user: user, completion: { isFollow in
+                if isFollow {
+                    FollowersManager.unfollow(user: user, completion: { [weak self] in
+                        self?.updateFollowingStatus()
+                    })
+                } else {
+                    FollowersManager.follow(user: user, completion: { [weak self] in
+                        self?.updateFollowingStatus()
+                    })
+                }
+            })
+        }
+    }
+    
     // MARK: - UIScrollViewDelegate
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let width = view.frame.size.width
@@ -166,3 +204,4 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
     }
     
 }
+

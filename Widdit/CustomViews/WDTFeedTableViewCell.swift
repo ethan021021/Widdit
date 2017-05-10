@@ -159,9 +159,11 @@ class WDTFeedTableViewCell: UITableViewCell {
                 let description = objPost["linkDescription"] as? String,
                 let site = objPost["linkSite"] as? String {
                 
-                m_linkPreviewView.linkImageView.kf.setImage(with: URL(string: imageUrl), placeholder: nil, completionHandler: { [weak self] (image, error, _, _) in                
-                    self?.m_linkPreviewViewHeightConstraint.priority = 200
-                    self?.delegate?.onUpdateObject(objPost)
+                m_linkPreviewView.linkImageView.kf.setImage(with: URL(string: imageUrl), placeholder: nil, completionHandler: { [weak self] (image, error, _, _) in
+                    if image != nil && error == nil {
+                        self?.m_linkPreviewViewHeightConstraint.priority = 200
+                        self?.delegate?.onUpdateObject(objPost)
+                    }
                 })
                 m_linkPreviewView.linkTitleLabel.text = title
                 m_linkPreviewView.linkDescriptionLabel.text = description
