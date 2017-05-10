@@ -9,6 +9,9 @@
 import UIKit
 import JSQMessagesViewController
 import Parse
+import DKImagePickerController
+import Kingfisher
+import NYTPhotoViewer
 
 class WDTChatViewController: JSQMessagesViewController {
 
@@ -60,8 +63,6 @@ class WDTChatViewController: JSQMessagesViewController {
                                                                 capInsets: .zero)?
             .incomingMessagesBubbleImage(with: UIColor(r: 249, g: 249, b: 249, a: 1))
         
-        inputToolbar.contentView.leftBarButtonItem = nil
-        
         showHud()
         getChatHistory()
     }
@@ -112,11 +113,40 @@ class WDTChatViewController: JSQMessagesViewController {
                                     senderName = sender.username!
                                 }
                                 
-                                if let body = objReply["body"] as? String {
+                                if let body = objReply["body"] as? String,
+                                    body.characters.count > 0 {
                                     text = body
+                                    
+                                    self.m_aryMessages.append(JSQMessage(senderId: sender.objectId, displayName: senderName, text: text))
+                                } else if let photoURLString = objReply["photoURL"] as? String,
+                                          let photoURL = URL(string: photoURLString) {
+                                    let index = self.m_aryMessages.count
+                                    let media = JSQPhotoMediaItem(maskAsOutgoing: true)
+                                    media?.appliesMediaViewMaskAsOutgoing = (sender.objectId == PFUser.current()?.objectId)
+                                    if let message = JSQMessage(senderId: sender.objectId,
+                                                                displayName: senderName,
+                                                                media: media) {
+                                        self.m_aryMessages.append(message)
+                                        self.finishSendingMessage()
+                                    }
+                                    KingfisherManager.shared.retrieveImage(with: photoURL,
+                                                                           options: nil,
+                                                                           progressBlock: nil,
+                                                                           completionHandler:
+                                        { [weak self] (image, error, _, _) in
+                                            if let image = image {
+                                                let media = JSQPhotoMediaItem(image: image)
+                                                media?.appliesMediaViewMaskAsOutgoing = (sender.objectId == PFUser.current()?.objectId)
+                                                if let message = JSQMessage(senderId: sender.objectId,
+                                                                            displayName: senderName,
+                                                                            media: media) {
+                                                    self?.m_aryMessages.remove(at: index)
+                                                    self?.m_aryMessages.insert(message, at: index)
+                                                    self?.finishSendingMessage()
+                                                }
+                                            }
+                                    })
                                 }
-                                
-                                self.m_aryMessages.append(JSQMessage(senderId: sender.objectId, displayName: senderName, text: text))
                             }
                             
                             self.finishReceivingMessage()
@@ -159,12 +189,17 @@ class WDTChatViewController: JSQMessagesViewController {
             }
         }
         
-        m_aryMessages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text))
+        if let message = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text) {
+            m_aryMessages.append(message)
+        }
         finishSendingMessage()
     }
     
+    override func didPressAccessoryButton(_ sender: UIButton!) {
+        showPhotoPicker()
+    }
+    
     func sendMessage(_ objActivity: PFObject, text: String) {
-        
         let parseMessage = PFObject(className: "replies")
         
         parseMessage["by"] = PFUser.current()
@@ -190,6 +225,45 @@ class WDTChatViewController: JSQMessagesViewController {
             objActivity.saveInBackground()
         }
     }
+    
+    func sendMessage(_ objActivity: PFObject, photo: UIImage) {
+        let parseMessage = PFObject(className: "replies")
+        
+        parseMessage["by"] = PFUser.current()
+        parseMessage["to"] = m_objUser
+        parseMessage["body"] = ""
+        parseMessage["post"] = PFObject(withoutDataWithClassName: "posts", objectId: m_objPost?.objectId)
+        
+        WDTPush.sendPushAfterReply(toUsername: (m_objUser?.username!)!, msg: "Photo", postId: (self.m_objUser?.objectId!)!, comeFromTheFeed: m_isFeedChat)
+        
+        if let photoData = UIImageJPEGRepresentation(photo, 0.5) {
+            if let photoFile = PFFile(name: "postPhoto.jpg", data: photoData) {
+                
+                photoFile.saveInBackground(block: { (success, error) in
+                    if let url = photoFile.url {
+                        parseMessage["photoURL"] = url
+                    }
+                    
+                    parseMessage.saveInBackground { (bool, error) in
+                        let relation = objActivity.relation(forKey: "replies")
+                        relation.add(parseMessage)
+                        
+                        //sends message
+                        if PFUser.current()?.objectId != (self.m_objPost?["user"] as! PFUser).objectId {
+                            objActivity["replyDate"]  = parseMessage.updatedAt
+                        }
+                        
+                        objActivity["replyRead"] = false
+                        objActivity["repliesSeen"] = false
+                        objActivity["comeFromTheFeed"] = self.m_isFeedChat
+                        objActivity["whoRepliedLast"] = PFUser.current()
+                        objActivity.saveInBackground()
+                    }
+                })
+            }
+        }
+    }
+    
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return m_aryMessages.count
@@ -224,12 +298,112 @@ class WDTChatViewController: JSQMessagesViewController {
         
         let objMessage = m_aryMessages[indexPath.item]
         if objMessage.senderId() == senderId {
-            cell.textView.textColor = UIColor.white
+            cell.textView?.textColor = UIColor.white
         } else {
-            cell.textView.textColor = UIColor(r: 68, g: 74, b: 89, a: 1)
+            cell.textView?.textColor = UIColor(r: 68, g: 74, b: 89, a: 1)
         }
         
         return cell
     }
     
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAt indexPath: IndexPath!) {
+        let objMessage = m_aryMessages[indexPath.item]
+        
+        if objMessage.isMediaMessage() {
+            if let photoItem = objMessage.media?() as? JSQPhotoMediaItem {
+                let photo = photoItem.image
+                
+                let photos = [NYTPhotoObject(image: photo)]
+                let controller = PhotosViewController(photos: photos)
+                controller.rightBarButtonItem = nil
+                
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    
+    
+    fileprivate func showPhotoPicker() {
+        let pickerController = DKImagePickerController()
+        pickerController.maxSelectableCount = 1
+        pickerController.assetType = .allPhotos
+        
+        var pickedPhoto: UIImage?
+        
+        pickerController.didSelectAssets = { (assets: [DKAsset]) in
+            var pendingAssets = assets.count
+            
+            func removePendingAsset() {
+                pendingAssets -= 1
+                
+                if pendingAssets <= 0 {
+                    if let pickedPhoto = pickedPhoto {
+                        WDTActivity.isDownAndReverseDown(user: self.m_objUser!, post: self.m_objPost!) { (down) in
+                            if let down = down  {
+                                self.sendMessage(down, photo: pickedPhoto)
+                            } else {
+                                WDTActivity.addActivity(user: self.m_objUser!, post: self.m_objPost!, type: .Undown, completion: { (activityObj) in
+                                    self.sendMessage(activityObj, photo: pickedPhoto)
+                                })
+                            }
+                        }
+                        
+                        let media = JSQPhotoMediaItem(image: pickedPhoto)
+                        if let message = JSQMessage(senderId: self.senderId,
+                                                    displayName: self.senderDisplayName,
+                                                    media: media) {
+                            self.m_aryMessages.append(message)
+                            self.finishSendingMessage()
+                        }
+                    }
+                }
+            }
+            
+            assets.forEach {
+                $0.fetchOriginalImageWithCompleteBlock({ (image, _) in
+                    pickedPhoto = image
+                    
+                    removePendingAsset()
+                })
+            }
+        }
+        
+        self.present(pickerController, animated: true, completion: nil)
+    }
+    
+}
+
+
+extension JSQMessagesBubbleImageFactory {
+
+    private struct OnceDispatcher {
+        static var isDispatched = false
+    }
+    
+    override open static func initialize() {
+        super.initialize()
+        
+        if !OnceDispatcher.isDispatched {
+            swizzleInit()
+            OnceDispatcher.isDispatched = true
+        }
+    }
+    
+    
+    private static func swizzleInit() {
+        let oldSelector = #selector(JSQMessagesBubbleImageFactory.init(bubble:capInsets:))
+        let newSelector = #selector(JSQMessagesBubbleImageFactory.customInit(bubble:capInsets:))
+        
+        let oldMethod = class_getInstanceMethod(JSQMessagesBubbleImageFactory.self, oldSelector)
+        let newMethod = class_getInstanceMethod(JSQMessagesBubbleImageFactory.self, newSelector)
+        
+        method_exchangeImplementations(oldMethod, newMethod)
+    }
+    
+    
+    func customInit(bubble bubbleImage: UIImage, capInsets: UIEdgeInsets) -> JSQMessagesBubbleImageFactory {
+        return self.customInit(bubble: UIImage.jsq_bubbleRegularTailless(), capInsets: capInsets)
+    }
+
 }

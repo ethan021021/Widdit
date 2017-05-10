@@ -208,38 +208,38 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         }
     }
     
-    fileprivate final class NYTPhotoObject: NSObject, NYTPhoto {
+}
+
+final class NYTPhotoObject: NSObject, NYTPhoto {
     
-        var image: UIImage?
-        var imageData: Data?
-        var placeholderImage: UIImage?
-        var attributedCaptionTitle: NSAttributedString?
-        var attributedCaptionCredit: NSAttributedString?
-        var attributedCaptionSummary: NSAttributedString?
+    var image: UIImage?
+    var imageData: Data?
+    var placeholderImage: UIImage?
+    var attributedCaptionTitle: NSAttributedString?
+    var attributedCaptionCredit: NSAttributedString?
+    var attributedCaptionSummary: NSAttributedString?
+    
+    init(image: UIImage? = nil, imageData: Data? = nil, attributedCaptionTitle: NSAttributedString? = nil) {
+        self.image = image
+        self.imageData = imageData
+        self.attributedCaptionTitle = attributedCaptionTitle
         
-        init(image: UIImage? = nil, imageData: Data? = nil, attributedCaptionTitle: NSAttributedString? = nil) {
-            self.image = image
-            self.imageData = imageData
-            self.attributedCaptionTitle = attributedCaptionTitle
-            
-            super.init()
-        }
-    
+        super.init()
     }
     
-    
-    final class PhotosViewController: NYTPhotosViewController {
-        override func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
-            UIApplication.shared.isStatusBarHidden = true
-        }
-        override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-            UIApplication.shared.isStatusBarHidden = false
-        }
-        override var prefersStatusBarHidden: Bool {
-            return true
-        }
+}
+
+
+final class PhotosViewController: NYTPhotosViewController {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.shared.isStatusBarHidden = true
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+    }
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }
