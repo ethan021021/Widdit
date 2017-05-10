@@ -26,8 +26,6 @@ class WDTReplyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setTabBarHidden(true)
-        
         setupNavigationBar()
         
         m_viewPostInfoHeightConstraint.constant = 0
@@ -55,6 +53,9 @@ class WDTReplyViewController: UIViewController {
                         self.updateDowns()
                         self.updateReplies()
                     }
+                    
+                    self.m_lblPostText.isUserInteractionEnabled = true
+                    self.m_lblPostText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WDTReplyViewController.presentPost)))
                 }
             })
             
@@ -77,6 +78,8 @@ class WDTReplyViewController: UIViewController {
         avatarView.layer.cornerRadius = 18
         avatarView.clipsToBounds = true
         avatarView.contentMode = .scaleAspectFill
+        
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WDTReplyViewController.presentProfile)))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: avatarView)
         
@@ -150,6 +153,12 @@ class WDTReplyViewController: UIViewController {
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setTabBarHidden(true)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -168,6 +177,20 @@ class WDTReplyViewController: UIViewController {
         } else {
             tabBarController?.hideTabBarAnimated(hide: hidden)
         }
+    }
+    
+    
+    @IBAction func presentProfile() {
+        let profileVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTProfileViewController.self)) as! WDTProfileViewController
+        profileVC.m_objUser = m_objUser
+        
+        navigationController?.pushViewController(profileVC, animated: true)
+    }
+    
+    @IBAction func presentPost() {
+        let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+        morePostsVC.m_objPost = m_objPost
+        navigationController?.pushViewController(morePostsVC, animated: true)
     }
     
 
