@@ -14,11 +14,11 @@ class WDTReplyViewController: UIViewController {
     var m_imgAvatar: UIImageView!
     @IBOutlet weak var m_lblUsername: UILabel!
     @IBOutlet weak var m_lblPostText: UILabel!
-    @IBOutlet weak var m_lblPostDowns: UILabel!
-    @IBOutlet weak var m_lblPostReplies: UILabel!
+//    @IBOutlet weak var m_lblPostDowns: UILabel!
+//    @IBOutlet weak var m_lblPostReplies: UILabel!
     @IBOutlet weak var m_viewChatContainer: UIView!
-    @IBOutlet weak var m_viewPostInfo: UIView!
-    @IBOutlet weak var m_viewPostInfoHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var m_viewPostInfo: UIView!
+//    @IBOutlet weak var m_viewPostInfoHeightConstraint: NSLayoutConstraint!
     
     var m_objPost: PFObject?
     var m_objUser: PFUser?
@@ -26,11 +26,9 @@ class WDTReplyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setTabBarHidden(true)
-        
         setupNavigationBar()
         
-        m_viewPostInfoHeightConstraint.constant = 0
+//        m_viewPostInfoHeightConstraint.constant = 0
 
         // Do any additional setup after loading the view.
         
@@ -52,9 +50,12 @@ class WDTReplyViewController: UIViewController {
                     if let user = user as? PFUser,
                        let postText = self.m_objPost?["postText"] as? String {
                         self.setupPostInfoView(user: user, text: postText)
-                        self.updateDowns()
-                        self.updateReplies()
+//                        self.updateDowns()
+//                        self.updateReplies()
                     }
+                    
+                    self.m_lblPostText.isUserInteractionEnabled = true
+                    self.m_lblPostText.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WDTReplyViewController.presentPost)))
                 }
             })
             
@@ -78,6 +79,8 @@ class WDTReplyViewController: UIViewController {
         avatarView.clipsToBounds = true
         avatarView.contentMode = .scaleAspectFill
         
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WDTReplyViewController.presentProfile)))
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: avatarView)
         
         self.m_imgAvatar = avatarView
@@ -97,58 +100,64 @@ class WDTReplyViewController: UIViewController {
         }
     }
     
-    fileprivate func updateDowns() {
-        if let objPost = m_objPost {
-            let objUser = objPost["user"] as! PFUser
-            
-            var totalDowns = 0
-            
-            var pendingRequests = 2
-            func incrementTotalDowns(by count: Int) {
-                totalDowns += count
-                
-                pendingRequests -= 1
-                
-                if pendingRequests <= 0 {
-                    self.m_lblPostDowns.text = "\(totalDowns)"
-                    
-                    if totalDowns > 0 {
-                        self.m_viewPostInfoHeightConstraint.constant = 18
-                    }
-                }
-            }
-            
-            let activity = WDTActivity()
-            activity.post = objPost
-            activity.requestDowns(completion: { succeeded in
-                let downs = activity.downs.count
-                incrementTotalDowns(by: downs)
-            })
-            activity.requestMyDowns(completion: { succeeded in
-                let downs = activity.myDowns.count
-                incrementTotalDowns(by: downs)
-            })
-        }
-    }
+//    fileprivate func updateDowns() {
+//        if let objPost = m_objPost {
+//            let objUser = objPost["user"] as! PFUser
+//            
+//            var totalDowns = 0
+//            
+//            var pendingRequests = 2
+//            func incrementTotalDowns(by count: Int) {
+//                totalDowns += count
+//                
+//                pendingRequests -= 1
+//                
+//                if pendingRequests <= 0 {
+//                    self.m_lblPostDowns.text = "\(totalDowns)"
+//                    
+//                    if totalDowns > 0 {
+//                        self.m_viewPostInfoHeightConstraint.constant = 18
+//                    }
+//                }
+//            }
+//            
+//            let activity = WDTActivity()
+//            activity.post = objPost
+//            activity.requestDowns(completion: { succeeded in
+//                let downs = activity.downs.count
+//                incrementTotalDowns(by: downs)
+//            })
+//            activity.requestMyDowns(completion: { succeeded in
+//                let downs = activity.myDowns.count
+//                incrementTotalDowns(by: downs)
+//            })
+//        }
+//    }
+//    
+//    fileprivate func updateReplies() {
+//        if let objPost = m_objPost {
+//            let objUser = objPost["user"] as! PFUser
+//            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
+//                if let down = down {
+//                    let relation = down.relation(forKey: "replies")
+//                    let query = relation.query()
+//                    let replies = query.countObjects(nil)
+//                    self.m_lblPostReplies.text = "\(replies)"
+//                    
+//                    if replies > 0 {
+//                        self.m_viewPostInfoHeightConstraint.constant = 18
+//                    }
+//                }
+//            }
+//        }
+//    }
     
-    fileprivate func updateReplies() {
-        if let objPost = m_objPost {
-            let objUser = objPost["user"] as! PFUser
-            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
-                if let down = down {
-                    let relation = down.relation(forKey: "replies")
-                    let query = relation.query()
-                    let replies = query.countObjects(nil)
-                    self.m_lblPostReplies.text = "\(replies)"
-                    
-                    if replies > 0 {
-                        self.m_viewPostInfoHeightConstraint.constant = 18
-                    }
-                }
-            }
-        }
-    }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setTabBarHidden(true)
+    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -168,6 +177,20 @@ class WDTReplyViewController: UIViewController {
         } else {
             tabBarController?.hideTabBarAnimated(hide: hidden)
         }
+    }
+    
+    
+    @IBAction func presentProfile() {
+        let profileVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTProfileViewController.self)) as! WDTProfileViewController
+        profileVC.m_objUser = m_objUser
+        
+        navigationController?.pushViewController(profileVC, animated: true)
+    }
+    
+    @IBAction func presentPost() {
+        let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+        morePostsVC.m_objPost = m_objPost
+        navigationController?.pushViewController(morePostsVC, animated: true)
     }
     
 
