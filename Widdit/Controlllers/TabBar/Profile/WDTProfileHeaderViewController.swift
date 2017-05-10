@@ -125,7 +125,7 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         if let user = m_objUser, user.objectId != PFUser.current()?.objectId {
             FollowersManager.isFollow(user: user, completion: { [weak self] isFollow in
                 if isFollow {
-                    self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
+                    self?.m_btnFollow.setImage(UIImage(named: "profile_button_following"), for: .normal)
                     self?.m_btnFollow.setTitle("Following", for: .normal)
                 } else {
                     self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)

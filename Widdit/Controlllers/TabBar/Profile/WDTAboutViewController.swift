@@ -46,7 +46,7 @@ class WDTAboutViewController: UITableViewController {
 
     // MARK: - UITableViewDataSource
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return aryAccounts.count
+        return m_objUser?.objectId == PFUser.current()?.objectId ? aryAccounts.count : aryAccounts.count - 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
