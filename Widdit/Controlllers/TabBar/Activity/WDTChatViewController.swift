@@ -11,6 +11,7 @@ import JSQMessagesViewController
 import Parse
 import DKImagePickerController
 import Kingfisher
+import NYTPhotoViewer
 
 class WDTChatViewController: JSQMessagesViewController {
 
@@ -303,6 +304,22 @@ class WDTChatViewController: JSQMessagesViewController {
         }
         
         return cell
+    }
+    
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAt indexPath: IndexPath!) {
+        let objMessage = m_aryMessages[indexPath.item]
+        
+        if objMessage.isMediaMessage() {
+            if let photoItem = objMessage.media?() as? JSQPhotoMediaItem {
+                let photo = photoItem.image
+                
+                let photos = [NYTPhotoObject(image: photo)]
+                let controller = PhotosViewController(photos: photos)
+                controller.rightBarButtonItem = nil
+                
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
     }
     
     
