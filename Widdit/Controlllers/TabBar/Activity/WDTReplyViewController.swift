@@ -47,11 +47,15 @@ class WDTReplyViewController: UIViewController {
                     
                     self.m_lblUsername.sizeToFit()
                     
-                    if let user = user as? PFUser,
-                       let postText = self.m_objPost?["postText"] as? String {
-                        self.setupPostInfoView(user: user, text: postText)
-//                        self.updateDowns()
-//                        self.updateReplies()
+                    if let author = self.m_objPost?["user"] as? PFUser {
+                        author.fetchIfNeededInBackground(block: { (author, _) in
+                            if let author = author as? PFUser,
+                                let postText = self.m_objPost?["postText"] as? String {
+                                self.setupPostInfoView(user: author, text: postText)
+//                              self.updateDowns()
+//                              self.updateReplies()
+                            }
+                        })
                     }
                     
                     self.m_lblPostText.isUserInteractionEnabled = true
