@@ -13,12 +13,14 @@ import Kingfisher
 import SwiftLinkPreview
 
 protocol WDTFeedTableViewCellDelegate {
-    func onClickBtnMore(_ objPost: PFObject)
+    func onClickButtonReport(_ objPost: PFObject)
     func onTapPostPhoto(_ objPost: PFObject)
     func onClickBtnMorePosts(_ objUser: PFUser?)
     func onTapUserAvatar(_ objUser: PFUser?)
     func onUpdateObject(_ objPost: PFObject)
     func onClickBtnReply(_ objPost: PFObject)
+    func onClickToDeletePost(_ objPost: PFObject)
+    func onClickEditPost(_ objPost: PFObject)
 }
 
 class WDTFeedTableViewCell: UITableViewCell {
@@ -26,6 +28,9 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_imgAvatar: UIImageView!
     @IBOutlet weak var m_lblName: UILabel!
     @IBOutlet weak var m_lblExpireDate: UILabel!
+    @IBOutlet weak var m_imageLocation: UIImageView!
+    @IBOutlet weak var m_imageLocationWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var m_imageLocationLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var m_lblLocation: UILabel!
     @IBOutlet weak var m_imgPhoto: UIImageView!
     @IBOutlet weak var m_imgManyPhotosIndicator: UIImageView!
@@ -33,13 +38,17 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_imgPhotoTopEdgeConstraint: NSLayoutConstraint!
     @IBOutlet weak var m_lblPostText: ActiveLabel!
     @IBOutlet weak var m_btnMorePost: UIButton!
+    @IBOutlet weak var m_buttonReport: UIButton!
     @IBOutlet weak var m_constraintBtnMorePostsHeight: NSLayoutConstraint!
-    @IBOutlet weak var m_btnReply: UIButton!
-    @IBOutlet weak var m_btnDown: UIButton!
+    @IBOutlet weak var m_bottomLeftButton: UIButton!
+    @IBOutlet weak var m_bottomRightButton: UIButton!
     @IBOutlet weak var m_linkPreviewView: LinkPreviewView!
     @IBOutlet weak var m_linkPreviewViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet var m_linkPreviewViewVerticalOffsetConstraints: [NSLayoutConstraint]!
     
+    @IBOutlet weak var m_lblPostDowns: UILabel!
+    @IBOutlet weak var m_lblPostReplies: UILabel!
+    @IBOutlet weak var m_viewPostInfo: UIView!
     
     
     var m_objPost: PFObject?
@@ -48,6 +57,11 @@ class WDTFeedTableViewCell: UITableViewCell {
     
     var previewURLString: String?
     var didTapToLink: ((URL) -> Void)?
+    
+    
+    var isCurrentUserCell: Bool {
+        return (m_objPost?["user"] as? PFUser)?.objectId == PFUser.current()?.objectId
+    }
     
     
     override func awakeFromNib() {
@@ -69,6 +83,12 @@ class WDTFeedTableViewCell: UITableViewCell {
                 self?.onTapToLink(url: url)
             }
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        m_imgAvatar.layer.cornerRadius = m_imgAvatar.frame.width * 0.5
     }
     
     fileprivate func onTapToLink(url: URL?) {
@@ -103,6 +123,9 @@ class WDTFeedTableViewCell: UITableViewCell {
             })
         }
         
+        // Report
+        m_buttonReport.isHidden = isCurrentUserCell
+        
         //ExpireDate
         if let dateExpire = objPost["hoursexpired"] as? Date {
             m_lblExpireDate.text = dateExpire.timeLeft()
@@ -118,6 +141,10 @@ class WDTFeedTableViewCell: UITableViewCell {
         } else {
             m_lblLocation.text = ""
         }
+        
+        m_imageLocation.isHidden = m_lblLocation.text == nil || m_lblLocation.text?.characters.count == 0
+        m_imageLocationWidthConstraint.constant = m_imageLocation.isHidden ? 0 : 18
+        m_imageLocationLeftConstraint.constant = m_imageLocation.isHidden ? 0 : 4
         
         //Text
         if let text = objPost["postText"] as? String {
@@ -202,31 +229,75 @@ class WDTFeedTableViewCell: UITableViewCell {
         } else {
             m_linkPreviewViewHeightConstraint.priority = 1000
         }
+        
+        // Replies and downs
+        
+        m_viewPostInfo.isHidden = !isCurrentUserCell
+        
 
-        //if user is current user, disable buttons
-        m_btnReply.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
-        m_btnDown.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
-
-        //check down
-        if m_btnDown.isEnabled {
-            m_btnDown.isSelected = WDTActivity.sharedInstance().myDowns.filter({ (down) -> Bool in
-                let localPost = down["post"] as! PFObject
-                return localPost.objectId == objPost.objectId
-            }).count > 0
+        // Bottom buttons
+        
+        //if user is current user, show remove and edit buttons
+        if isCurrentUserCell {
+            m_bottomLeftButton.isSelected = false
+            m_bottomRightButton.isSelected = false
+            
+            m_bottomLeftButton.setTitle("Remove Post", for: .normal)
+            m_bottomRightButton.setTitle("Edit Post", for: .normal)
+            m_bottomLeftButton.setTitle("Remove Post", for: .selected)
+            m_bottomRightButton.setTitle("Edit Post", for: .selected)
+            
+            m_bottomLeftButton.setImage(nil, for: .normal)
+            m_bottomRightButton.setImage(nil, for: .normal)
+            m_bottomLeftButton.setImage(nil, for: .selected)
+            m_bottomRightButton.setImage(nil, for: .selected)
+        } else {
+            m_bottomLeftButton.setTitle("Reply", for: .normal)
+            m_bottomRightButton.setTitle("I'm Down", for: .normal)
+            m_bottomLeftButton.setTitle("Reply", for: .selected)
+            m_bottomRightButton.setTitle("I'm Down", for: .selected)
+            
+            m_bottomLeftButton.setImage(UIImage(named: "post_icon_reply"),
+                                        for: .normal)
+            m_bottomRightButton.setImage(UIImage(named: "post_icon_down"),
+                                         for: .normal)
+            m_bottomLeftButton.setImage(UIImage(named: "post_icon_reply_selected"),
+                                        for: .selected)
+            m_bottomRightButton.setImage(UIImage(named: "post_icon_down_selected"),
+                                         for: .selected)
+            
+            if !isCurrentUserCell {
+                m_bottomRightButton.isSelected = WDTActivity.sharedInstance().myDowns.filter({ (down) -> Bool in
+                    let localPost = down["post"] as! PFObject
+                    return localPost.objectId == objPost.objectId
+                }).count > 0
+            
+                updateMyReplies()
+            }
         }
+        
+        updateDowns()
+        updateReplies()
     }
     
     func setMorePosts(_ postCount: Int) {
         if postCount > 1 {
+            m_btnMorePost.isHidden = false
             m_btnMorePost.setTitle("+\(String(postCount - 1))", for: UIControlState.normal)
+            m_constraintBtnMorePostsHeight.constant = 30
         } else {
-            m_constraintBtnMorePostsHeight.constant = 0
+            m_btnMorePost.isHidden = true
+            if isCurrentUserCell {
+                m_constraintBtnMorePostsHeight.constant = 30
+            } else {
+                m_constraintBtnMorePostsHeight.constant = 0
+            }
         }
     }
     
-    @IBAction func onClickBtnMore(_ sender: Any) {
+    @IBAction func onClickButtonReport(_ sender: Any) {
         if let objPost = m_objPost {
-            delegate?.onClickBtnMore(objPost)
+            delegate?.onClickButtonReport(objPost)
         }
     }
     
@@ -236,21 +307,29 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
     }
     
-    @IBAction func onClickBtnReply(_ sender: Any) {
+    @IBAction func onClickBottomLeftButton(_ sender: Any) {
         if let objPost = m_objPost {
-            delegate?.onClickBtnReply(objPost)
+            if isCurrentUserCell {
+                delegate?.onClickToDeletePost(objPost)
+            } else {
+                delegate?.onClickBtnReply(objPost)
+            }
         }
     }
     
-    @IBAction func onClickBtnDown(_ sender: Any) {
-        let btnDown = sender as! UIButton
-        btnDown.isSelected = !btnDown.isSelected
-        
+    @IBAction func onClickBottomRightButton(_ sender: Any) {
         if let objPost = m_objPost {
-            if btnDown.isSelected {
-                WDTActivity.addActivity(user: (objPost["user"] as! PFUser), post: objPost, type: .Down, completion: { _ in })
+            if isCurrentUserCell {
+                delegate?.onClickEditPost(objPost)
             } else {
-                WDTActivity.deleteActivity(user: (objPost["user"] as! PFUser), post: objPost)
+                let btnDown = sender as! UIButton
+                btnDown.isSelected = !btnDown.isSelected
+                
+                if btnDown.isSelected {
+                    WDTActivity.addActivity(user: (objPost["user"] as! PFUser), post: objPost, type: .Down, completion: { _ in })
+                } else {
+                    WDTActivity.deleteActivity(user: (objPost["user"] as! PFUser), post: objPost)
+                }
             }
         }
     }
@@ -264,6 +343,83 @@ class WDTFeedTableViewCell: UITableViewCell {
     func onTapUserAvatar() {
         if let objPost = m_objPost {
             delegate?.onTapUserAvatar(objPost["user"] as? PFUser)
+        }
+    }
+    
+    
+    
+    
+    
+    fileprivate func updateDowns() {
+        if let objPost = m_objPost {
+            let objUser = objPost["user"] as! PFUser
+
+            var totalDowns = 0
+
+            var pendingRequests = 2
+            func incrementTotalDowns(by count: Int) {
+                totalDowns += count
+
+                pendingRequests -= 1
+
+                if pendingRequests <= 0 {
+                    self.m_lblPostDowns.text = "\(totalDowns)"
+                }
+            }
+
+            let activity = WDTActivity()
+            activity.post = objPost
+            activity.requestDowns(completion: { succeeded in
+                let downs = activity.downs.count
+                incrementTotalDowns(by: downs)
+            })
+            activity.requestMyDowns(completion: { [weak self] succeeded in
+                let downs = activity.myDowns.count
+                
+                if self?.isCurrentUserCell == false {
+                    self?.m_bottomRightButton.isSelected = downs > 0
+                }
+                
+                incrementTotalDowns(by: downs)
+            })
+        }
+    }
+
+    fileprivate func updateReplies() {
+        if let objPost = m_objPost {
+            let objUser = objPost["user"] as! PFUser
+            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
+                if let down = down {
+                    let relation = down.relation(forKey: "replies")
+                    let query = relation.query()
+                    query.countObjectsInBackground(block: { (replies, error) in
+                        self.m_lblPostReplies.text = "\(replies)"
+                    })
+                }
+            }
+        }
+    }
+    
+    fileprivate func updateMyReplies() {
+        if let objPost = m_objPost {
+            let objUser = objPost["user"] as! PFUser
+            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
+                if let down = down {
+                    let relation = down.relation(forKey: "replies")
+                    let query = relation.query()
+                    query.includeKey("by")
+                    if let me = PFUser.current() {
+                        query.whereKey("by", equalTo: me)
+                    }
+                    query.countObjectsInBackground(block: { [weak self] (replies, error) in
+                        if replies > 0 {
+                            self?.m_bottomLeftButton.isSelected = true
+                        } else {
+                            self?.m_bottomLeftButton.isSelected = false
+                        }
+                    })
+                }
+            }
         }
     }
     
