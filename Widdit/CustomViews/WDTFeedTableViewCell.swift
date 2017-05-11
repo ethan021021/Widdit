@@ -266,13 +266,18 @@ class WDTFeedTableViewCell: UITableViewCell {
             m_bottomRightButton.setImage(UIImage(named: "post_icon_down_selected"),
                                          for: .selected)
             
-            m_bottomRightButton.isSelected = WDTActivity.sharedInstance().myDowns.filter({ (down) -> Bool in
-                let localPost = down["post"] as! PFObject
-                return localPost.objectId == objPost.objectId
-            }).count > 0
+            if !isCurrentUserCell {
+                m_bottomRightButton.isSelected = WDTActivity.sharedInstance().myDowns.filter({ (down) -> Bool in
+                    let localPost = down["post"] as! PFObject
+                    return localPost.objectId == objPost.objectId
+                }).count > 0
             
-            // TODO: update reply button
+                updateMyReplies()
+            }
         }
+        
+        updateDowns()
+        updateReplies()
     }
     
     func setMorePosts(_ postCount: Int) {
@@ -338,6 +343,83 @@ class WDTFeedTableViewCell: UITableViewCell {
     func onTapUserAvatar() {
         if let objPost = m_objPost {
             delegate?.onTapUserAvatar(objPost["user"] as? PFUser)
+        }
+    }
+    
+    
+    
+    
+    
+    fileprivate func updateDowns() {
+        if let objPost = m_objPost {
+            let objUser = objPost["user"] as! PFUser
+
+            var totalDowns = 0
+
+            var pendingRequests = 2
+            func incrementTotalDowns(by count: Int) {
+                totalDowns += count
+
+                pendingRequests -= 1
+
+                if pendingRequests <= 0 {
+                    self.m_lblPostDowns.text = "\(totalDowns)"
+                }
+            }
+
+            let activity = WDTActivity()
+            activity.post = objPost
+            activity.requestDowns(completion: { succeeded in
+                let downs = activity.downs.count
+                incrementTotalDowns(by: downs)
+            })
+            activity.requestMyDowns(completion: { [weak self] succeeded in
+                let downs = activity.myDowns.count
+                
+                if self?.isCurrentUserCell == false {
+                    self?.m_bottomRightButton.isSelected = downs > 0
+                }
+                
+                incrementTotalDowns(by: downs)
+            })
+        }
+    }
+
+    fileprivate func updateReplies() {
+        if let objPost = m_objPost {
+            let objUser = objPost["user"] as! PFUser
+            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
+                if let down = down {
+                    let relation = down.relation(forKey: "replies")
+                    let query = relation.query()
+                    query.countObjectsInBackground(block: { (replies, error) in
+                        self.m_lblPostReplies.text = "\(replies)"
+                    })
+                }
+            }
+        }
+    }
+    
+    fileprivate func updateMyReplies() {
+        if let objPost = m_objPost {
+            let objUser = objPost["user"] as! PFUser
+            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
+                if let down = down {
+                    let relation = down.relation(forKey: "replies")
+                    let query = relation.query()
+                    query.includeKey("by")
+                    if let me = PFUser.current() {
+                        query.whereKey("by", equalTo: me)
+                    }
+                    query.countObjectsInBackground(block: { [weak self] (replies, error) in
+                        if replies > 0 {
+                            self?.m_bottomLeftButton.isSelected = true
+                        } else {
+                            self?.m_bottomLeftButton.isSelected = false
+                        }
+                    })
+                }
+            }
         }
     }
     
