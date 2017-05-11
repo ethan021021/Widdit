@@ -46,6 +46,9 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_linkPreviewViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet var m_linkPreviewViewVerticalOffsetConstraints: [NSLayoutConstraint]!
     
+    @IBOutlet weak var m_lblPostDowns: UILabel!
+    @IBOutlet weak var m_lblPostReplies: UILabel!
+    @IBOutlet weak var m_viewPostInfo: UIView!
     
     
     var m_objPost: PFObject?
@@ -226,6 +229,11 @@ class WDTFeedTableViewCell: UITableViewCell {
         } else {
             m_linkPreviewViewHeightConstraint.priority = 1000
         }
+        
+        // Replies and downs
+        
+        m_viewPostInfo.isHidden = !isCurrentUserCell
+        
 
         // Bottom buttons
         
@@ -269,9 +277,16 @@ class WDTFeedTableViewCell: UITableViewCell {
     
     func setMorePosts(_ postCount: Int) {
         if postCount > 1 {
+            m_btnMorePost.isHidden = false
             m_btnMorePost.setTitle("+\(String(postCount - 1))", for: UIControlState.normal)
+            m_constraintBtnMorePostsHeight.constant = 30
         } else {
-            m_constraintBtnMorePostsHeight.constant = 0
+            m_btnMorePost.isHidden = true
+            if isCurrentUserCell {
+                m_constraintBtnMorePostsHeight.constant = 30
+            } else {
+                m_constraintBtnMorePostsHeight.constant = 0
+            }
         }
     }
     
