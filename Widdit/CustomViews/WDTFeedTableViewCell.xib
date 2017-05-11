@@ -76,14 +76,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u1b-Py-dWr">
-                                        <rect key="frame" x="246" y="1" width="30" height="30"/>
+                                        <rect key="frame" x="268" y="10" width="18" height="18"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="PAx-av-VeQ"/>
-                                            <constraint firstAttribute="width" constant="30" id="vPX-Sw-vM1"/>
+                                            <constraint firstAttribute="height" constant="18" id="PAx-av-VeQ"/>
+                                            <constraint firstAttribute="width" constant="18" id="vPX-Sw-vM1"/>
                                         </constraints>
-                                        <state key="normal" image="post_button_more"/>
+                                        <state key="normal" image="post_button_report"/>
                                         <connections>
-                                            <action selector="onClickBtnMore:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="jZE-re-GKJ"/>
+                                            <action selector="onClickButtonReport:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="unq-DM-xU8"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -92,14 +92,14 @@
                                     <constraint firstAttribute="trailing" secondItem="Ene-oF-oED" secondAttribute="trailing" constant="20" id="AH7-hf-dB4"/>
                                     <constraint firstItem="U7o-9v-jQc" firstAttribute="top" secondItem="6SS-AE-ewM" secondAttribute="bottom" constant="5" id="Ceu-JZ-gq9"/>
                                     <constraint firstItem="6SS-AE-ewM" firstAttribute="leading" secondItem="uT2-Ow-LZ6" secondAttribute="trailing" constant="12" id="DSE-7q-u2t"/>
+                                    <constraint firstAttribute="trailing" secondItem="u1b-Py-dWr" secondAttribute="trailing" constant="10" id="JC6-9X-XIf"/>
                                     <constraint firstItem="Ene-oF-oED" firstAttribute="centerY" secondItem="U7o-9v-jQc" secondAttribute="centerY" id="NPw-dh-3D9"/>
-                                    <constraint firstItem="Ene-oF-oED" firstAttribute="top" secondItem="u1b-Py-dWr" secondAttribute="bottom" id="W1j-be-31P"/>
                                     <constraint firstItem="U7o-9v-jQc" firstAttribute="leading" secondItem="6SS-AE-ewM" secondAttribute="leading" id="ZUy-sp-O3e"/>
                                     <constraint firstItem="uT2-Ow-LZ6" firstAttribute="centerY" secondItem="3Er-HK-ar0" secondAttribute="centerY" id="amx-yG-Xt7"/>
                                     <constraint firstItem="uT2-Ow-LZ6" firstAttribute="top" secondItem="3Er-HK-ar0" secondAttribute="top" constant="12" id="fqe-ca-F9G"/>
                                     <constraint firstItem="uT2-Ow-LZ6" firstAttribute="leading" secondItem="3Er-HK-ar0" secondAttribute="leading" constant="12" id="gqR-IB-tlL"/>
-                                    <constraint firstItem="u1b-Py-dWr" firstAttribute="trailing" secondItem="Ene-oF-oED" secondAttribute="trailing" id="iuO-Lq-nyb"/>
                                     <constraint firstItem="6SS-AE-ewM" firstAttribute="top" secondItem="uT2-Ow-LZ6" secondAttribute="top" id="lHn-BL-7Yn"/>
+                                    <constraint firstItem="u1b-Py-dWr" firstAttribute="top" secondItem="3Er-HK-ar0" secondAttribute="top" constant="10" id="szj-7h-a5U"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qop-LG-LhJ" customClass="ActiveLabel" customModule="ActiveLabel">
@@ -371,6 +371,7 @@
                 <outlet property="m_bottomLeftButton" destination="ZNo-qX-O31" id="VxO-cJ-U4c"/>
                 <outlet property="m_bottomRightButton" destination="1YM-oW-ORW" id="9kP-9f-g7Q"/>
                 <outlet property="m_btnMorePost" destination="auz-KD-wEc" id="hEw-PK-5WZ"/>
+                <outlet property="m_buttonReport" destination="u1b-Py-dWr" id="vt1-zC-Nqs"/>
                 <outlet property="m_constraintBtnMorePostsHeight" destination="m2e-BO-CnA" id="5CL-Tq-ESb"/>
                 <outlet property="m_constraintPhotoHeight" destination="lE2-n9-nW8" id="uKX-ni-In5"/>
                 <outlet property="m_imgAvatar" destination="uT2-Ow-LZ6" id="fJ9-Tm-e6t"/>
@@ -390,7 +391,7 @@
     </objects>
     <resources>
         <image name="common_avatar_placeholder" width="65" height="61"/>
-        <image name="post_button_more" width="22" height="6"/>
+        <image name="post_button_report" width="18" height="18"/>
         <image name="post_icon_down" width="18" height="18"/>
         <image name="post_icon_down_selected" width="18" height="18"/>
         <image name="post_icon_photos_many" width="40" height="41"/>

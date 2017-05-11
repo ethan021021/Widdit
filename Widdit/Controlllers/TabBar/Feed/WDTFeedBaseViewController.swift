@@ -81,7 +81,7 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     }
     
     // MARK: - WDTFeedTableViewCellDelegate
-    func onClickBtnMore(_ objPost: PFObject) {
+    func onClickButtonReport(_ objPost: PFObject) {
         let alert = UIAlertController(title: "", message: Constants.String.APP_NAME, preferredStyle: .actionSheet)
         
         if (objPost["user"] as? PFUser)?.objectId == PFUser.current()?.objectId {

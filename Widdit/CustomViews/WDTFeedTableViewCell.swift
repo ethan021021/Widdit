@@ -13,7 +13,7 @@ import Kingfisher
 import SwiftLinkPreview
 
 protocol WDTFeedTableViewCellDelegate {
-    func onClickBtnMore(_ objPost: PFObject)
+    func onClickButtonReport(_ objPost: PFObject)
     func onTapPostPhoto(_ objPost: PFObject)
     func onClickBtnMorePosts(_ objUser: PFUser?)
     func onTapUserAvatar(_ objUser: PFUser?)
@@ -35,6 +35,7 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_imgPhotoTopEdgeConstraint: NSLayoutConstraint!
     @IBOutlet weak var m_lblPostText: ActiveLabel!
     @IBOutlet weak var m_btnMorePost: UIButton!
+    @IBOutlet weak var m_buttonReport: UIButton!
     @IBOutlet weak var m_constraintBtnMorePostsHeight: NSLayoutConstraint!
     @IBOutlet weak var m_bottomLeftButton: UIButton!
     @IBOutlet weak var m_bottomRightButton: UIButton!
@@ -109,6 +110,9 @@ class WDTFeedTableViewCell: UITableViewCell {
                 }
             })
         }
+        
+        // Report
+        m_buttonReport.isHidden = isCurrentUserCell
         
         //ExpireDate
         if let dateExpire = objPost["hoursexpired"] as? Date {
@@ -258,9 +262,9 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
     }
     
-    @IBAction func onClickBtnMore(_ sender: Any) {
+    @IBAction func onClickButtonReport(_ sender: Any) {
         if let objPost = m_objPost {
-            delegate?.onClickBtnMore(objPost)
+            delegate?.onClickButtonReport(objPost)
         }
     }
     
