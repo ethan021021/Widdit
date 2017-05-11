@@ -104,7 +104,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="uT2-Ow-LZ6" secondAttribute="bottom" id="1r1-tE-DdT"/>
-                                    <constraint firstAttribute="trailing" secondItem="U7o-9v-jQc" secondAttribute="trailing" constant="20" id="5Sa-eE-ZxJ"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="U7o-9v-jQc" secondAttribute="trailing" constant="20" id="5Sa-eE-ZxJ"/>
                                     <constraint firstItem="oin-Fj-5ls" firstAttribute="bottom" secondItem="uT2-Ow-LZ6" secondAttribute="bottom" id="A4n-7m-iyR"/>
                                     <constraint firstItem="6SS-AE-ewM" firstAttribute="leading" secondItem="uT2-Ow-LZ6" secondAttribute="trailing" constant="10" id="DSE-7q-u2t"/>
                                     <constraint firstItem="u1b-Py-dWr" firstAttribute="leading" secondItem="6SS-AE-ewM" secondAttribute="trailing" constant="10" id="HcY-cY-mo7"/>
@@ -394,6 +394,8 @@
                 <outlet property="m_constraintBtnMorePostsHeight" destination="m2e-BO-CnA" id="5CL-Tq-ESb"/>
                 <outlet property="m_constraintPhotoHeight" destination="lE2-n9-nW8" id="uKX-ni-In5"/>
                 <outlet property="m_imageLocation" destination="oin-Fj-5ls" id="b1j-2c-OA9"/>
+                <outlet property="m_imageLocationLeftConstraint" destination="ggy-kg-nqi" id="tZ6-V5-Nbn"/>
+                <outlet property="m_imageLocationWidthConstraint" destination="M6G-xQ-qpb" id="VHx-as-gEK"/>
                 <outlet property="m_imgAvatar" destination="uT2-Ow-LZ6" id="fJ9-Tm-e6t"/>
                 <outlet property="m_imgManyPhotosIndicator" destination="2OP-bW-FBl" id="VoN-Yn-HhZ"/>
                 <outlet property="m_imgPhoto" destination="lcV-Tb-W0g" id="uqt-rI-lTI"/>

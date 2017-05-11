@@ -29,6 +29,8 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_lblName: UILabel!
     @IBOutlet weak var m_lblExpireDate: UILabel!
     @IBOutlet weak var m_imageLocation: UIImageView!
+    @IBOutlet weak var m_imageLocationWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var m_imageLocationLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var m_lblLocation: UILabel!
     @IBOutlet weak var m_imgPhoto: UIImageView!
     @IBOutlet weak var m_imgManyPhotosIndicator: UIImageView!
@@ -138,6 +140,8 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
         
         m_imageLocation.isHidden = m_lblLocation.text == nil || m_lblLocation.text?.characters.count == 0
+        m_imageLocationWidthConstraint.constant = m_imageLocation.isHidden ? 0 : 18
+        m_imageLocationLeftConstraint.constant = m_imageLocation.isHidden ? 0 : 4
         
         //Text
         if let text = objPost["postText"] as? String {
