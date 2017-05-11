@@ -32,6 +32,8 @@ class WDTEditProfileViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 1 || section == 3 {
             return 3
+        } else if section == 0 {
+            return 2
         } else {
             return 1
         }
@@ -39,10 +41,29 @@ class WDTEditProfileViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = Bundle.main.loadNibNamed(String(describing: WDTAvatarTableViewCell.self), owner: nil, options: [:])?.first as! WDTAvatarTableViewCell
-            cell.setView(self)
-            
-            return cell
+            if indexPath.row == 0 {
+                let cell = Bundle.main.loadNibNamed(String(describing: WDTAvatarTableViewCell.self), owner: nil, options: [:])?.first as! WDTAvatarTableViewCell
+                cell.setView(self)
+                
+                return cell
+            } else {
+                let cell = Bundle.main.loadNibNamed(String(describing: WDTCoverTableViewCell.self), owner: nil, options: [:])?.first as! WDTCoverTableViewCell
+                
+                cell.m_parentVC = self
+                
+                cell.deleteButton.isHidden = true
+                
+                if let objUser = PFUser.current() {
+                    if let cover = objUser["cover"] as? PFFile {
+                        if let path = cover.url {
+                            cell.coverView.kf.setImage(with: URL(string: path))
+                            cell.deleteButton.isHidden = false
+                        }
+                    }
+                }
+                
+                return cell
+            }
         } else  if indexPath.section == 1 {
             let cell = Bundle.main.loadNibNamed(String(describing: WDTProfileTextTableViewCell.self), owner: nil, options: [:])?.first as! WDTProfileTextTableViewCell
             
@@ -76,7 +97,7 @@ class WDTEditProfileViewController: UITableViewController {
     // MARK: - UITableViewDelegate
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 2 {
-            return 0
+            return 2
         } else {
             return 52
         }
@@ -84,9 +105,9 @@ class WDTEditProfileViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 110
+            return 114
         } else {
-            return 60
+            return 64
         }
     }
     
@@ -108,7 +129,7 @@ class WDTEditProfileViewController: UITableViewController {
         
         if section == 0 {
             lblTitle.text = "PHOTOS"
-        } else if section == 1 || section == 3 {
+        } else if section == 1{
             lblTitle.text = "PERSONAL DATA"
         } else if section == 3 {
             lblTitle.text = "SITUATION"

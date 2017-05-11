@@ -66,6 +66,8 @@
 		3FF8BA851E6A9BBB008A1CEA /* JHButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA841E6A9BBB008A1CEA /* JHButton.swift */; };
 		3FF8BA891E6AA03A008A1CEA /* WDTTutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA881E6AA03A008A1CEA /* WDTTutorialContentViewController.swift */; };
 		3FF8BA8B1E6AA086008A1CEA /* WDTTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8BA8A1E6AA086008A1CEA /* WDTTutorialViewController.swift */; };
+		967471121EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471101EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift */; };
+		967471131EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 967471111EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib */; };
 		96B2AEED1EBF8DAD00C02531 /* WDTPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */; };
 		96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */; };
 		96E06E371EC0BAF000C7F83D /* FollowersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E361EC0BAF000C7F83D /* FollowersManager.swift */; };
@@ -138,6 +140,8 @@
 		3FF8BA841E6A9BBB008A1CEA /* JHButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHButton.swift; sourceTree = "<group>"; };
 		3FF8BA881E6AA03A008A1CEA /* WDTTutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTTutorialContentViewController.swift; sourceTree = "<group>"; };
 		3FF8BA8A1E6AA086008A1CEA /* WDTTutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTTutorialViewController.swift; sourceTree = "<group>"; };
+		967471101EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTCoverTableViewCell.swift; sourceTree = "<group>"; };
+		967471111EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTCoverTableViewCell.xib; sourceTree = "<group>"; };
 		96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPhotoCell.swift; sourceTree = "<group>"; };
 		96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkPreviewView.swift; sourceTree = "<group>"; };
 		96E06E361EC0BAF000C7F83D /* FollowersManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersManager.swift; sourceTree = "<group>"; };
@@ -277,6 +281,8 @@
 				3F3CFDC11E7C487900AD8FF8 /* WDTAccountTableViewCell.xib */,
 				3F3CFDC61E7CCD3100AD8FF8 /* WDTAvatarTableViewCell.swift */,
 				3F3CFDC71E7CCD3100AD8FF8 /* WDTAvatarTableViewCell.xib */,
+				967471101EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift */,
+				967471111EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib */,
 				3FEBD9841E711E6400878392 /* WDTCategoryTableViewCell.swift */,
 				3F3CFDAA1E7B6FC600AD8FF8 /* WDTCircleSlider.swift */,
 				3F3A31651E6EB036009267A6 /* WDTFeedTableViewCell.swift */,
@@ -429,6 +435,7 @@
 				3F23B5F41E7ED4BF00175017 /* SFUIText-Bold.ttf in Resources */,
 				3F78B9C51E67ACED006DE822 /* LaunchScreen.storyboard in Resources */,
 				3FF8BA7A1E6A5FDF008A1CEA /* SFUIText-Regular.ttf in Resources */,
+				967471131EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib in Resources */,
 				3F3CFDBF1E7C486700AD8FF8 /* WDTAboutTableViewCell.xib in Resources */,
 				3F78B9C21E67ACED006DE822 /* Assets.xcassets in Resources */,
 				3F78B9C01E67ACED006DE822 /* Main.storyboard in Resources */,
@@ -531,6 +538,7 @@
 				3F3CFDC81E7CCD3100AD8FF8 /* WDTAvatarTableViewCell.swift in Sources */,
 				96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */,
 				3F3A314F1E6D6610009267A6 /* WDTProfileSituationTableViewCell.swift in Sources */,
+				967471121EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift in Sources */,
 				3F3A314C1E6D62E6009267A6 /* WDTSignUpSituationViewController.swift in Sources */,
 				3FF8BA8B1E6AA086008A1CEA /* WDTTutorialViewController.swift in Sources */,
 				3FEBD9851E711E6400878392 /* WDTCategoryTableViewCell.swift in Sources */,

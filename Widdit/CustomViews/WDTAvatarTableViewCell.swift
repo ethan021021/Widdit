@@ -110,4 +110,22 @@ class WDTAvatarTableViewCell: UITableViewCell {
         m_parentVC?.present(cameraVC, animated: true, completion: nil)
     }
     
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        if let context = UIGraphicsGetCurrentContext() {
+            context.setStrokeColor(UIColor(r: 249, g: 249, b: 249, a: 1).cgColor)
+            context.setLineWidth(2)
+            
+            context.move(to: CGPoint(x: 0, y: 1))
+            context.addLine(to: CGPoint(x: rect.width, y: 1))
+            context.strokePath()
+            
+            context.move(to: CGPoint(x: 0, y: rect.height - 1))
+            context.addLine(to: CGPoint(x: rect.width, y: rect.height - 1))
+            context.strokePath()
+        }
+    }
+    
 }
