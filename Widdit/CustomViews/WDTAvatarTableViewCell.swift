@@ -24,6 +24,15 @@ class WDTAvatarTableViewCell: UITableViewCell {
             imgAvatar.addGestureRecognizer(tap)
         }
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        for tag in 100...102 {
+            let imgAvatar = viewWithTag(tag) as! UIImageView
+            imgAvatar.layer.cornerRadius = imgAvatar.frame.width * 0.5
+        }
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -68,7 +77,7 @@ class WDTAvatarTableViewCell: UITableViewCell {
         let index = btnDelete.tag - 200
         
         let imgAvatar = viewWithTag(100 + index) as! UIImageView
-        imgAvatar.image = UIImage(named: "post_image_placeholder")
+        imgAvatar.image = UIImage(named: "profile_icon_avatar_placeholder")
         
         if let objUser = PFUser.current() {
             objUser.remove(forKey: "ava" + (index == 0 ? "" : String(index + 1)))

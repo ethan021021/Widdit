@@ -15,9 +15,6 @@ class WDTEditProfileViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 48.0
         
         m_btnLinkFacebook.isSelected = PFFacebookUtils.isLinked(with: PFUser.current()!)
     }
@@ -78,12 +75,18 @@ class WDTEditProfileViewController: UITableViewController {
     
     // MARK: - UITableViewDelegate
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0.1
-        } else if section == 1 || section == 3 {
-            return 40
+        if section == 2 {
+            return 0
         } else {
-            return 20
+            return 52
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 110
+        } else {
+            return 60
         }
     }
     
@@ -92,23 +95,28 @@ class WDTEditProfileViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 1 || section == 3 {
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 40))
-            
-            let lblTitle = UILabel()
-            lblTitle.text = section == 1 ? "PERSONAL DATA" : "SITUATION"
-            lblTitle.font = UIFont.WDTRegular(size: 12)
-            lblTitle.textColor = UIColor.WDTTealColor()
-            headerView.addSubview(lblTitle)
-            lblTitle.snp.makeConstraints { (make) in
-                make.centerY.equalToSuperview()
-                make.leading.equalTo(12)
-            }
-            
-            return headerView
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 52))
+        
+        let lblTitle = UILabel()
+        lblTitle.font = UIFont.WDTMedium(size: 14)
+        lblTitle.textColor = UIColor(r: 71, g: 211, b: 214, a: 1)
+        headerView.addSubview(lblTitle)
+        lblTitle.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().offset(-10)
+            make.leading.equalTo(12)
+        }
+        
+        if section == 0 {
+            lblTitle.text = "PHOTOS"
+        } else if section == 1 || section == 3 {
+            lblTitle.text = "PERSONAL DATA"
+        } else if section == 3 {
+            lblTitle.text = "SITUATION"
         } else {
             return nil
         }
+        
+        return headerView
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
