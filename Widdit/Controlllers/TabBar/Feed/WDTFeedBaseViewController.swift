@@ -99,10 +99,12 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
                 let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
                     WDTPost.deletePost(post: objPost, completion: { (success) in
                         if success {
-                            let index = self.m_aryPosts.index(where: { (post) -> Bool in
+                            if let index = self.m_aryPosts.index(where: { (post) -> Bool in
                                 return post.objectId == objPost.objectId
-                            })
-                            self.tableView.deleteRows(at: [IndexPath.init(row: index!, section: 0)], with: .automatic)
+                            }) {
+                                self.m_aryPosts.remove(at: index)
+                                self.tableView.deleteRows(at: [IndexPath.init(row: index, section: 0)], with: .automatic)
+                            }
                         }
                     })
                 })
@@ -169,6 +171,36 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         replyVC.m_objPost = objPost
         replyVC.m_objUser = objPost["user"] as? PFUser
         navigationController?.pushViewController(replyVC, animated: true)
+    }
+    
+    func onClickToDeletePost(_ objPost: PFObject) {
+        let confirmAlert = UIAlertController(title: Constants.String.APP_NAME, message: "Are you sure to remove this post?", preferredStyle: .alert)
+        
+        let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
+            WDTPost.deletePost(post: objPost, completion: { (success) in
+                if success {
+                    if let index = self.m_aryPosts.index(where: { (post) -> Bool in
+                        return post.objectId == objPost.objectId
+                    }) {
+                        self.m_aryPosts.remove(at: index)
+                        self.tableView.deleteRows(at: [IndexPath.init(row: index, section: 0)], with: .automatic)
+                    }
+                }
+            })
+        })
+        confirmAlert.addAction(actionYes)
+        
+        let actionNo = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        confirmAlert.addAction(actionNo)
+        
+        self.present(confirmAlert, animated: true, completion: nil)
+    }
+    
+    func onClickEditPost(_ objPost: PFObject) {
+        let addPostNC = self.storyboard?.instantiateViewController(withIdentifier: "WDTAddPostNavigationController") as! UINavigationController
+        let addPostVC = addPostNC.viewControllers[0] as! WDTAddPostViewController
+        addPostVC.m_objPost = objPost
+        self.present(addPostNC, animated: true, completion: nil)
     }
     
     

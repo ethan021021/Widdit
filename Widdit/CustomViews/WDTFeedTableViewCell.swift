@@ -19,6 +19,8 @@ protocol WDTFeedTableViewCellDelegate {
     func onTapUserAvatar(_ objUser: PFUser?)
     func onUpdateObject(_ objPost: PFObject)
     func onClickBtnReply(_ objPost: PFObject)
+    func onClickToDeletePost(_ objPost: PFObject)
+    func onClickEditPost(_ objPost: PFObject)
 }
 
 class WDTFeedTableViewCell: UITableViewCell {
@@ -34,8 +36,8 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_lblPostText: ActiveLabel!
     @IBOutlet weak var m_btnMorePost: UIButton!
     @IBOutlet weak var m_constraintBtnMorePostsHeight: NSLayoutConstraint!
-    @IBOutlet weak var m_btnReply: UIButton!
-    @IBOutlet weak var m_btnDown: UIButton!
+    @IBOutlet weak var m_bottomLeftButton: UIButton!
+    @IBOutlet weak var m_bottomRightButton: UIButton!
     @IBOutlet weak var m_linkPreviewView: LinkPreviewView!
     @IBOutlet weak var m_linkPreviewViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet var m_linkPreviewViewVerticalOffsetConstraints: [NSLayoutConstraint]!
@@ -48,6 +50,11 @@ class WDTFeedTableViewCell: UITableViewCell {
     
     var previewURLString: String?
     var didTapToLink: ((URL) -> Void)?
+    
+    
+    var isCurrentUserCell: Bool {
+        return (m_objPost?["user"] as? PFUser)?.objectId == PFUser.current()?.objectId
+    }
     
     
     override func awakeFromNib() {
@@ -203,16 +210,43 @@ class WDTFeedTableViewCell: UITableViewCell {
             m_linkPreviewViewHeightConstraint.priority = 1000
         }
 
-        //if user is current user, disable buttons
-        m_btnReply.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
-        m_btnDown.isEnabled = (objPost["user"] as? PFUser)?.objectId != PFUser.current()?.objectId
-
-        //check down
-        if m_btnDown.isEnabled {
-            m_btnDown.isSelected = WDTActivity.sharedInstance().myDowns.filter({ (down) -> Bool in
+        // Bottom buttons
+        
+        //if user is current user, show remove and edit buttons
+        if isCurrentUserCell {
+            m_bottomLeftButton.isSelected = false
+            m_bottomRightButton.isSelected = false
+            
+            m_bottomLeftButton.setTitle("Remove Post", for: .normal)
+            m_bottomRightButton.setTitle("Edit Post", for: .normal)
+            m_bottomLeftButton.setTitle("Remove Post", for: .selected)
+            m_bottomRightButton.setTitle("Edit Post", for: .selected)
+            
+            m_bottomLeftButton.setImage(nil, for: .normal)
+            m_bottomRightButton.setImage(nil, for: .normal)
+            m_bottomLeftButton.setImage(nil, for: .selected)
+            m_bottomRightButton.setImage(nil, for: .selected)
+        } else {
+            m_bottomLeftButton.setTitle("Reply", for: .normal)
+            m_bottomRightButton.setTitle("I'm Down", for: .normal)
+            m_bottomLeftButton.setTitle("Reply", for: .selected)
+            m_bottomRightButton.setTitle("I'm Down", for: .selected)
+            
+            m_bottomLeftButton.setImage(UIImage(named: "post_icon_reply"),
+                                        for: .normal)
+            m_bottomRightButton.setImage(UIImage(named: "post_icon_down"),
+                                         for: .normal)
+            m_bottomLeftButton.setImage(UIImage(named: "post_icon_reply_selected"),
+                                        for: .selected)
+            m_bottomRightButton.setImage(UIImage(named: "post_icon_down_selected"),
+                                         for: .selected)
+            
+            m_bottomRightButton.isSelected = WDTActivity.sharedInstance().myDowns.filter({ (down) -> Bool in
                 let localPost = down["post"] as! PFObject
                 return localPost.objectId == objPost.objectId
             }).count > 0
+            
+            // TODO: update reply button
         }
     }
     
@@ -236,21 +270,29 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
     }
     
-    @IBAction func onClickBtnReply(_ sender: Any) {
+    @IBAction func onClickBottomLeftButton(_ sender: Any) {
         if let objPost = m_objPost {
-            delegate?.onClickBtnReply(objPost)
+            if isCurrentUserCell {
+                delegate?.onClickToDeletePost(objPost)
+            } else {
+                delegate?.onClickBtnReply(objPost)
+            }
         }
     }
     
-    @IBAction func onClickBtnDown(_ sender: Any) {
-        let btnDown = sender as! UIButton
-        btnDown.isSelected = !btnDown.isSelected
-        
+    @IBAction func onClickBottomRightButton(_ sender: Any) {
         if let objPost = m_objPost {
-            if btnDown.isSelected {
-                WDTActivity.addActivity(user: (objPost["user"] as! PFUser), post: objPost, type: .Down, completion: { _ in })
+            if isCurrentUserCell {
+                delegate?.onClickEditPost(objPost)
             } else {
-                WDTActivity.deleteActivity(user: (objPost["user"] as! PFUser), post: objPost)
+                let btnDown = sender as! UIButton
+                btnDown.isSelected = !btnDown.isSelected
+                
+                if btnDown.isSelected {
+                    WDTActivity.addActivity(user: (objPost["user"] as! PFUser), post: objPost, type: .Down, completion: { _ in })
+                } else {
+                    WDTActivity.deleteActivity(user: (objPost["user"] as! PFUser), post: objPost)
+                }
             }
         }
     }
