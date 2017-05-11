@@ -148,33 +148,16 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Oo-Gk-6il" customClass="JHShadowView" customModule="Widdit" customModuleProvider="target">
-                                <rect key="frame" x="12" y="146" width="272" height="0.0"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="ShadowRadius">
-                                        <real key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="ShadowOpacity">
-                                        <real key="value" value="0.14999999999999999"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lcV-Tb-W0g">
-                                <rect key="frame" x="12" y="146" width="272" height="0.0"/>
+                                <rect key="frame" x="20" y="146" width="256" height="0.0"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="lcV-Tb-W0g" secondAttribute="height" multiplier="1:1" priority="799" id="lE2-n9-nW8"/>
                                     <constraint firstAttribute="height" priority="800" id="xXn-Dm-7b2"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post_icon_photos_many" translatesAutoresizingMaskIntoConstraints="NO" id="2OP-bW-FBl">
-                                <rect key="frame" x="240" y="150" width="40" height="40"/>
+                                <rect key="frame" x="232" y="150" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="s3J-aX-2S9"/>
                                     <constraint firstAttribute="width" constant="40" id="zhu-9a-KZU"/>
@@ -266,7 +249,7 @@
                                 </connections>
                             </view>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="auz-KD-wEc" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                <rect key="frame" x="224" y="419" width="60" height="35"/>
+                                <rect key="frame" x="216" y="419" width="60" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="aTE-Ei-wTl"/>
                                     <constraint firstAttribute="height" constant="35" id="m2e-BO-CnA"/>
@@ -359,18 +342,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="top" secondItem="VLg-Ta-3vT" secondAttribute="top" id="1Wn-J5-T0C"/>
+                            <constraint firstAttribute="trailing" secondItem="lcV-Tb-W0g" secondAttribute="trailing" constant="20" id="3At-13-geO"/>
+                            <constraint firstAttribute="trailing" secondItem="auz-KD-wEc" secondAttribute="trailing" constant="20" id="6Lm-Um-EPu"/>
                             <constraint firstItem="auz-KD-wEc" firstAttribute="top" secondItem="pQO-x0-cIF" secondAttribute="bottom" constant="1" id="6he-Fu-HUZ"/>
                             <constraint firstItem="kfa-Qi-tUq" firstAttribute="width" secondItem="pQO-x0-cIF" secondAttribute="width" id="8NZ-Js-xi6"/>
                             <constraint firstItem="pQO-x0-cIF" firstAttribute="top" secondItem="lcV-Tb-W0g" secondAttribute="bottom" constant="12" id="8Uz-Bg-DO9"/>
-                            <constraint firstItem="7Oo-Gk-6il" firstAttribute="height" secondItem="lcV-Tb-W0g" secondAttribute="height" id="D3T-Ei-3FI"/>
                             <constraint firstItem="qop-LG-LhJ" firstAttribute="top" secondItem="3Er-HK-ar0" secondAttribute="bottom" constant="15" id="FDu-7a-4Zu"/>
                             <constraint firstItem="kfa-Qi-tUq" firstAttribute="centerX" secondItem="pQO-x0-cIF" secondAttribute="centerX" id="ICI-cr-WsW"/>
                             <constraint firstAttribute="trailing" secondItem="pQO-x0-cIF" secondAttribute="trailing" constant="12" id="JS8-Lp-gZV"/>
-                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="leading" secondItem="VLg-Ta-3vT" secondAttribute="leading" constant="12" id="MzW-9g-tHk"/>
-                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="centerX" secondItem="3Er-HK-ar0" secondAttribute="centerX" id="PWT-iW-U7q"/>
-                            <constraint firstItem="qop-LG-LhJ" firstAttribute="centerX" secondItem="lcV-Tb-W0g" secondAttribute="centerX" id="SM8-9W-bFh"/>
+                            <constraint firstItem="lcV-Tb-W0g" firstAttribute="leading" secondItem="VLg-Ta-3vT" secondAttribute="leading" constant="20" id="MzW-9g-tHk"/>
                             <constraint firstAttribute="trailing" secondItem="qop-LG-LhJ" secondAttribute="trailing" constant="20" id="USb-1L-q4K"/>
-                            <constraint firstItem="7Oo-Gk-6il" firstAttribute="width" secondItem="lcV-Tb-W0g" secondAttribute="width" id="WoP-nC-TYX"/>
                             <constraint firstItem="qop-LG-LhJ" firstAttribute="leading" secondItem="VLg-Ta-3vT" secondAttribute="leading" constant="20" id="X1l-Ox-3fR"/>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="centerX" secondItem="VLg-Ta-3vT" secondAttribute="centerX" id="Z1i-e9-b8B"/>
                             <constraint firstItem="lcV-Tb-W0g" firstAttribute="trailing" secondItem="2OP-bW-FBl" secondAttribute="trailing" constant="4" id="bFr-Rx-yG4"/>
@@ -379,11 +360,8 @@
                             <constraint firstItem="kfa-Qi-tUq" firstAttribute="height" secondItem="pQO-x0-cIF" secondAttribute="height" id="gM8-Q1-QMe"/>
                             <constraint firstItem="kfa-Qi-tUq" firstAttribute="centerY" secondItem="pQO-x0-cIF" secondAttribute="centerY" id="gyX-P1-TVj"/>
                             <constraint firstItem="lcV-Tb-W0g" firstAttribute="top" secondItem="qop-LG-LhJ" secondAttribute="bottom" constant="1" id="iuG-YM-FO5"/>
-                            <constraint firstItem="auz-KD-wEc" firstAttribute="trailing" secondItem="lcV-Tb-W0g" secondAttribute="trailing" id="jAC-Ss-Ugi"/>
-                            <constraint firstItem="7Oo-Gk-6il" firstAttribute="centerX" secondItem="lcV-Tb-W0g" secondAttribute="centerX" id="mBa-Lx-NC3"/>
                             <constraint firstItem="6q6-57-ERv" firstAttribute="top" secondItem="auz-KD-wEc" secondAttribute="bottom" constant="12" id="oWZ-rC-Sv4"/>
                             <constraint firstItem="pQO-x0-cIF" firstAttribute="leading" secondItem="VLg-Ta-3vT" secondAttribute="leading" constant="12" id="p39-ke-lQI"/>
-                            <constraint firstItem="7Oo-Gk-6il" firstAttribute="centerY" secondItem="lcV-Tb-W0g" secondAttribute="centerY" id="ql9-dT-eMn"/>
                             <constraint firstItem="6q6-57-ERv" firstAttribute="centerX" secondItem="VLg-Ta-3vT" secondAttribute="centerX" id="rHl-Z0-obB"/>
                             <constraint firstAttribute="bottom" secondItem="6q6-57-ERv" secondAttribute="bottom" id="w0y-vp-gsZ"/>
                             <constraint firstItem="3Er-HK-ar0" firstAttribute="width" secondItem="VLg-Ta-3vT" secondAttribute="width" id="zeI-CT-2TS"/>
