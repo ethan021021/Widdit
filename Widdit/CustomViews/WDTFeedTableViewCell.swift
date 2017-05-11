@@ -28,6 +28,7 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_imgAvatar: UIImageView!
     @IBOutlet weak var m_lblName: UILabel!
     @IBOutlet weak var m_lblExpireDate: UILabel!
+    @IBOutlet weak var m_imageLocation: UIImageView!
     @IBOutlet weak var m_lblLocation: UILabel!
     @IBOutlet weak var m_imgPhoto: UIImageView!
     @IBOutlet weak var m_imgManyPhotosIndicator: UIImageView!
@@ -77,6 +78,12 @@ class WDTFeedTableViewCell: UITableViewCell {
                 self?.onTapToLink(url: url)
             }
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        m_imgAvatar.layer.cornerRadius = m_imgAvatar.frame.width * 0.5
     }
     
     fileprivate func onTapToLink(url: URL?) {
@@ -129,6 +136,8 @@ class WDTFeedTableViewCell: UITableViewCell {
         } else {
             m_lblLocation.text = ""
         }
+        
+        m_imageLocation.isHidden = m_lblLocation.text == nil || m_lblLocation.text?.characters.count == 0
         
         //Text
         if let text = objPost["postText"] as? String {
