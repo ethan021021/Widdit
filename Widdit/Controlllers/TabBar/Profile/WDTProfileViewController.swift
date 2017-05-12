@@ -29,19 +29,19 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
         let aboutVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTAboutViewController.self)) as! WDTAboutViewController
         aboutVC.m_objUser = m_objUser
         aboutVC.title = "About"
-        segmentControllers = [feedVC, aboutVC]
+        segmentControllers = [aboutVC, feedVC]
         
         headerViewHeight = 388
-        segmentTitleColor = UIColor.WDTGreenColor()
-        segmentTitleFont = UIFont.WDTMedium(size: 12)
-        selectedSegmentViewHeight = 0
+        segmentTitleColor = UIColor(r: 68, g: 74, b: 89, a: 1)
+        segmentTitleFont = UIFont.WDTMedium(size: 14)
+        selectedSegmentViewHeight = 3
+        selectedSegmentViewColor = UIColor(r: 71, g: 211, b: 214, a: 1)
         segmentViewHeight = 44
+        segmentShadow = SJShadow(offset: .zero, color: .clear, radius: 0, opacity: 0)
         
         delegate = self
         
         super.viewDidLoad()
-        
-//        setSelectedSegmentAt(1, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,11 +61,6 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = false
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
 
     /*
@@ -81,10 +76,11 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
     // MARK: - SJSegementedViewControllerDelegate
     func didMoveToPage(_ controller: UIViewController, segment: SJSegmentTab?, index: Int) {
         if selectedSegment != nil {
-            selectedSegment?.titleColor(UIColor.WDTGreenColor())
+            selectedSegment?.titleColor(UIColor(r: 68, g: 74, b: 89, a: 1))
         }
 
         selectedSegment = segment
-        segment?.titleColor(UIColor.WDTTealColor())
+        segment?.titleColor(UIColor(r: 71, g: 211, b: 214, a: 1))
     }
+    
 }
