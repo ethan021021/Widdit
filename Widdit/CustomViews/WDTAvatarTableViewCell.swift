@@ -94,7 +94,7 @@ class WDTAvatarTableViewCell: UITableViewCell {
                 imgAvatar.image = image
                 let index = imgAvatar.tag - 100
                 if let objUser = PFUser.current() {
-                    let dataAvatar = UIImageJPEGRepresentation(image.resizeImage(CGFloat(Constants.Integer.AVATAR_SIZE)), 0.5)
+                    let dataAvatar = UIImageJPEGRepresentation(image.resizeImage(CGFloat(Constants.Integer.AVATAR_SIZE)), 0.9)
                     let fileAvatar = PFFile(name: "ava.jpg", data: dataAvatar!)
                     objUser["ava" + (index == 0 ? "" : String(index + 1))] = fileAvatar
                     objUser.saveInBackground()
