@@ -17,6 +17,16 @@ class WDTEditProfileViewController: UITableViewController {
         super.viewDidLoad()
         
         m_btnLinkFacebook.isSelected = PFFacebookUtils.isLinked(with: PFUser.current()!)
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spacer.width = -16
+        let backButton = WDTBackButton(frame: CGRect(x: 0, y: 0, width: 50, height: 36))
+        backButton.backColor = UIColor(r: 96, g: 219, b: 221, a: 1)
+        let backButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.setLeftBarButtonItems([spacer, backButtonItem], animated: false)
+        backButton.onTouchUp = {
+            self.onClickButtonBack(backButton)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -147,7 +157,7 @@ class WDTEditProfileViewController: UITableViewController {
         }
     }
 
-    @IBAction func onClickBtnDone(_ sender: Any) {
+    @IBAction func onClickButtonBack(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
