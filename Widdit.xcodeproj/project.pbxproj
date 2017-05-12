@@ -69,6 +69,7 @@
 		967471121EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471101EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift */; };
 		967471131EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 967471111EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib */; };
 		967471151EC5A3E700AFBDD0 /* WDTBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */; };
+		967471171EC5B8D900AFBDD0 /* WDTArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471161EC5B8D900AFBDD0 /* WDTArcView.swift */; };
 		96B2AEED1EBF8DAD00C02531 /* WDTPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */; };
 		96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */; };
 		96E06E371EC0BAF000C7F83D /* FollowersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E361EC0BAF000C7F83D /* FollowersManager.swift */; };
@@ -144,6 +145,7 @@
 		967471101EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTCoverTableViewCell.swift; sourceTree = "<group>"; };
 		967471111EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTCoverTableViewCell.xib; sourceTree = "<group>"; };
 		967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTBackButton.swift; sourceTree = "<group>"; };
+		967471161EC5B8D900AFBDD0 /* WDTArcView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTArcView.swift; sourceTree = "<group>"; };
 		96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPhotoCell.swift; sourceTree = "<group>"; };
 		96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkPreviewView.swift; sourceTree = "<group>"; };
 		96E06E361EC0BAF000C7F83D /* FollowersManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersManager.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				96E06E3A1EC0BC7A00C7F83D /* WDTFollowerCell.swift */,
 				96E06E3D1EC0E40700C7F83D /* FlexButton.swift */,
 				967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */,
+				967471161EC5B8D900AFBDD0 /* WDTArcView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -530,6 +533,7 @@
 				96E06E391EC0BBA600C7F83D /* WDTFollowersViewController.swift in Sources */,
 				3F3917B11E6CE84E007409D9 /* WDTNoNavigationBaseViewController.swift in Sources */,
 				3F3CFDAB1E7B6FC600AD8FF8 /* WDTCircleSlider.swift in Sources */,
+				967471171EC5B8D900AFBDD0 /* WDTArcView.swift in Sources */,
 				3F3A31521E6E5831009267A6 /* WDTTabBarController.swift in Sources */,
 				3FEBD9811E70EDE100878392 /* WDTCategoriesViewController.swift in Sources */,
 				3F3CFDC51E7CC9F900AD8FF8 /* WDTEditProfileViewController.swift in Sources */,

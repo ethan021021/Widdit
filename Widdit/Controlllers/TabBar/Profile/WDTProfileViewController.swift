@@ -31,7 +31,7 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
         aboutVC.title = "About"
         segmentControllers = [feedVC, aboutVC]
         
-        headerViewHeight = 300
+        headerViewHeight = 388
         segmentTitleColor = UIColor.WDTGreenColor()
         segmentTitleFont = UIFont.WDTMedium(size: 12)
         selectedSegmentViewHeight = 0
@@ -41,7 +41,7 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
         
         super.viewDidLoad()
         
-        setSelectedSegmentAt(1, animated: false)
+//        setSelectedSegmentAt(1, animated: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,9 +52,6 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
     }
     
     private func reloadData() {
-        let headerVC = headerViewController as! WDTProfileHeaderViewController
-        headerVC.initAvatarScrollView()
-        
         for segmentVC in segmentControllers {
             (segmentVC as! UITableViewController).tableView.reloadData()
         }

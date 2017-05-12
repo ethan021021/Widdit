@@ -9,24 +9,36 @@
 import UIKit
 import Parse
 
-class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
+class WDTProfileHeaderViewController: UIViewController {
 
     var m_objUser: PFUser?
     var m_parentVC: UIViewController?
     
-    @IBOutlet weak var m_sclAvatar: UIScrollView!
-    @IBOutlet weak var m_btnBack: UIButton!
+    @IBOutlet weak var m_imageViewAvatar: UIImageView!
+    @IBOutlet weak var m_imageViewCover: UIImageView!
+    @IBOutlet weak var m_btnBack: WDTBackButton!
     @IBOutlet weak var m_btnSettings: UIButton!
     @IBOutlet weak var m_lblName: UILabel!
-    @IBOutlet weak var m_pgControl: UIPageControl!
     @IBOutlet weak var m_btnFollow: UIButton!
+    @IBOutlet weak var m_buttonNewPost: UIButton!
+    
+    
+    fileprivate var aryAvatars = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        m_btnSettings.isHidden = m_objUser?.objectId != PFUser.current()?.objectId
-        m_btnBack.isHidden = m_objUser?.objectId == PFUser.current()?.objectId
+        m_imageViewAvatar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WDTProfileHeaderViewController.onTapToAvatar)))
+        m_imageViewCover.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WDTProfileHeaderViewController.onTapToCover)))
+        
+        let isCurrentUser = m_objUser?.objectId == PFUser.current()?.objectId
+        m_btnSettings.isHidden = !isCurrentUser
+        m_btnBack.isHidden = isCurrentUser
+        m_buttonNewPost.isHidden = !isCurrentUser
+        
+        m_btnBack.onTouchUp = {
+            self.onClickBtnBack(self.m_btnBack)
+        }
         
         m_btnFollow.isHidden = true
         updateFollowingStatus()
@@ -37,87 +49,56 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
             m_lblName.text = m_objUser?.username
         }
         
-        // setup avatar scrollview
-        initAvatarScrollView()
+        updateAvatar()
+        updateCover()
     }
     
-    public func initAvatarScrollView() {
-        // remove containerView
-        for view in m_sclAvatar.subviews {
-            view.removeFromSuperview()
-        }
-        
-        var aryAvatars = [String]()
+    public func updateAvatar() {
+        aryAvatars = [String]()
         
         if let ava = m_objUser?["ava"] as? PFFile {
-            aryAvatars.append(ava.url!)
+            if let url = ava.url {
+                aryAvatars.append(url)
+            }
         }
         
         if let ava = m_objUser?["ava2"] as? PFFile {
-            aryAvatars.append(ava.url!)
+            if let url = ava.url {
+                aryAvatars.append(url)
+            }
         }
         
         if let ava = m_objUser?["ava3"] as? PFFile {
-            aryAvatars.append(ava.url!)
+            if let url = ava.url {
+                aryAvatars.append(url)
+            }
         }
         
-        m_pgControl.numberOfPages = aryAvatars.count
-        
-        let viewContainer = UIView()
-        viewContainer.backgroundColor = UIColor.clear
-        m_sclAvatar.addSubview(viewContainer)
-        viewContainer.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-            make.height.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(aryAvatars.count > 0 ? aryAvatars.count : 1)
+        if let path = aryAvatars.first {
+            if let url = URL(string: path) {
+                m_imageViewAvatar.kf.setImage(with: url)
+            }
         }
-        
-        var preView: UIView?
-        
-        for nIndex in 0..<aryAvatars.count {
-            let imgAvatar = UIImageView(frame: .zero)
-            imgAvatar.clipsToBounds = true
-            imgAvatar.contentMode = .scaleAspectFill
-            imgAvatar.kf.setImage(with: URL(string: aryAvatars[nIndex]))
-            
-            viewContainer.addSubview(imgAvatar)
-            imgAvatar.snp.makeConstraints({ (make) in
-                make.height.equalToSuperview()
-                make.centerY.equalToSuperview()
-                
-                if nIndex == 0 {
-                    make.left.equalToSuperview()
+    }
+    
+    func updateCover() {
+        if let coverFile = m_objUser?["cover"] as? PFFile {
+            if let path = coverFile.url {
+                if let url = URL(string: path) {
+                    m_imageViewCover.kf.setImage(with: url)
                 }
-                
-                if nIndex == aryAvatars.count - 1 {
-                    make.right.equalToSuperview()
-                }
-                
-                if preView != nil {
-                    make.left.equalTo(preView!.snp.right)
-                    make.width.equalTo(preView!)
-                }
-            })
-            
-            preView = imgAvatar
-        }
-        
-        if aryAvatars.count == 0 {
-            let imgAvatar = UIImageView(frame: .zero)
-            imgAvatar.clipsToBounds = true
-            imgAvatar.contentMode = .scaleAspectFill
-            imgAvatar.image = UIImage(named: "common_avatar_placeholder")
-            
-            viewContainer.addSubview(imgAvatar)
-            imgAvatar.snp.makeConstraints({ (make) in
-                make.edges.equalToSuperview()
-            })
+            }
         }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        m_imageViewAvatar.layer.cornerRadius = m_imageViewAvatar.frame.width * 0.5
     }
     
     
@@ -195,12 +176,16 @@ class WDTProfileHeaderViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    // MARK: - UIScrollViewDelegate
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let width = view.frame.size.width
-        let nPage = (scrollView.contentOffset.x + width / 2) / width
+    @IBAction func onClickButtonNewPost(_ sender: Any) {
         
-        m_pgControl.currentPage = Int(nPage)
+    }
+    
+    func onTapToCover() {
+        
+    }
+    
+    func onTapToAvatar() {
+        
     }
     
 }
