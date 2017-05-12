@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import Kingfisher
 
 class WDTProfileHeaderViewController: UIViewController {
 
@@ -177,15 +178,77 @@ class WDTProfileHeaderViewController: UIViewController {
     }
     
     @IBAction func onClickButtonNewPost(_ sender: Any) {
-        
+        let addPostNC = m_parentVC?.storyboard?.instantiateViewController(withIdentifier: "WDTAddPostNavigationController") as! UINavigationController
+        m_parentVC?.present(addPostNC, animated: true, completion: nil)
     }
     
     func onTapToCover() {
-        
+        if let coverFile = m_objUser?["cover"] as? PFFile {
+            if let path = coverFile.url {
+                let photoURLs = [path]
+                let photos = photoURLs.map { _ in NYTPhotoObject() }
+                let controller = PhotosViewController(photos: photos)
+                controller.rightBarButtonItem = nil
+                
+                m_parentVC?.present(controller, animated: true, completion: nil)
+                
+                loadPhotos(for: photoURLs,
+                           loaded:
+                    { image, index in
+                        photos[index].image = image
+                        controller.updateImage(for: photos[index])
+                })
+            }
+        }
     }
     
     func onTapToAvatar() {
+        let photos = aryAvatars.map { _ in NYTPhotoObject() }
+        let controller = PhotosViewController(photos: photos)
+        controller.rightBarButtonItem = nil
         
+        m_parentVC?.present(controller, animated: true, completion: nil)
+        
+        loadPhotos(for: aryAvatars,
+                   loaded:
+            { image, index in
+                photos[index].image = image
+                controller.updateImage(for: photos[index])
+        })
+    }
+    
+    
+    fileprivate func loadPhotos(for photoURLs: [String],
+                                loaded: @escaping (UIImage?, Int) -> Void,
+                                completion: (() -> Void)? = nil) {
+        if photoURLs.count > 0 {
+            var photosLoaded = 0
+            for (index, path) in photoURLs.enumerated() {
+                guard let url = URL(string: path) else {
+                    photosLoaded += 1
+                    
+                    if photosLoaded >= photoURLs.count {
+                        completion?()
+                    }
+                    return
+                }
+                
+                KingfisherManager.shared.retrieveImage(with: url,
+                                                       options: nil,
+                                                       progressBlock: nil,
+                                                       completionHandler:
+                    { (image, _, _, _) in
+                        loaded(image, index)
+                        
+                        photosLoaded += 1
+                        if photosLoaded >= photoURLs.count {
+                            completion?()
+                        }
+                })
+            }
+        } else {
+            completion?()
+        }
     }
     
 }
