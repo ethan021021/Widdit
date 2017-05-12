@@ -48,7 +48,7 @@ class WDTCoverTableViewCell: UITableViewCell {
             if let image = image {
                 self.coverView.image = image
                 if let objUser = PFUser.current() {
-                    let dataAvatar = UIImageJPEGRepresentation(image.resizeImage(CGFloat(Constants.Integer.AVATAR_SIZE)), 0.5)
+                    let dataAvatar = UIImageJPEGRepresentation(image.resizeImage(CGFloat(Constants.Integer.AVATAR_SIZE)), 0.85)
                     let fileAvatar = PFFile(name: "cover.jpg", data: dataAvatar!)
                     objUser["cover"] = fileAvatar
                     objUser.saveInBackground()

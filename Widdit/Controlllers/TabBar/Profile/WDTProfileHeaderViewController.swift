@@ -40,6 +40,10 @@ class WDTProfileHeaderViewController: UIViewController {
         m_btnBack.onTouchUp = {
             self.onClickBtnBack(self.m_btnBack)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         m_btnFollow.isHidden = true
         updateFollowingStatus()
