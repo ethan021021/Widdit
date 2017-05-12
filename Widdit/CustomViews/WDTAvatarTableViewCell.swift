@@ -24,6 +24,15 @@ class WDTAvatarTableViewCell: UITableViewCell {
             imgAvatar.addGestureRecognizer(tap)
         }
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        for tag in 100...102 {
+            let imgAvatar = viewWithTag(tag) as! UIImageView
+            imgAvatar.layer.cornerRadius = imgAvatar.frame.width * 0.5
+        }
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -68,7 +77,7 @@ class WDTAvatarTableViewCell: UITableViewCell {
         let index = btnDelete.tag - 200
         
         let imgAvatar = viewWithTag(100 + index) as! UIImageView
-        imgAvatar.image = UIImage(named: "post_image_placeholder")
+        imgAvatar.image = UIImage(named: "profile_icon_avatar_placeholder")
         
         if let objUser = PFUser.current() {
             objUser.remove(forKey: "ava" + (index == 0 ? "" : String(index + 1)))
@@ -99,6 +108,24 @@ class WDTAvatarTableViewCell: UITableViewCell {
         }
         
         m_parentVC?.present(cameraVC, animated: true, completion: nil)
+    }
+    
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        if let context = UIGraphicsGetCurrentContext() {
+            context.setStrokeColor(UIColor(r: 249, g: 249, b: 249, a: 1).cgColor)
+            context.setLineWidth(2)
+            
+            context.move(to: CGPoint(x: 0, y: 1))
+            context.addLine(to: CGPoint(x: rect.width, y: 1))
+            context.strokePath()
+            
+            context.move(to: CGPoint(x: 0, y: rect.height - 1))
+            context.addLine(to: CGPoint(x: rect.width, y: rect.height - 1))
+            context.strokePath()
+        }
     }
     
 }
