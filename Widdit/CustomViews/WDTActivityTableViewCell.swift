@@ -8,6 +8,8 @@
 
 import UIKit
 import Parse
+import RelativeFormatter
+
 
 protocol WDTActivityTableViewCellDelegate {
     func onTapUserAvatar(_ objUser: PFUser?)
@@ -21,6 +23,8 @@ class WDTActivityTableViewCell: UITableViewCell {
     @IBOutlet weak var m_lblComment: UILabel!
     @IBOutlet weak var m_lblDescription: UILabel!
     @IBOutlet weak var m_btnReply: UIButton!
+    @IBOutlet weak var m_newPostIndicator: UIView!
+    @IBOutlet weak var m_timeLabel: UILabel!
     
     var m_objActivity: PFObject?
     var delegate: WDTActivityTableViewCellDelegate?
@@ -59,6 +63,22 @@ class WDTActivityTableViewCell: UITableViewCell {
                 self.m_imgAvatar.kf.setImage(with: URL(string: avaFile.url!))
             }
         }
+        
+        // Date label
+        if let date = objActivity["replyDate"] as? Date {
+            let relativeDate = date.relativeFormatted(false, precision: .minute)
+            m_timeLabel.text = relativeDate
+        }
+        
+        // Not watched activity indicator
+        if toUser.username == PFUser.current()!.username {
+            m_newPostIndicator.isHidden = (objActivity["replyRead"] as? Bool == true)
+        } else {
+            m_newPostIndicator.isHidden = true
+        }
+        
+        // Activity type image
+//        if objActivity[""]
         
         if isDown {
             if byUser.username == PFUser.current()!.username {

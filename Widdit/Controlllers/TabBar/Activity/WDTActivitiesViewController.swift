@@ -10,72 +10,83 @@ import UIKit
 import Parse
 
 class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCellDelegate {
-
-    let segmentedControl = UISegmentedControl(items: ["REPLIES", "DOWNS"])
+    
+    fileprivate var unwatchedFollows: [Follow] = []
+    fileprivate var activities: [PFObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 48.0
         
-        segmentedControl.addTarget(self, action: #selector(onSegmentValueChanged), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = 0
-        navigationItem.titleView = segmentedControl
-        
-        showHud()
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 24))
+        label.text = "ACTIVITY"
+        label.textAlignment = .center
+        label.textColor = .white
+        navigationItem.titleView = label
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        makeRequest()
-    }
-    
-    func onSegmentValueChanged() {
+        
+        showHud()
+        
+        requestUnwatchedFollows()
+        
         makeRequest()
     }
     
     func makeRequest() {
-        if segmentedControl.selectedSegmentIndex == 1 {
-            WDTActivity.sharedInstance().requestDowns { (success) in
-                self.hideHud()
-                self.tableView.reloadData()
-            }
-        } else {
-            WDTActivity.sharedInstance().requestChats { (success) in
-                self.hideHud()
-                self.tableView.reloadData()
-            }
+//        if segmentedControl.selectedSegmentIndex == 1 {
+//            WDTActivity.sharedInstance().requestDowns { (success) in
+//                self.hideHud()
+//                self.tableView.reloadData()
+//            }
+//        } else {
+        WDTActivity.sharedInstance().requestChats { [weak self] (success) in
+            self?.hideHud()
+            
+            self?.activities = WDTActivity.sharedInstance().chats
+            
+            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        }
+//        }
+    }
+    
+    fileprivate func requestUnwatchedFollows() {
+        FollowersManager.getUnwatchedFollows { [weak self] follows in
+            self?.unwatchedFollows = follows
+            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - TableViewDataSource
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if segmentedControl.selectedSegmentIndex == 1 {
-            return WDTActivity.sharedInstance().downs.count
+        if section == 0 {
+            return unwatchedFollows.count > 0 ? 1 : 0
         } else {
-            return WDTActivity.sharedInstance().chats.count
+            return activities.count
         }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed(String(describing: WDTActivityTableViewCell.self), owner: nil, options: [:])?.first as! WDTActivityTableViewCell
-        if segmentedControl.selectedSegmentIndex == 1 {
-            let objActivity = WDTActivity.sharedInstance().downs[indexPath.row]
-            cell.setViewWithActivity(objActivity, isDown: true)
+        if indexPath.section == 0 {
+            let cell = UITableViewCell()
+            
+            return cell
         } else {
-            let objActivity = WDTActivity.sharedInstance().chats[indexPath.row]
+            let cell = Bundle.main.loadNibNamed(String(describing: WDTActivityTableViewCell.self), owner: nil, options: [:])?.first as! WDTActivityTableViewCell
+            
+            let objActivity = activities[indexPath.row]
             cell.setViewWithActivity(objActivity, isDown: false)
+            
+            cell.delegate = self
+            
+            return cell
         }
-        
-        cell.delegate = self
-        
-        return cell
     }
     
     // MARK: - UITableViewDelegate
@@ -88,19 +99,26 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var objPost: PFObject?
-        
-        if segmentedControl.selectedSegmentIndex == 1 {
-            let objActivity = WDTActivity.sharedInstance().downs[indexPath.row]
-            objPost = objActivity["post"] as? PFObject
+        if indexPath.section == 0 {
+            if let controller = storyboard?.instantiateViewController(withIdentifier: "WDTFollowersViewController") {
+                navigationController?.pushViewController(controller,
+                                                         animated: true)
+            }
         } else {
-            let objActivity = WDTActivity.sharedInstance().chats[indexPath.row]
-            objPost = objActivity["post"] as? PFObject
+            if let objPost = activities[indexPath.row]["post"] as? PFObject {
+                let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+                morePostsVC.m_objPost = objPost
+                navigationController?.pushViewController(morePostsVC, animated: true)
+            }
         }
-        
-        let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
-        morePostsVC.m_objPost = objPost
-        navigationController?.pushViewController(morePostsVC, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 80
+        } else {
+            return 110
+        }
     }
 
     // MARK: - WDTActivityTableViewCellDelegate

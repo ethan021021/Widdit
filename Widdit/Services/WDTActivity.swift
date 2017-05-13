@@ -181,6 +181,7 @@ class WDTActivity {
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
         activitiesQuery.includeKey("whoRepliedLast")
+        activitiesQuery.includeKey("createdAt")
         activitiesQuery.addDescendingOrder("createdAt")
         
         activitiesQuery.findObjectsInBackground(block: { (chats, error) in
