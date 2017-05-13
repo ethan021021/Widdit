@@ -12,7 +12,7 @@ import Parse
 class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCellDelegate {
     
     fileprivate var unwatchedFollows: [Follow] = []
-    fileprivate var activities: [PFObject] = []
+    fileprivate var activities: [Activity] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +27,8 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        tableView.reloadData()
+        
         showHud()
         
         requestUnwatchedFollows()
@@ -35,20 +37,15 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
     }
     
     func makeRequest() {
-//        if segmentedControl.selectedSegmentIndex == 1 {
-//            WDTActivity.sharedInstance().requestDowns { (success) in
-//                self.hideHud()
-//                self.tableView.reloadData()
-//            }
-//        } else {
+        activities = WDTActivity.sharedInstance().chats
+        tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        
         WDTActivity.sharedInstance().requestChats { [weak self] (success) in
             self?.hideHud()
             
             self?.activities = WDTActivity.sharedInstance().chats
-            
             self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
         }
-//        }
     }
     
     fileprivate func requestUnwatchedFollows() {
@@ -80,8 +77,8 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
         } else {
             let cell = Bundle.main.loadNibNamed(String(describing: WDTActivityTableViewCell.self), owner: nil, options: [:])?.first as! WDTActivityTableViewCell
             
-            let objActivity = activities[indexPath.row]
-            cell.setViewWithActivity(objActivity, isDown: false)
+            let activity = activities[indexPath.row]
+            cell.setViewWithActivity(activity)
             
             cell.delegate = self
             
@@ -105,11 +102,9 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
                                                          animated: true)
             }
         } else {
-            if let objPost = activities[indexPath.row]["post"] as? PFObject {
-                let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
-                morePostsVC.m_objPost = objPost
-                navigationController?.pushViewController(morePostsVC, animated: true)
-            }
+            let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+            morePostsVC.m_objPost = activities[indexPath.row].post
+            navigationController?.pushViewController(morePostsVC, animated: true)
         }
     }
     
