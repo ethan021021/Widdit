@@ -107,9 +107,14 @@ class WDTActivity {
     }
     
     func requestMyDowns(completion: @escaping (_ success: Bool) -> Void) {
-        let activitiesQuery = PFQuery(className: "Activity")
+        let activitiesQuery1 = PFQuery(className: "Activity")
+        activitiesQuery1.whereKey("type", equalTo: "down")
+        let activitiesQuery2 = PFQuery(className: "Activity")
+        activitiesQuery2.whereKey("isDowned", equalTo: true)
+        
+        let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
         activitiesQuery.whereKey("by", equalTo: currentUser)
-        activitiesQuery.whereKey("type", equalTo: "down")
+        activitiesQuery.whereKey("isDowned", equalTo: true)
         activitiesQuery.includeKey("post")
         activitiesQuery.addDescendingOrder("createdAt")
         
@@ -135,9 +140,13 @@ class WDTActivity {
     }
     
     func requestDowns(completion: @escaping (_ success: Bool) -> Void) {
-        let activitiesQuery = PFQuery(className: "Activity")
+        let activitiesQuery1 = PFQuery(className: "Activity")
+        activitiesQuery1.whereKey("type", equalTo: "down")
+        let activitiesQuery2 = PFQuery(className: "Activity")
+        activitiesQuery2.whereKey("isDowned", equalTo: true)
+        
+        let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
         activitiesQuery.whereKey("to", equalTo: currentUser)
-        activitiesQuery.whereKey("type", equalTo: "down")
         activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
@@ -165,23 +174,18 @@ class WDTActivity {
     }
     
     func requestChats(completion: @escaping (_ success: Bool) -> Void) {
-        
         let activitiesToMeQuery = PFQuery(className: "Activity")
         activitiesToMeQuery.whereKey("by", equalTo: currentUser)
-        activitiesToMeQuery.whereKey("comeFromTheFeed", equalTo: false)
-        activitiesToMeQuery.whereKeyExists("whoRepliedLast")
         
         let activitiesFromMeQuery = PFQuery(className: "Activity")
         activitiesFromMeQuery.whereKey("to", equalTo: currentUser)
-        activitiesFromMeQuery.whereKeyExists("whoRepliedLast")
         
         let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesToMeQuery, activitiesFromMeQuery])
         activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
-        activitiesQuery.includeKey("whoRepliedLast")
-        activitiesQuery.includeKey("createdAt")
-        activitiesQuery.addDescendingOrder("createdAt")
+        activitiesQuery.includeKey("lastMessageDate")
+        activitiesQuery.addDescendingOrder("lastMessageDate")
         
         activitiesQuery.findObjectsInBackground(block: { (chats, error) in
             if let chats = chats {
@@ -340,12 +344,20 @@ final class Reply {
     var object: PFObject {
         pfObject["by"] = self.by
         pfObject["to"] = self.to
-        pfObject["body"] = self.body
-        pfObject["photoURL"] = self.photoURL
+        pfObject["body"] = self.body ?? NSNull()
+        pfObject["photoURL"] = self.photoURL ?? NSNull()
         pfObject["isDown"] = self.isDown
         
         return pfObject
     }
+    
+    
+    func send(completion: @escaping () -> Void) {
+        self.object.saveInBackground { _ in
+            completion()
+        }
+    }
+    
 
 }
 

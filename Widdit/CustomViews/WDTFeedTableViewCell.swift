@@ -326,13 +326,46 @@ class WDTFeedTableViewCell: UITableViewCell {
                 btnDown.isSelected = !btnDown.isSelected
                 
                 if btnDown.isSelected {
-                    WDTActivity.addActivity(user: (objPost["user"] as! PFUser), post: objPost, type: .Down, completion: { _ in })
+                    if let user = objPost["user"] as? PFUser {
+                        WDTActivity.isDownAndReverseDown(user: user, post: objPost) { (down) in
+                            if let down = down, let activity = Activity(pfObject: down) {
+                                self.sendMessage("I'am down", activity: activity, to: user)
+                            } else {
+                                WDTActivity.addActivity(user: user, post: objPost, type: .Down, completion: { (activityObj) in
+                                    if let activity = Activity(pfObject: activityObj) {
+                                        self.sendMessage("I'am down", activity: activity, to: user)
+                                    }
+                                })
+                            }
+                        }
+                    }
                 } else {
-                    WDTActivity.deleteActivity(user: (objPost["user"] as! PFUser), post: objPost)
+//                    WDTActivity.deleteActivity(user: (objPost["user"] as! PFUser), post: objPost)
                 }
             }
         }
     }
+    
+    
+    fileprivate func sendMessage(_ message: String, activity: Activity, to: PFUser) {
+        if let by = PFUser.current() {
+            let reply = Reply(by: by,
+                              to: to,
+                              body: message,
+                              photoURL: nil,
+                              isDown: true)
+            
+            WDTPush.sendPushAfterReply(toUsername: to.username ?? "",
+                                       msg: message,
+                                       postId: to.objectId!,
+                                       comeFromTheFeed: true)
+            
+            reply.send {
+                activity.addReply(reply, completion: nil)
+            }
+        }
+    }
+    
     
     func onTapPhoto() {
         if let objPost = m_objPost {
