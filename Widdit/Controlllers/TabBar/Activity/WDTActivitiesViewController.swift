@@ -71,7 +71,11 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = UITableViewCell()
+            let cell = tableView.dequeueReusableCell(withIdentifier: "WDTNewFollowersCell", for: indexPath) as! WDTNewFollowersCell
+            
+            let followersCount = unwatchedFollows.count
+            let end = followersCount == 1 ? "" : "s"
+            cell.followersCountLabel.text = "\(followersCount) new follower\(end)"
             
             return cell
         } else {
@@ -102,9 +106,26 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
                                                          animated: true)
             }
         } else {
-            let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
-            morePostsVC.m_objPost = activities[indexPath.row].post
-            navigationController?.pushViewController(morePostsVC, animated: true)
+//            let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+//            morePostsVC.m_objPost = activities[indexPath.row].post
+//            navigationController?.pushViewController(morePostsVC, animated: true)
+            let activity = activities[indexPath.row]
+            let byUser = activity.by
+            let toUser = activity.to
+            
+            var objUser: PFUser?
+            if byUser.objectId == PFUser.current()?.objectId {
+                objUser = toUser
+            } else {
+                objUser = byUser
+            }
+            
+            activity.post.fetchIfNeededInBackground(block: { [weak self] (post, error) in
+                let replyVC = self?.storyboard?.instantiateViewController(withIdentifier: String(describing: WDTReplyViewController.self)) as! WDTReplyViewController
+                replyVC.m_objPost = post
+                replyVC.m_objUser = objUser
+                self?.navigationController?.pushViewController(replyVC, animated: true)
+            })
         }
     }
     

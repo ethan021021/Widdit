@@ -42,7 +42,7 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="commom_icon_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="Yln-91-CQh">
+                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="commom_icon_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="Yln-91-CQh">
                         <rect key="frame" x="342" y="20.5" width="25" height="25"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="tintColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="deviceRGB"/>
@@ -116,8 +116,10 @@
                     <constraint firstAttribute="trailing" secondItem="Yln-91-CQh" secondAttribute="trailing" constant="8" id="xl1-9h-CUY"/>
                 </constraints>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="m_activityTypeView" destination="S55-Kg-8ds" id="L4y-qP-CYn"/>
+                <outlet property="m_arrowImageView" destination="Yln-91-CQh" id="WQu-LO-Z8P"/>
                 <outlet property="m_imgAvatar" destination="Dfx-wE-4sP" id="fgd-da-EbA"/>
                 <outlet property="m_lblDescription" destination="rT5-0Q-s82" id="f07-dY-NZi"/>
                 <outlet property="m_lblLastMessage" destination="nbm-xf-xew" id="vjs-FH-qn8"/>

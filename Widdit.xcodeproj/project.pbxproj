@@ -70,6 +70,7 @@
 		967471131EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 967471111EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib */; };
 		967471151EC5A3E700AFBDD0 /* WDTBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */; };
 		967471171EC5B8D900AFBDD0 /* WDTArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471161EC5B8D900AFBDD0 /* WDTArcView.swift */; };
+		967471231EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471221EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift */; };
 		96B2AEED1EBF8DAD00C02531 /* WDTPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */; };
 		96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */; };
 		96E06E371EC0BAF000C7F83D /* FollowersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E361EC0BAF000C7F83D /* FollowersManager.swift */; };
@@ -146,6 +147,7 @@
 		967471111EC4FFAB00AFBDD0 /* WDTCoverTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTCoverTableViewCell.xib; sourceTree = "<group>"; };
 		967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTBackButton.swift; sourceTree = "<group>"; };
 		967471161EC5B8D900AFBDD0 /* WDTArcView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTArcView.swift; sourceTree = "<group>"; };
+		967471221EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTNewFollowersCell.swift; sourceTree = "<group>"; };
 		96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPhotoCell.swift; sourceTree = "<group>"; };
 		96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkPreviewView.swift; sourceTree = "<group>"; };
 		96E06E361EC0BAF000C7F83D /* FollowersManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersManager.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 				96E06E3D1EC0E40700C7F83D /* FlexButton.swift */,
 				967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */,
 				967471161EC5B8D900AFBDD0 /* WDTArcView.swift */,
+				967471221EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -557,6 +560,7 @@
 				3F23B6541E7F6F6800175017 /* WDTReplyViewController.swift in Sources */,
 				3FF8BA7F1E6A6050008A1CEA /* WDTWelcomeViewController.swift in Sources */,
 				3F3917B31E6CE8B3007409D9 /* WDTSignUpPhoneViewController.swift in Sources */,
+				967471231EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift in Sources */,
 				3FF8BA891E6AA03A008A1CEA /* WDTTutorialContentViewController.swift in Sources */,
 				3F3A31561E6E94AF009267A6 /* JHView.swift in Sources */,
 				3F3CFDB51E7C238400AD8FF8 /* WDTProfileHeaderViewController.swift in Sources */,

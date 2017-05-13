@@ -25,6 +25,7 @@ class WDTActivityTableViewCell: UITableViewCell {
     @IBOutlet weak var m_activityTypeView: UIImageView!
     @IBOutlet weak var m_newPostIndicator: UIView!
     @IBOutlet weak var m_timeLabel: UILabel!
+    @IBOutlet weak var m_arrowImageView: UIImageView!
     
     var m_objActivity: Activity?
     var delegate: WDTActivityTableViewCellDelegate?
@@ -35,6 +36,8 @@ class WDTActivityTableViewCell: UITableViewCell {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTapAvatar))
         m_imgAvatar.addGestureRecognizer(tap)
+        
+        m_arrowImageView.tintColor = UIColor(r: 189, g: 189, b: 189, a: 1)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
