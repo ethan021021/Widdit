@@ -272,7 +272,7 @@ class WDTFeedTableViewCell: UITableViewCell {
                     return localPost.objectId == objPost.objectId
                 }).count > 0
             
-                updateMyReplies()
+//                updateMyReplies()
             }
         }
         
@@ -329,11 +329,11 @@ class WDTFeedTableViewCell: UITableViewCell {
                     if let user = objPost["user"] as? PFUser {
                         WDTActivity.isDownAndReverseDown(user: user, post: objPost) { (down) in
                             if let down = down, let activity = Activity(pfObject: down) {
-                                self.sendMessage("I'am down", activity: activity, to: user)
+                                self.sendMessage("I'm down", activity: activity, to: user)
                             } else {
                                 WDTActivity.addActivity(user: user, post: objPost, type: .Down, completion: { (activityObj) in
                                     if let activity = Activity(pfObject: activityObj) {
-                                        self.sendMessage("I'am down", activity: activity, to: user)
+                                        self.sendMessage("I'm down", activity: activity, to: user)
                                     }
                                 })
                             }
@@ -433,27 +433,27 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
     }
     
-    fileprivate func updateMyReplies() {
-        if let objPost = m_objPost {
-            let objUser = objPost["user"] as! PFUser
-            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
-                if let down = down {
-                    let relation = down.relation(forKey: "replies")
-                    let query = relation.query()
-                    query.includeKey("by")
-                    if let me = PFUser.current() {
-                        query.whereKey("by", equalTo: me)
-                    }
-                    query.countObjectsInBackground(block: { [weak self] (replies, error) in
-                        if replies > 0 {
-                            self?.m_bottomLeftButton.isSelected = true
-                        } else {
-                            self?.m_bottomLeftButton.isSelected = false
-                        }
-                    })
-                }
-            }
-        }
-    }
+//    fileprivate func updateMyReplies() {
+//        if let objPost = m_objPost {
+//            let objUser = objPost["user"] as! PFUser
+//            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
+//                if let down = down {
+//                    let relation = down.relation(forKey: "replies")
+//                    let query = relation.query()
+//                    query.includeKey("by")
+//                    if let me = PFUser.current() {
+//                        query.whereKey("by", equalTo: me)
+//                    }
+//                    query.countObjectsInBackground(block: { [weak self] (replies, error) in
+//                        if replies > 0 {
+//                            self?.m_bottomLeftButton.isSelected = true
+//                        } else {
+//                            self?.m_bottomLeftButton.isSelected = false
+//                        }
+//                    })
+//                }
+//            }
+//        }
+//    }
     
 }
