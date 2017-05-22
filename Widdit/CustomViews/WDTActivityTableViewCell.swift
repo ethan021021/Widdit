@@ -55,10 +55,12 @@ class WDTActivityTableViewCell: UITableViewCell {
         self.m_lblDescription.text = activity.postText
         
         if byUser.username == PFUser.current()!.username {
+            m_lblUsername.text = toUser["name"] as? String ?? toUser.username
             if let avaFile = toUser["ava"] as? PFFile {
                 self.m_imgAvatar.kf.setImage(with: URL(string: avaFile.url!))
             }
         } else {
+            m_lblUsername.text = byUser["name"] as? String ?? byUser.username
             if let avaFile = byUser["ava"] as? PFFile {
                 self.m_imgAvatar.kf.setImage(with: URL(string: avaFile.url!))
             }

@@ -133,11 +133,14 @@ class WDTFeedTableViewCell: UITableViewCell {
         
         //Location
         if let _ = objPost["geoPoint"] as? PFGeoPoint {
-            if let country = objPost["country"] as? String {
-                m_lblLocation.text = "\(country), \(objPost["city"] as? String ?? "")"
-            } else {
-                m_lblLocation.text = objPost["city"] as? String ?? ""
+            if let fullLocation = objPost["fullLocation"] as? String {
+                m_lblLocation.text = fullLocation
             }
+//            if let country = objPost["country"] as? String {
+//                m_lblLocation.text = "\(country), \(objPost["city"] as? String ?? "")"
+//            } else {
+//                m_lblLocation.text = objPost["city"] as? String ?? ""
+//            }
         } else {
             m_lblLocation.text = ""
         }

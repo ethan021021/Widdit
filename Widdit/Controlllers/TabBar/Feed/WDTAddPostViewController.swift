@@ -172,6 +172,8 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
         m_objPost?["user"] = PFUser.current()
         
         if let geoPoint = self.geoPoint {
+            tasksCount += 1
+            
             m_objPost?["geoPoint"] = geoPoint
             
             let geoCoder = CLGeocoder()
@@ -182,6 +184,10 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
                     if placemarks.count > 0 {
                         let placemark = placemarks.last
                         
+                        if let fullLocation = placemark?.asString {
+                            self.m_objPost?["fullLocation"] = fullLocation
+                        }
+                        
                         if let city = placemark?.locality {
                             self.m_objPost?["city"] = city
                         }
@@ -189,7 +195,15 @@ class WDTAddPostViewController: UIViewController, UITextViewDelegate {
                         if let country = placemark?.isoCountryCode {
                             self.m_objPost?["country"] = country
                         }
+                        
+                        self.m_objPost?.saveInBackground(block: { (success, error) in
+                            removeTask()
+                        })
+                    } else {
+                        removeTask()
                     }
+                } else {
+                    removeTask()
                 }
             })
         }
@@ -397,4 +411,33 @@ extension WDTAddPostViewController: UICollectionViewDelegate {
         }
     }
     
+}
+
+
+extension CLPlacemark {
+
+    var asString: String? {
+        var entries: [String] = []
+        
+        if let city = self.locality {
+            entries.append(city)
+        }
+//        if let state = self.administrativeArea {
+//            entries.append(state)
+//        }
+        if let street = self.thoroughfare {
+            entries.append(street)
+        }
+        if let number = self.subThoroughfare {
+            entries.append(number)
+        }
+        if let name = self.name {
+            entries.append(name)
+        }
+        
+        guard entries.count > 0 else { return nil }
+        
+        return entries.joined(separator: ", ")
+    }
+
 }
