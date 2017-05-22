@@ -18,10 +18,9 @@ class WDTActivity {
 
     let currentUser = PFUser.current()!
     var post: PFObject?
-    var chats: [PFObject] = []
+    var chats: [Activity] = []
     var downs: [PFObject] = []
     var myDowns: [PFObject] = []
-    var chatsAndDowns: [PFObject] = []
     
     static var _wdtActivity: WDTActivity? = nil
     
@@ -108,9 +107,14 @@ class WDTActivity {
     }
     
     func requestMyDowns(completion: @escaping (_ success: Bool) -> Void) {
-        let activitiesQuery = PFQuery(className: "Activity")
+        let activitiesQuery1 = PFQuery(className: "Activity")
+        activitiesQuery1.whereKey("type", equalTo: "down")
+        let activitiesQuery2 = PFQuery(className: "Activity")
+        activitiesQuery2.whereKey("isDowned", equalTo: true)
+        
+        let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
         activitiesQuery.whereKey("by", equalTo: currentUser)
-        activitiesQuery.whereKey("type", equalTo: "down")
+        activitiesQuery.whereKey("isDowned", equalTo: true)
         activitiesQuery.includeKey("post")
         activitiesQuery.addDescendingOrder("createdAt")
         
@@ -136,9 +140,13 @@ class WDTActivity {
     }
     
     func requestDowns(completion: @escaping (_ success: Bool) -> Void) {
-        let activitiesQuery = PFQuery(className: "Activity")
+        let activitiesQuery1 = PFQuery(className: "Activity")
+        activitiesQuery1.whereKey("type", equalTo: "down")
+        let activitiesQuery2 = PFQuery(className: "Activity")
+        activitiesQuery2.whereKey("isDowned", equalTo: true)
+        
+        let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
         activitiesQuery.whereKey("to", equalTo: currentUser)
-        activitiesQuery.whereKey("type", equalTo: "down")
         activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
@@ -166,33 +174,25 @@ class WDTActivity {
     }
     
     func requestChats(completion: @escaping (_ success: Bool) -> Void) {
-        
         let activitiesToMeQuery = PFQuery(className: "Activity")
         activitiesToMeQuery.whereKey("by", equalTo: currentUser)
-        activitiesToMeQuery.whereKey("comeFromTheFeed", equalTo: false)
-        activitiesToMeQuery.whereKeyExists("whoRepliedLast")
         
         let activitiesFromMeQuery = PFQuery(className: "Activity")
         activitiesFromMeQuery.whereKey("to", equalTo: currentUser)
-        activitiesFromMeQuery.whereKeyExists("whoRepliedLast")
         
         let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesToMeQuery, activitiesFromMeQuery])
         activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
-        activitiesQuery.includeKey("whoRepliedLast")
-        activitiesQuery.addDescendingOrder("createdAt")
+        activitiesQuery.includeKey("lastMessageDate")
+        activitiesQuery.addDescendingOrder("lastMessageDate")
         
         activitiesQuery.findObjectsInBackground(block: { (chats, error) in
             if let chats = chats {
                 
-                self.chats = chats.filter({
-                    if let _ = $0["post"] {
-                        return true
-                    } else {
-                        return false
-                    }
-                })
+                self.chats = chats.flatMap { chat in
+                    return Activity(pfObject: chat)
+                }
                 
                 completion(true)
             } else {
@@ -201,3 +201,163 @@ class WDTActivity {
         })
     }
 }
+
+
+final class Activity {
+
+    var by: PFUser
+    var to: PFUser
+    var post: PFObject
+    var postText: String
+    var lastMessageText: String
+    var lastMessageDate: Date
+    var lastMessageRead: Bool
+    var isDowned: Bool
+//    var replies: [PFObject]
+    
+    fileprivate var pfObject: PFObject
+    
+    
+    init?(pfObject: PFObject) {
+        self.pfObject = pfObject
+        
+        if let by = pfObject["by"] as? PFUser,
+            let to = pfObject["to"] as? PFUser,
+            let post = pfObject["post"] as? PFObject,
+            let postText = pfObject["postText"] as? String {
+            
+            let lastMessageText = pfObject["lastMessageText"] as? String ?? ""
+            let lastMessageDate = pfObject["lastMessageDate"] as? Date ?? pfObject["replyDate"] as? Date ?? Date()
+            let lastMessageRead = pfObject["lastMessageRead"] as? Bool ?? true
+            let isDowned = pfObject["isDowned"] as? Bool ?? false
+            
+            self.by = by
+            self.to = to
+            self.post = post
+            self.postText = postText
+            self.lastMessageText = lastMessageText
+            self.lastMessageDate = lastMessageDate
+            self.lastMessageRead = lastMessageRead
+            self.isDowned = isDowned
+            
+        } else {
+            return nil
+        }
+    }
+    
+    init(by: PFUser,
+         to: PFUser,
+         post: PFObject,
+         postText: String,
+         lastMessageText: String,
+         lastMessageDate: Date,
+         lastMessageRead: Bool,
+         isDowned: Bool) {
+        pfObject = PFObject(className: "Activity")
+        
+        self.by = by
+        self.to = to
+        self.post = post
+        self.postText = postText
+        self.lastMessageText = lastMessageText
+        self.lastMessageDate = lastMessageDate
+        self.lastMessageRead = lastMessageRead
+        self.isDowned = isDowned
+    }
+    
+    var object: PFObject {
+        pfObject["by"] = self.by
+        pfObject["to"] = self.to
+        pfObject["post"] = self.post
+        pfObject["postText"] = self.postText
+        pfObject["lastMessageText"] = self.lastMessageText
+        pfObject["lastMessageDate"] = self.lastMessageDate
+        pfObject["lastMessageRead"] = self.lastMessageRead
+        pfObject["isDowned"] = self.isDowned
+        
+        return pfObject
+    }
+    
+    
+    func addReply(_ reply: Reply, completion: (() -> Void)?) {
+        let repliesRelation = self.object.relation(forKey: "replies")
+        repliesRelation.add(reply.object)
+        
+        self.lastMessageText = reply.photoURL != nil ? "Photo" : reply.body ?? ""
+        self.lastMessageDate = reply.object.updatedAt ?? Date()
+        self.lastMessageRead = false
+        if reply.isDown {
+            self.isDowned = reply.isDown
+        }
+        
+        self.object.saveInBackground { (_, _) in
+            completion?()
+        }
+    }
+    
+
+}
+
+
+final class Reply {
+
+    var by: PFUser
+    var to: PFUser
+    var body: String?
+    var photoURL: String?
+    var isDown: Bool
+    
+    fileprivate var pfObject: PFObject
+    
+    
+    init?(pfObject: PFObject) {
+        self.pfObject = pfObject
+        
+        if let by = pfObject["by"] as? PFUser,
+            let to = pfObject["to"] as? PFUser {
+            
+            let body = pfObject["body"] as? String
+            let photoURL = pfObject["photoURL"] as? String
+            let isDown = pfObject["isDown"] as? Bool ?? false
+            
+            self.by = by
+            self.to = to
+            self.body = body
+            self.photoURL = photoURL
+            self.isDown = isDown
+            
+        } else {
+            return nil
+        }
+    }
+    
+    init(by: PFUser, to: PFUser, body: String?, photoURL: String?, isDown: Bool) {
+        self.pfObject = PFObject(className: "replies")
+        
+        self.by = by
+        self.to = to
+        self.body = body
+        self.photoURL = photoURL
+        self.isDown = isDown
+    }
+    
+    var object: PFObject {
+        pfObject["by"] = self.by
+        pfObject["to"] = self.to
+        pfObject["body"] = self.body ?? NSNull()
+        pfObject["photoURL"] = self.photoURL ?? NSNull()
+        pfObject["isDown"] = self.isDown
+        
+        return pfObject
+    }
+    
+    
+    func send(completion: @escaping () -> Void) {
+        self.object.saveInBackground { _ in
+            completion()
+        }
+    }
+    
+
+}
+

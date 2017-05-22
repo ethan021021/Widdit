@@ -8,6 +8,8 @@
 
 import UIKit
 import Parse
+import RelativeFormatter
+
 
 protocol WDTActivityTableViewCellDelegate {
     func onTapUserAvatar(_ objUser: PFUser?)
@@ -18,11 +20,14 @@ class WDTActivityTableViewCell: UITableViewCell {
 
     @IBOutlet weak var m_imgAvatar: UIImageView!
     @IBOutlet weak var m_lblUsername: UILabel!
-    @IBOutlet weak var m_lblComment: UILabel!
+    @IBOutlet weak var m_lblLastMessage: UILabel!
     @IBOutlet weak var m_lblDescription: UILabel!
-    @IBOutlet weak var m_btnReply: UIButton!
+    @IBOutlet weak var m_activityTypeView: UIImageView!
+    @IBOutlet weak var m_newPostIndicator: UIView!
+    @IBOutlet weak var m_timeLabel: UILabel!
+    @IBOutlet weak var m_arrowImageView: UIImageView!
     
-    var m_objActivity: PFObject?
+    var m_objActivity: Activity?
     var delegate: WDTActivityTableViewCellDelegate?
     
     override func awakeFromNib() {
@@ -31,6 +36,8 @@ class WDTActivityTableViewCell: UITableViewCell {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTapAvatar))
         m_imgAvatar.addGestureRecognizer(tap)
+        
+        m_arrowImageView.tintColor = UIColor(r: 189, g: 189, b: 189, a: 1)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -39,16 +46,13 @@ class WDTActivityTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setViewWithActivity(_ objActivity: PFObject, isDown: Bool) {
-        m_objActivity = objActivity
+    func setViewWithActivity(_ activity: Activity) {
+        m_objActivity = activity
         
-        let byUser = objActivity["by"] as! PFUser
-        let toUser = objActivity["to"] as! PFUser
+        let byUser = activity.by
+        let toUser = activity.to
         
-        let objPost = objActivity["post"] as! PFObject
-        objPost.fetchIfNeededInBackground { (_, _) in
-            self.m_lblDescription.text = objPost["postText"] as? String
-        }
+        self.m_lblDescription.text = activity.postText
         
         if byUser.username == PFUser.current()!.username {
             if let avaFile = toUser["ava"] as? PFFile {
@@ -60,56 +64,40 @@ class WDTActivityTableViewCell: UITableViewCell {
             }
         }
         
-        if isDown {
-            if byUser.username == PFUser.current()!.username {
-                m_lblUsername.text = "You"
-                m_lblComment.text = "down for this post"
-                m_btnReply.isHidden = true
-            } else {
-                m_lblUsername.text = byUser.username
-                m_lblComment.text = "is down for your post"
-            }
+        // Date label
+        let date = activity.lastMessageDate
+        let relativeDate = date.relativeFormatted(false, precision: .minute)
+        m_timeLabel.text = relativeDate
+        
+        // Not watched activity indicator
+        if toUser.username == PFUser.current()!.username {
+            m_newPostIndicator.isHidden = activity.lastMessageRead
         } else {
-            if let whoRepliedLast = objActivity["whoRepliedLast"] as? PFUser {
-                if let firstMessage = objActivity["comeFromTheFeed"] as? Bool {
-                    if firstMessage {
-                        m_lblUsername.text = whoRepliedLast.username
-                        m_lblComment.text = "replied to your post"
-                    } else {
-                        if PFUser.current()!.username == byUser.username {
-                            m_lblUsername.text = toUser.username
-                            if whoRepliedLast.username == byUser.username {
-                                m_lblComment.text = ""
-                            } else {
-                                m_lblComment.text = "replied back"
-                            }
-                            
-                        } else {
-                            m_lblUsername.text = byUser.username
-                            
-                            if whoRepliedLast.username == byUser.username {
-                                m_lblComment.text = "replied back"
-                            } else {
-                                m_lblComment.text = ""
-                            }
-                        }
-                    }
-                }
-            }
+            m_newPostIndicator.isHidden = true
         }
+        
+        // Activity type image
+        if activity.isDowned {
+            m_activityTypeView.image = UIImage(named: "post_icon_down_selected")
+        } else {
+            m_activityTypeView.image = UIImage(named: "post_icon_reply_selected")
+        }
+        
+        // Last message
+        m_lblLastMessage.text = activity.lastMessageText
     }
     
     @IBAction func onClickBtnReply(_ sender: Any) {
         if let objActivity = m_objActivity {
-            let objPost = objActivity["post"] as! PFObject
+            let objPost = objActivity.post
             objPost.fetchIfNeededInBackground(block: { (objPost, error) in
                 if error == nil {
-                    let byUser = self.m_objActivity?["by"] as! PFUser
-                    let toUser = self.m_objActivity?["to"] as! PFUser
+                    let byUser = self.m_objActivity?.by
+                    let toUser = self.m_objActivity?.to
                     
                     var objUser: PFUser?
                     
-                    if byUser.objectId == PFUser.current()!.objectId {
+                    if byUser?.objectId == PFUser.current()!.objectId {
                         objUser = toUser
                     } else {
                         objUser = byUser
@@ -123,8 +111,8 @@ class WDTActivityTableViewCell: UITableViewCell {
     
     func onTapAvatar() {
         if let objActivity = m_objActivity {
-            let byUser = objActivity["by"] as! PFUser
-            let toUser = objActivity["to"] as! PFUser
+            let byUser = objActivity.by
+            let toUser = objActivity.to
             
             if byUser.username == PFUser.current()!.username {
                 delegate?.onTapUserAvatar(toUser)

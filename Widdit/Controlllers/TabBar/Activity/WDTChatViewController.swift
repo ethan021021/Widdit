@@ -43,15 +43,19 @@ class WDTChatViewController: JSQMessagesViewController {
         }
         
         if let avatarFile = objUser["ava"] as? PFFile {
-            if let data = try? avatarFile.getData() {
-                senderAvatar = UIImage(data: data)
-            }
+            avatarFile.getDataInBackground(block: { [weak self] (data, error) in
+                if let data = data {
+                    self?.senderAvatar = UIImage(data: data)
+                }
+            })
         }
         
         if let avatarFile = m_objUser?["ava"] as? PFFile {
-            if let data = try? avatarFile.getData() {
-                recipientAvatar = UIImage(data: data)
-            }
+            avatarFile.getDataInBackground(block: { [weak self] (data, error) in
+                if let data = data {
+                    self?.recipientAvatar = UIImage(data: data)
+                }
+            })
         }
         
         collectionView.collectionViewLayout.messageBubbleFont = UIFont.WDTRegular(size: 16)
@@ -180,11 +184,13 @@ class WDTChatViewController: JSQMessagesViewController {
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
         WDTActivity.isDownAndReverseDown(user: m_objUser!, post: m_objPost!) { (down) in
-            if let down = down  {
-                self.sendMessage(down, text: text)
+            if let down = down, let activity = Activity(pfObject: down) {
+                self.sendMessage(activity, text: text)
             } else {
                 WDTActivity.addActivity(user: self.m_objUser!, post: self.m_objPost!, type: .Undown, completion: { (activityObj) in
-                    self.sendMessage(activityObj, text: text)
+                    if let activity = Activity(pfObject: activityObj) {
+                        self.sendMessage(activity, text: text)
+                    }
                 })
             }
         }
@@ -199,67 +205,49 @@ class WDTChatViewController: JSQMessagesViewController {
         showPhotoPicker()
     }
     
-    func sendMessage(_ objActivity: PFObject, text: String) {
-        let parseMessage = PFObject(className: "replies")
-        
-        parseMessage["by"] = PFUser.current()
-        parseMessage["to"] = m_objUser
-        parseMessage["body"] = text
-        parseMessage["post"] = PFObject(withoutDataWithClassName: "posts", objectId: m_objPost?.objectId)
-        
-        WDTPush.sendPushAfterReply(toUsername: (m_objUser?.username!)!, msg: text, postId: (self.m_objUser?.objectId!)!, comeFromTheFeed: m_isFeedChat)
-        
-        parseMessage.saveInBackground { (bool, error) in
-            let relation = objActivity.relation(forKey: "replies")
-            relation.add(parseMessage)
+    func sendMessage(_ activity: Activity, text: String) {
+        if let by = PFUser.current(), let to = m_objUser {
+            let reply = Reply(by: by,
+                              to: to,
+                              body: text,
+                              photoURL: nil,
+                              isDown: false)
             
-            //sends message
-            if PFUser.current()?.objectId != (self.m_objPost?["user"] as! PFUser).objectId {
-                objActivity["replyDate"]  = parseMessage.updatedAt
+            WDTPush.sendPushAfterReply(toUsername: to.username ?? "",
+                                       msg: text,
+                                       postId: to.objectId!,
+                                       comeFromTheFeed: true)
+            
+            reply.send {
+                activity.addReply(reply, completion: nil)
             }
-            
-            objActivity["replyRead"] = false
-            objActivity["repliesSeen"] = false
-            objActivity["comeFromTheFeed"] = self.m_isFeedChat
-            objActivity["whoRepliedLast"] = PFUser.current()
-            objActivity.saveInBackground()
         }
     }
     
-    func sendMessage(_ objActivity: PFObject, photo: UIImage) {
-        let parseMessage = PFObject(className: "replies")
-        
-        parseMessage["by"] = PFUser.current()
-        parseMessage["to"] = m_objUser
-        parseMessage["body"] = ""
-        parseMessage["post"] = PFObject(withoutDataWithClassName: "posts", objectId: m_objPost?.objectId)
-        
-        WDTPush.sendPushAfterReply(toUsername: (m_objUser?.username!)!, msg: "Photo", postId: (self.m_objUser?.objectId!)!, comeFromTheFeed: m_isFeedChat)
-        
-        if let photoData = UIImageJPEGRepresentation(photo, 0.5) {
-            if let photoFile = PFFile(name: "postPhoto.jpg", data: photoData) {
-                
-                photoFile.saveInBackground(block: { (success, error) in
-                    if let url = photoFile.url {
-                        parseMessage["photoURL"] = url
-                    }
-                    
-                    parseMessage.saveInBackground { (bool, error) in
-                        let relation = objActivity.relation(forKey: "replies")
-                        relation.add(parseMessage)
-                        
-                        //sends message
-                        if PFUser.current()?.objectId != (self.m_objPost?["user"] as! PFUser).objectId {
-                            objActivity["replyDate"]  = parseMessage.updatedAt
+    func sendMessage(_ activity: Activity, photo: UIImage) {
+        if let by = PFUser.current(), let to = m_objUser {
+            let reply = Reply(by: by,
+                              to: to,
+                              body: nil,
+                              photoURL: nil,
+                              isDown: false)
+            
+            WDTPush.sendPushAfterReply(toUsername: to.username ?? "",
+                                       msg: "Photo",
+                                       postId: to.objectId!,
+                                       comeFromTheFeed: true)
+            
+            if let photoData = UIImageJPEGRepresentation(photo, 0.5) {
+                if let photoFile = PFFile(name: "postPhoto.jpg", data: photoData) {
+                    photoFile.saveInBackground(block: { (success, error) in
+                        if let url = photoFile.url {
+                            reply.photoURL = url
+                            reply.send {
+                                activity.addReply(reply, completion: nil)
+                            }
                         }
-                        
-                        objActivity["replyRead"] = false
-                        objActivity["repliesSeen"] = false
-                        objActivity["comeFromTheFeed"] = self.m_isFeedChat
-                        objActivity["whoRepliedLast"] = PFUser.current()
-                        objActivity.saveInBackground()
-                    }
-                })
+                    })
+                }
             }
         }
     }
@@ -340,11 +328,13 @@ class WDTChatViewController: JSQMessagesViewController {
                 if pendingAssets <= 0 {
                     if let pickedPhoto = pickedPhoto {
                         WDTActivity.isDownAndReverseDown(user: self.m_objUser!, post: self.m_objPost!) { (down) in
-                            if let down = down  {
-                                self.sendMessage(down, photo: pickedPhoto)
+                            if let down = down, let activity = Activity(pfObject: down) {
+                                self.sendMessage(activity, photo: pickedPhoto)
                             } else {
                                 WDTActivity.addActivity(user: self.m_objUser!, post: self.m_objPost!, type: .Undown, completion: { (activityObj) in
-                                    self.sendMessage(activityObj, photo: pickedPhoto)
+                                    if let activity = Activity(pfObject: activityObj) {
+                                        self.sendMessage(activity, photo: pickedPhoto)
+                                    }
                                 })
                             }
                         }
