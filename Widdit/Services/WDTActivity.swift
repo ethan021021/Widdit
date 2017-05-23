@@ -69,7 +69,7 @@ class WDTActivity {
         })
     }
     
-    class func addActivity(user: PFUser, post: PFObject, type: WDTActivityType, completion:@escaping (_ activityObj: PFObject) -> Void) {
+    class func addActivity(user: PFUser, post: PFObject, type: WDTActivityType, completion: @escaping (_ activityObj: PFObject) -> Void) {
         WDTPush.sendPushAfterDownTapped(toUsername: user.username!, postId: post.objectId!)
         
         WDTActivity.isDown(user: user, post: post) { (down) in
@@ -212,6 +212,7 @@ final class Activity {
     var lastMessageText: String
     var lastMessageDate: Date
     var lastMessageRead: Bool
+    var lastMessageUser: PFUser?
     var isDowned: Bool
 //    var replies: [PFObject]
     
@@ -229,6 +230,7 @@ final class Activity {
             let lastMessageText = pfObject["lastMessageText"] as? String ?? ""
             let lastMessageDate = pfObject["lastMessageDate"] as? Date ?? pfObject["replyDate"] as? Date ?? Date()
             let lastMessageRead = pfObject["lastMessageRead"] as? Bool ?? true
+            let lastMessageUser = pfObject["lastMessageUser"] as? PFUser
             let isDowned = pfObject["isDowned"] as? Bool ?? false
             
             self.by = by
@@ -238,6 +240,7 @@ final class Activity {
             self.lastMessageText = lastMessageText
             self.lastMessageDate = lastMessageDate
             self.lastMessageRead = lastMessageRead
+            self.lastMessageUser = lastMessageUser
             self.isDowned = isDowned
             
         } else {
@@ -252,6 +255,7 @@ final class Activity {
          lastMessageText: String,
          lastMessageDate: Date,
          lastMessageRead: Bool,
+         lastMessageUser: PFUser,
          isDowned: Bool) {
         pfObject = PFObject(className: "Activity")
         
@@ -262,6 +266,7 @@ final class Activity {
         self.lastMessageText = lastMessageText
         self.lastMessageDate = lastMessageDate
         self.lastMessageRead = lastMessageRead
+        self.lastMessageUser = lastMessageUser
         self.isDowned = isDowned
     }
     
@@ -273,6 +278,7 @@ final class Activity {
         pfObject["lastMessageText"] = self.lastMessageText
         pfObject["lastMessageDate"] = self.lastMessageDate
         pfObject["lastMessageRead"] = self.lastMessageRead
+        pfObject["lastMessageUser"] = self.lastMessageUser ?? NSNull()
         pfObject["isDowned"] = self.isDowned
         
         return pfObject
@@ -286,6 +292,7 @@ final class Activity {
         self.lastMessageText = reply.photoURL != nil ? "Photo" : reply.body ?? ""
         self.lastMessageDate = reply.object.updatedAt ?? Date()
         self.lastMessageRead = false
+        self.lastMessageUser = PFUser.current()
         if reply.isDown {
             self.isDowned = reply.isDown
         }

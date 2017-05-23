@@ -126,6 +126,9 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
                 replyVC.m_objUser = objUser
                 self?.navigationController?.pushViewController(replyVC, animated: true)
             })
+            
+            activity.lastMessageRead = true
+            activity.object.saveInBackground()
         }
     }
     
