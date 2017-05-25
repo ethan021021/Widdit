@@ -351,8 +351,9 @@ class WDTFeedTableViewCell: UITableViewCell {
     
     
     fileprivate func sendMessage(_ message: String, activity: Activity, to: PFUser) {
-        if let by = PFUser.current() {
-            let reply = Reply(by: by,
+        if let by = PFUser.current(), let activityID = activity.object.objectId {
+            let reply = Reply(activityID: activityID,
+                              by: by,
                               to: to,
                               body: message,
                               photoURL: nil,

@@ -51,14 +51,13 @@ class WDTActivity {
         let didDown = PFQuery(className: "Activity")
         didDown.whereKey("by", equalTo: PFUser.current()!)
         didDown.whereKey("to", equalTo: user)
-        didDown.whereKey("post", equalTo: post)
         
         let reverseDidDown = PFQuery(className: "Activity")
         reverseDidDown.whereKey("by", equalTo: user)
         reverseDidDown.whereKey("to", equalTo: PFUser.current()!)
-        reverseDidDown.whereKey("post", equalTo: post)
         
         let allQueries = PFQuery.orQuery(withSubqueries: [didDown, reverseDidDown])
+        allQueries.whereKey("post", equalTo: post)
         
         allQueries.findObjectsInBackground(block: { (objects, error) in
             if let object = objects?.first {
@@ -304,6 +303,7 @@ final class Activity {
 
 final class Reply {
 
+    var activityID: String
     var by: PFUser
     var to: PFUser
     var body: String?
@@ -316,13 +316,15 @@ final class Reply {
     init?(pfObject: PFObject) {
         self.pfObject = pfObject
         
-        if let by = pfObject["by"] as? PFUser,
+        if let activityID = pfObject["ativityID"] as? String,
+            let by = pfObject["by"] as? PFUser,
             let to = pfObject["to"] as? PFUser {
             
             let body = pfObject["body"] as? String
             let photoURL = pfObject["photoURL"] as? String
             let isDown = pfObject["isDown"] as? Bool ?? false
             
+            self.activityID = activityID
             self.by = by
             self.to = to
             self.body = body
@@ -334,9 +336,10 @@ final class Reply {
         }
     }
     
-    init(by: PFUser, to: PFUser, body: String?, photoURL: String?, isDown: Bool) {
+    init(activityID: String, by: PFUser, to: PFUser, body: String?, photoURL: String?, isDown: Bool) {
         self.pfObject = PFObject(className: "replies")
         
+        self.activityID = activityID
         self.by = by
         self.to = to
         self.body = body
@@ -345,6 +348,7 @@ final class Reply {
     }
     
     var object: PFObject {
+        pfObject["activityID"] = self.activityID
         pfObject["by"] = self.by
         pfObject["to"] = self.to
         pfObject["body"] = self.body ?? NSNull()
