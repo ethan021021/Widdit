@@ -73,22 +73,19 @@ class WDTActivity {
         WDTPush.sendPushAfterDownTapped(toUsername: user.username!, postId: post.objectId!)
         
         WDTActivity.isDown(user: user, post: post) { (down) in
-            if let down = down {
-                down["type"] = type.rawValue
-                down.saveInBackground(block: { (success, error) in
-                    completion(down)
-                    WDTActivity.sharedInstance().requestMyDowns(completion: { (success) in})
-                })
-            } else {
-                let activityObj = PFObject(className: "Activity")
-                activityObj["by"] = PFUser.current()
-                activityObj["to"] = user
-                activityObj["post"] = post
-                activityObj["postText"] = post["postText"]
-                activityObj["type"] = type.rawValue
+            if down == nil {
+                let activity = Activity(by: PFUser.current()!,
+                                        to: user,
+                                        post: post,
+                                        postText: post["postText"] as! String,
+                                        lastMessageText: "",
+                                        lastMessageDate: Date(),
+                                        lastMessageRead: false,
+                                        lastMessageUser: PFUser.current()!,
+                                        isDowned: false)
                 
-                activityObj.saveInBackground(block: { (success, error) in
-                    completion(activityObj)
+                activity.object.saveInBackground(block: { (success, error) in
+                    completion(activity.object)
                     WDTActivity.sharedInstance().requestMyDowns(completion: { (success) in})
                 })
             }
@@ -113,9 +110,9 @@ class WDTActivity {
         activitiesQuery2.whereKey("isDowned", equalTo: true)
         
         let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
-        activitiesQuery.whereKey("by", equalTo: currentUser)
-        activitiesQuery.whereKey("isDowned", equalTo: true)
+        activitiesQuery.includeKey("to")
         activitiesQuery.includeKey("post")
+        activitiesQuery.whereKey("by", equalTo: currentUser)
         activitiesQuery.addDescendingOrder("createdAt")
         
         if let post = post {
@@ -146,10 +143,10 @@ class WDTActivity {
         activitiesQuery2.whereKey("isDowned", equalTo: true)
         
         let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
-        activitiesQuery.whereKey("to", equalTo: currentUser)
-        activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
+        activitiesQuery.includeKey("post")
+        activitiesQuery.whereKey("to", equalTo: currentUser)
         activitiesQuery.addDescendingOrder("createdAt")
         
         if let post = post {
@@ -184,7 +181,6 @@ class WDTActivity {
         activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
-        activitiesQuery.includeKey("lastMessageDate")
         activitiesQuery.addDescendingOrder("lastMessageDate")
         
         activitiesQuery.findObjectsInBackground(block: { (chats, error) in

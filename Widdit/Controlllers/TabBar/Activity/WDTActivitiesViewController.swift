@@ -27,31 +27,31 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        tableView.reloadData()
-        
-        showHud()
-        
         requestUnwatchedFollows()
         
         makeRequest()
     }
     
     func makeRequest() {
+        if activities.count == 0 {
+            showHud()
+        }
+        
         activities = WDTActivity.sharedInstance().chats
-        tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+        tableView.reloadData()
         
         WDTActivity.sharedInstance().requestChats { [weak self] (success) in
             self?.hideHud()
             
             self?.activities = WDTActivity.sharedInstance().chats
-            self?.tableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+            self?.tableView.reloadData()
         }
     }
     
     fileprivate func requestUnwatchedFollows() {
         FollowersManager.getUnwatchedFollows { [weak self] follows in
             self?.unwatchedFollows = follows
-            self?.tableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+            self?.tableView.reloadData()
         }
     }
     

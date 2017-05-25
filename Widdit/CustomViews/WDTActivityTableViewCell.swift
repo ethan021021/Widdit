@@ -72,8 +72,16 @@ class WDTActivityTableViewCell: UITableViewCell {
         m_timeLabel.text = relativeDate
         
         // Not watched activity indicator
-        if let lastMessageUser = activity.lastMessageUser, lastMessageUser.username != PFUser.current()?.username {
-            m_newPostIndicator.isHidden = activity.lastMessageRead
+        if let lastMessageUser = activity.lastMessageUser {
+            m_newPostIndicator.isHidden = true
+            
+            lastMessageUser.fetchIfNeededInBackground(block: { [weak self] (_, _) in
+                if lastMessageUser.username != PFUser.current()?.username {
+                    self?.m_newPostIndicator.isHidden = activity.lastMessageRead
+                } else {
+                    self?.m_newPostIndicator.isHidden = true
+                }
+            })
         } else {
             m_newPostIndicator.isHidden = true
         }
