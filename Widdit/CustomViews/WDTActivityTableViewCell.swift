@@ -55,10 +55,12 @@ class WDTActivityTableViewCell: UITableViewCell {
         self.m_lblDescription.text = activity.postText
         
         if byUser.username == PFUser.current()!.username {
+            m_lblUsername.text = toUser["name"] as? String ?? toUser.username
             if let avaFile = toUser["ava"] as? PFFile {
                 self.m_imgAvatar.kf.setImage(with: URL(string: avaFile.url!))
             }
         } else {
+            m_lblUsername.text = byUser["name"] as? String ?? byUser.username
             if let avaFile = byUser["ava"] as? PFFile {
                 self.m_imgAvatar.kf.setImage(with: URL(string: avaFile.url!))
             }
@@ -70,8 +72,16 @@ class WDTActivityTableViewCell: UITableViewCell {
         m_timeLabel.text = relativeDate
         
         // Not watched activity indicator
-        if toUser.username == PFUser.current()!.username {
-            m_newPostIndicator.isHidden = activity.lastMessageRead
+        if let lastMessageUser = activity.lastMessageUser {
+            m_newPostIndicator.isHidden = true
+            
+            lastMessageUser.fetchIfNeededInBackground(block: { [weak self] (_, _) in
+                if lastMessageUser.username != PFUser.current()?.username {
+                    self?.m_newPostIndicator.isHidden = activity.lastMessageRead
+                } else {
+                    self?.m_newPostIndicator.isHidden = true
+                }
+            })
         } else {
             m_newPostIndicator.isHidden = true
         }

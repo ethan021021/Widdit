@@ -51,14 +51,13 @@ class WDTActivity {
         let didDown = PFQuery(className: "Activity")
         didDown.whereKey("by", equalTo: PFUser.current()!)
         didDown.whereKey("to", equalTo: user)
-        didDown.whereKey("post", equalTo: post)
         
         let reverseDidDown = PFQuery(className: "Activity")
         reverseDidDown.whereKey("by", equalTo: user)
         reverseDidDown.whereKey("to", equalTo: PFUser.current()!)
-        reverseDidDown.whereKey("post", equalTo: post)
         
         let allQueries = PFQuery.orQuery(withSubqueries: [didDown, reverseDidDown])
+        allQueries.whereKey("post", equalTo: post)
         
         allQueries.findObjectsInBackground(block: { (objects, error) in
             if let object = objects?.first {
@@ -69,26 +68,23 @@ class WDTActivity {
         })
     }
     
-    class func addActivity(user: PFUser, post: PFObject, type: WDTActivityType, completion:@escaping (_ activityObj: PFObject) -> Void) {
+    class func addActivity(user: PFUser, post: PFObject, type: WDTActivityType, completion: @escaping (_ activityObj: PFObject) -> Void) {
         WDTPush.sendPushAfterDownTapped(toUsername: user.username!, postId: post.objectId!)
         
         WDTActivity.isDown(user: user, post: post) { (down) in
-            if let down = down {
-                down["type"] = type.rawValue
-                down.saveInBackground(block: { (success, error) in
-                    completion(down)
-                    WDTActivity.sharedInstance().requestMyDowns(completion: { (success) in})
-                })
-            } else {
-                let activityObj = PFObject(className: "Activity")
-                activityObj["by"] = PFUser.current()
-                activityObj["to"] = user
-                activityObj["post"] = post
-                activityObj["postText"] = post["postText"]
-                activityObj["type"] = type.rawValue
+            if down == nil {
+                let activity = Activity(by: PFUser.current()!,
+                                        to: user,
+                                        post: post,
+                                        postText: post["postText"] as! String,
+                                        lastMessageText: "",
+                                        lastMessageDate: Date(),
+                                        lastMessageRead: false,
+                                        lastMessageUser: PFUser.current()!,
+                                        isDowned: false)
                 
-                activityObj.saveInBackground(block: { (success, error) in
-                    completion(activityObj)
+                activity.object.saveInBackground(block: { (success, error) in
+                    completion(activity.object)
                     WDTActivity.sharedInstance().requestMyDowns(completion: { (success) in})
                 })
             }
@@ -113,9 +109,9 @@ class WDTActivity {
         activitiesQuery2.whereKey("isDowned", equalTo: true)
         
         let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
-        activitiesQuery.whereKey("by", equalTo: currentUser)
-        activitiesQuery.whereKey("isDowned", equalTo: true)
+        activitiesQuery.includeKey("to")
         activitiesQuery.includeKey("post")
+        activitiesQuery.whereKey("by", equalTo: currentUser)
         activitiesQuery.addDescendingOrder("createdAt")
         
         if let post = post {
@@ -146,10 +142,10 @@ class WDTActivity {
         activitiesQuery2.whereKey("isDowned", equalTo: true)
         
         let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesQuery1, activitiesQuery2])
-        activitiesQuery.whereKey("to", equalTo: currentUser)
-        activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
+        activitiesQuery.includeKey("post")
+        activitiesQuery.whereKey("to", equalTo: currentUser)
         activitiesQuery.addDescendingOrder("createdAt")
         
         if let post = post {
@@ -184,7 +180,6 @@ class WDTActivity {
         activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
         activitiesQuery.includeKey("to")
-        activitiesQuery.includeKey("lastMessageDate")
         activitiesQuery.addDescendingOrder("lastMessageDate")
         
         activitiesQuery.findObjectsInBackground(block: { (chats, error) in
@@ -212,6 +207,7 @@ final class Activity {
     var lastMessageText: String
     var lastMessageDate: Date
     var lastMessageRead: Bool
+    var lastMessageUser: PFUser?
     var isDowned: Bool
 //    var replies: [PFObject]
     
@@ -229,6 +225,7 @@ final class Activity {
             let lastMessageText = pfObject["lastMessageText"] as? String ?? ""
             let lastMessageDate = pfObject["lastMessageDate"] as? Date ?? pfObject["replyDate"] as? Date ?? Date()
             let lastMessageRead = pfObject["lastMessageRead"] as? Bool ?? true
+            let lastMessageUser = pfObject["lastMessageUser"] as? PFUser
             let isDowned = pfObject["isDowned"] as? Bool ?? false
             
             self.by = by
@@ -238,6 +235,7 @@ final class Activity {
             self.lastMessageText = lastMessageText
             self.lastMessageDate = lastMessageDate
             self.lastMessageRead = lastMessageRead
+            self.lastMessageUser = lastMessageUser
             self.isDowned = isDowned
             
         } else {
@@ -252,6 +250,7 @@ final class Activity {
          lastMessageText: String,
          lastMessageDate: Date,
          lastMessageRead: Bool,
+         lastMessageUser: PFUser,
          isDowned: Bool) {
         pfObject = PFObject(className: "Activity")
         
@@ -262,6 +261,7 @@ final class Activity {
         self.lastMessageText = lastMessageText
         self.lastMessageDate = lastMessageDate
         self.lastMessageRead = lastMessageRead
+        self.lastMessageUser = lastMessageUser
         self.isDowned = isDowned
     }
     
@@ -273,6 +273,7 @@ final class Activity {
         pfObject["lastMessageText"] = self.lastMessageText
         pfObject["lastMessageDate"] = self.lastMessageDate
         pfObject["lastMessageRead"] = self.lastMessageRead
+        pfObject["lastMessageUser"] = self.lastMessageUser ?? NSNull()
         pfObject["isDowned"] = self.isDowned
         
         return pfObject
@@ -286,6 +287,7 @@ final class Activity {
         self.lastMessageText = reply.photoURL != nil ? "Photo" : reply.body ?? ""
         self.lastMessageDate = reply.object.updatedAt ?? Date()
         self.lastMessageRead = false
+        self.lastMessageUser = PFUser.current()
         if reply.isDown {
             self.isDowned = reply.isDown
         }
@@ -301,6 +303,7 @@ final class Activity {
 
 final class Reply {
 
+    var activityID: String
     var by: PFUser
     var to: PFUser
     var body: String?
@@ -313,13 +316,15 @@ final class Reply {
     init?(pfObject: PFObject) {
         self.pfObject = pfObject
         
-        if let by = pfObject["by"] as? PFUser,
+        if let activityID = pfObject["ativityID"] as? String,
+            let by = pfObject["by"] as? PFUser,
             let to = pfObject["to"] as? PFUser {
             
             let body = pfObject["body"] as? String
             let photoURL = pfObject["photoURL"] as? String
             let isDown = pfObject["isDown"] as? Bool ?? false
             
+            self.activityID = activityID
             self.by = by
             self.to = to
             self.body = body
@@ -331,9 +336,10 @@ final class Reply {
         }
     }
     
-    init(by: PFUser, to: PFUser, body: String?, photoURL: String?, isDown: Bool) {
+    init(activityID: String, by: PFUser, to: PFUser, body: String?, photoURL: String?, isDown: Bool) {
         self.pfObject = PFObject(className: "replies")
         
+        self.activityID = activityID
         self.by = by
         self.to = to
         self.body = body
@@ -342,6 +348,7 @@ final class Reply {
     }
     
     var object: PFObject {
+        pfObject["activityID"] = self.activityID
         pfObject["by"] = self.by
         pfObject["to"] = self.to
         pfObject["body"] = self.body ?? NSNull()

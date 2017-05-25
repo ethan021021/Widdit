@@ -91,22 +91,27 @@ class WDTChatViewController: JSQMessagesViewController {
     }
     
     func getChatHistory() {
-        if let objPost = m_objPost {
-            let objUser = objPost["user"] as! PFUser
+        if let objPost = m_objPost,
+           let objUser = m_objUser {
             WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { (down) in
-                if let down = down  {
+                if let down = down, let activityID = down.objectId {
                     let relation = down.relation(forKey: "replies")
-                    let query = relation.query()
+                    let query = relation.query()// PFQuery(className: "replies")
                     query.addAscendingOrder("createdAt")
                     query.includeKey("by")
+                    query.includeKey("to")
+                    query.whereKey("activityID", equalTo: activityID)
                     query.findObjectsInBackground(block: { (replies, err) in
                         self.hideHud()
                         
                         if err == nil {
-                            for objReply in replies! {
-                                down["replyRead"] = true
+                            
+                            if (down["lastMessageUser"] as? PFUser)?.objectId != PFUser.current()?.objectId {
+                                down["lastMessageRead"] = true
                                 down.saveInBackground()
-                                
+                            }
+                            
+                            for objReply in replies! {
                                 let sender = objReply["by"] as! PFUser
                                 var senderName = ""
                                 var text = ""
@@ -206,8 +211,9 @@ class WDTChatViewController: JSQMessagesViewController {
     }
     
     func sendMessage(_ activity: Activity, text: String) {
-        if let by = PFUser.current(), let to = m_objUser {
-            let reply = Reply(by: by,
+        if let by = PFUser.current(), let to = m_objUser, let activityID = activity.object.objectId {
+            let reply = Reply(activityID: activityID,
+                              by: by,
                               to: to,
                               body: text,
                               photoURL: nil,
@@ -225,8 +231,9 @@ class WDTChatViewController: JSQMessagesViewController {
     }
     
     func sendMessage(_ activity: Activity, photo: UIImage) {
-        if let by = PFUser.current(), let to = m_objUser {
-            let reply = Reply(by: by,
+        if let by = PFUser.current(), let to = m_objUser, let activityID = activity.object.objectId {
+            let reply = Reply(activityID: activityID,
+                              by: by,
                               to: to,
                               body: nil,
                               photoURL: nil,
