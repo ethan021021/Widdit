@@ -57,6 +57,10 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         cell.setViewWithPFObject(m_aryPosts[indexPath.row])
         cell.setMorePosts(self.setMorePosts(indexPath.row))
         
+        cell.m_btnMorePost?.tintColor = morePostsButtonColor(at: indexPath.row)
+        cell.m_btnMorePost?.setTitleColor(morePostsButtonColor(at: indexPath.row), for: .normal)
+        cell.m_btnMorePost?.BorderColor = morePostsButtonColor(at: indexPath.row)
+        
         cell.m_lblPostText.enabledTypes = [.hashtag, .url]
         cell.m_lblPostText.hashtagColor = UIColor.WDTTealColor()
         cell.m_lblPostText.handleHashtagTap { (hashtag) in
@@ -78,6 +82,10 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     
     func setMorePosts(_ index: Int) -> Int {
         return 1
+    }
+    
+    func morePostsButtonColor(at index: Int) -> UIColor {
+        return UIColor.WDTPrimaryColor()
     }
     
     // MARK: - WDTFeedTableViewCellDelegate

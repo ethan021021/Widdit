@@ -15,11 +15,21 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
     var m_strCategory: String?
     var m_objPost: PFObject?
     
+    var morePostsButtonColorSaved: [Int: UIColor] = [:]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let objUser = m_objUser {
+        if let objUser = m_objUser, let strCategory = m_strCategory {
+            if let name = objUser["name"] as? String {
+                title = name
+            } else {
+                title = objUser.username
+            }
+            
+            m_aryPosts = WDTPost.sharedInstance().getPosts(user: objUser, category: strCategory)
+        } else if let objUser = m_objUser {
             if let name = objUser["name"] as? String {
                 title = name
             } else {
@@ -30,6 +40,20 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
         } else if let strCategory = m_strCategory {
             title = "#\(strCategory)"
             m_aryPosts = WDTPost.sharedInstance().getPosts(user: nil, category: strCategory)
+                .reduce([], { (acc, current) -> [PFObject] in
+                    if acc.contains( where: {
+                        if ($0["user"] as! PFUser).objectId == (current["user"] as! PFUser).objectId {
+                            return true
+                        } else {
+                            return false
+                        }
+                    })
+                    {
+                        return acc
+                    } else {
+                        return acc + [current]
+                    }
+                })
         } else if let objPost = m_objPost {
             title = "Post"
             m_aryPosts = [objPost]
@@ -61,6 +85,42 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
         } else {
             super.onClickBtnAddPost(sender)
         }
+    }
+    
+    override func onClickBtnMorePosts(_ objUser: PFUser?) {
+        let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+        morePostsVC.m_objUser = objUser
+        morePostsVC.m_strCategory = m_strCategory
+        navigationController?.pushViewController(morePostsVC, animated: true)
+    }
+    
+    override func setMorePosts(_ index: Int) -> Int {
+        if let category = m_strCategory {
+            let post = m_aryPosts[index]
+            let allCategoryPostsCount = WDTPost.sharedInstance().m_aryAllPosts.filter { tmpPost -> Bool in
+                if let categories = tmpPost["hashtags"] as? [String] {
+                    return categories.contains(category)
+                }
+                return false
+            }.count
+            
+            if allCategoryPostsCount == 0 {
+                morePostsButtonColorSaved[index] = UIColor.WDTPrimaryColor()
+                return WDTPost.sharedInstance().m_aryAllPosts.filter { (tmpPost) -> Bool in
+                    return (post["user"] as! PFUser).objectId == (tmpPost["user"] as! PFUser).objectId
+                }.count
+            }
+            
+            morePostsButtonColorSaved[index] = UIColor.purple
+            return allCategoryPostsCount
+        } else {
+            morePostsButtonColorSaved[index] = UIColor.WDTPrimaryColor()
+            return super.setMorePosts(index)
+        }
+    }
+    
+    override func morePostsButtonColor(at index: Int) -> UIColor {
+        return morePostsButtonColorSaved[index] ?? UIColor.WDTPrimaryColor()
     }
 
 }

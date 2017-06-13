@@ -37,7 +37,7 @@ class WDTFeedTableViewCell: UITableViewCell {
     @IBOutlet weak var m_constraintPhotoHeight: NSLayoutConstraint!
     @IBOutlet weak var m_imgPhotoTopEdgeConstraint: NSLayoutConstraint!
     @IBOutlet weak var m_lblPostText: ActiveLabel!
-    @IBOutlet weak var m_btnMorePost: UIButton!
+    @IBOutlet weak var m_btnMorePost: JHButton!
     @IBOutlet weak var m_buttonReport: UIButton!
     @IBOutlet weak var m_constraintBtnMorePostsHeight: NSLayoutConstraint!
     @IBOutlet weak var m_bottomLeftButton: UIButton!

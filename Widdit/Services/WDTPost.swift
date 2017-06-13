@@ -74,7 +74,13 @@ class WDTPost {
     func getPosts(user: PFUser?, category: String?) -> [PFObject] {
         return m_aryAllPosts.filter { (post) -> Bool in
             if let user = user {
-                return ((post["user"] as? PFUser)?.objectId == user.objectId)
+                let equalByUser = ((post["user"] as? PFUser)?.objectId == user.objectId)
+                if let category = category {
+                    if let aryCategories = post["hashtags"] as? [String] {
+                        return aryCategories.contains(category) && equalByUser
+                    }
+                }
+                return equalByUser
             } else {
                 if let aryCategories = post["hashtags"] as? [String] {
                     return aryCategories.contains(category!)
