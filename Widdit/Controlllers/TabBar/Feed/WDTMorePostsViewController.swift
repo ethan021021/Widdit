@@ -15,6 +15,8 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
     var m_strCategory: String?
     var m_objPost: PFObject?
     
+    var morePostsButtonColorSaved: [Int: UIColor] = [:]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -103,14 +105,22 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
             }.count
             
             if allCategoryPostsCount == 0 {
+                morePostsButtonColorSaved[index] = UIColor.WDTPrimaryColor()
                 return WDTPost.sharedInstance().m_aryAllPosts.filter { (tmpPost) -> Bool in
                     return (post["user"] as! PFUser).objectId == (tmpPost["user"] as! PFUser).objectId
                 }.count
             }
+            
+            morePostsButtonColorSaved[index] = UIColor.purple
             return allCategoryPostsCount
         } else {
+            morePostsButtonColorSaved[index] = UIColor.WDTPrimaryColor()
             return super.setMorePosts(index)
         }
+    }
+    
+    override func morePostsButtonColor(at index: Int) -> UIColor {
+        return morePostsButtonColorSaved[index] ?? UIColor.WDTPrimaryColor()
     }
 
 }
