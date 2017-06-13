@@ -33,4 +33,5 @@ target 'Widdit' do
     pod 'DKImagePickerController'
     pod 'NYTPhotoViewer', '~> 1.1.0'
     pod 'RelativeFormatter'
+    pod 'DZNEmptyDataSet'
 end

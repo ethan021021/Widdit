@@ -17,6 +17,7 @@ PODS:
     - DKImagePickerController/ImageManager (= 3.5.1)
   - DKImagePickerController/Camera (3.5.1)
   - DKImagePickerController/ImageManager (3.5.1)
+  - DZNEmptyDataSet (1.8.1)
   - Fabric (1.6.11)
   - FBSDKCoreKit (4.20.2):
     - Bolts (~> 1.7)
@@ -71,6 +72,7 @@ DEPENDENCIES:
   - Crashlytics (~> 3.8)
   - DGActivityIndicatorView (~> 2.1)
   - DKImagePickerController
+  - DZNEmptyDataSet
   - Fabric (~> 1.6)
   - IQKeyboardManagerSwift (~> 4.0)
   - JSQMessagesViewController (~> 7.3)
@@ -101,6 +103,7 @@ SPEC CHECKSUMS:
   Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
   DGActivityIndicatorView: ff2c76073d79692f724863c8dd38685866a03cb6
   DKImagePickerController: 8db7e76a88a7a66a893ba30e935cc4c9bb7ed335
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FBSDKCoreKit: 82eac696eb6157da5f4266c3a241f00e9bd72471
   FBSDKLoginKit: 2211bede07c83391349eacc1fd86cf6d9289ce38
@@ -127,6 +130,6 @@ SPEC CHECKSUMS:
   TPKeyboardAvoiding: 0d6af20e95e2850f4c621841225b59ec7d8dd852
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: e08c4fb447950194191a70a11cdd7091f7efc19f
+PODFILE CHECKSUM: 1c50ad72a3c1a4d789bb7b9d281477248b85ed43
 
 COCOAPODS: 1.2.1

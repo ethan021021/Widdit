@@ -8,11 +8,15 @@
 
 import UIKit
 import Parse
+import DZNEmptyDataSet
+
 
 class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCellDelegate {
     
     fileprivate var unwatchedFollows: [Follow] = []
     fileprivate var activities: [Activity] = []
+    
+    fileprivate var isFirstLoad: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,13 +26,15 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
         label.textAlignment = .center
         label.textColor = .white
         navigationItem.titleView = label
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         requestUnwatchedFollows()
-        
         makeRequest()
     }
     
@@ -42,6 +48,8 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
         
         WDTActivity.sharedInstance().requestChats { [weak self] (success) in
             self?.hideHud()
+            
+            self?.isFirstLoad = false
             
             self?.activities = WDTActivity.sharedInstance().chats
             self?.tableView.reloadData()
@@ -154,4 +162,38 @@ class WDTActivitiesViewController: UITableViewController, WDTActivityTableViewCe
         replyVC.m_objUser = objUser
         navigationController?.pushViewController(replyVC, animated: true)
     }
+}
+
+
+extension WDTActivitiesViewController: DZNEmptyDataSetSource {
+
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        if isFirstLoad {
+            return nil
+        }
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.alignment = .center
+        return NSAttributedString(string: "No activities", attributes: [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: UIFont.WDTRegular(size: 12),
+            NSParagraphStyleAttributeName: paragraph
+        ])
+    }
+    
+    func buttonImage(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> UIImage! {
+        if isFirstLoad {
+            return nil
+        }
+        return UIImage(named: "common_reload")!
+    }
+
+}
+
+extension WDTActivitiesViewController: DZNEmptyDataSetDelegate {
+
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        requestUnwatchedFollows()
+        makeRequest()
+    }
+
 }
