@@ -83,4 +83,13 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
         segment?.titleColor(UIColor(r: 71, g: 211, b: 214, a: 1))
     }
     
+    
+    @IBAction func showMyDownsViewController() {
+        let feedVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+        feedVC.shouldRequestMyDowns = true
+        feedVC.title = "My Downs"
+        
+        navigationController?.pushViewController(feedVC, animated: true)
+    }
+    
 }
