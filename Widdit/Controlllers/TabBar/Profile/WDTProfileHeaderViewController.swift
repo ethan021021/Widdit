@@ -182,6 +182,10 @@ class WDTProfileHeaderViewController: UIViewController {
         }
     }
     
+    @IBAction func onClickBtnMyDowns() {
+        (m_parentVC as? WDTProfileViewController)?.showMyDownsViewController()
+    }
+    
     @IBAction func onClickButtonNewPost(_ sender: Any) {
         let addPostNC = m_parentVC?.storyboard?.instantiateViewController(withIdentifier: "WDTAddPostNavigationController") as! UINavigationController
         m_parentVC?.present(addPostNC, animated: true, completion: nil)

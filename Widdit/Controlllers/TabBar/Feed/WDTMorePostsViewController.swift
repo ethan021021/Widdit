@@ -15,48 +15,64 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
     var m_strCategory: String?
     var m_objPost: PFObject?
     
+    var shouldRequestMyDowns: Bool = false
+    
     var morePostsButtonColorSaved: [Int: UIColor] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        if let objUser = m_objUser, let strCategory = m_strCategory {
-            if let name = objUser["name"] as? String {
-                title = name
-            } else {
-                title = objUser.username
-            }
+        if shouldRequestMyDowns {
+            navigationItem.rightBarButtonItem = nil
             
-            m_aryPosts = WDTPost.sharedInstance().getPosts(user: objUser, category: strCategory)
-        } else if let objUser = m_objUser {
-            if let name = objUser["name"] as? String {
-                title = name
-            } else {
-                title = objUser.username
-            }
-            
-            m_aryPosts = WDTPost.sharedInstance().getPosts(user: objUser, category: nil)
-        } else if let strCategory = m_strCategory {
-            title = "#\(strCategory)"
-            m_aryPosts = WDTPost.sharedInstance().getPosts(user: nil, category: strCategory)
-                .reduce([], { (acc, current) -> [PFObject] in
-                    if acc.contains( where: {
-                        if ($0["user"] as! PFUser).objectId == (current["user"] as! PFUser).objectId {
-                            return true
+            showHud()
+            WDTActivity.sharedInstance().requestMyDowns(completion: { [weak self] success in
+                self?.hideHud()
+                
+                self?.m_aryPosts = WDTActivity.sharedInstance().myDowns.flatMap { down in
+                    return down["post"] as? PFObject
+                }
+                
+                self?.tableView.reloadData()
+            })
+        } else {
+            if let objUser = m_objUser, let strCategory = m_strCategory {
+                if let name = objUser["name"] as? String {
+                    title = name
+                } else {
+                    title = objUser.username
+                }
+                
+                m_aryPosts = WDTPost.sharedInstance().getPosts(user: objUser, category: strCategory)
+            } else if let objUser = m_objUser {
+                if let name = objUser["name"] as? String {
+                    title = name
+                } else {
+                    title = objUser.username
+                }
+                
+                m_aryPosts = WDTPost.sharedInstance().getPosts(user: objUser, category: nil)
+            } else if let strCategory = m_strCategory {
+                title = "#\(strCategory)"
+                m_aryPosts = WDTPost.sharedInstance().getPosts(user: nil, category: strCategory)
+                    .reduce([], { (acc, current) -> [PFObject] in
+                        if acc.contains( where: {
+                            if ($0["user"] as! PFUser).objectId == (current["user"] as! PFUser).objectId {
+                                return true
+                            } else {
+                                return false
+                            }
+                        })
+                        {
+                            return acc
                         } else {
-                            return false
+                            return acc + [current]
                         }
                     })
-                    {
-                        return acc
-                    } else {
-                        return acc + [current]
-                    }
-                })
-        } else if let objPost = m_objPost {
-            title = "Post"
-            m_aryPosts = [objPost]
+            } else if let objPost = m_objPost {
+                title = "Post"
+                m_aryPosts = [objPost]
+            }
         }
     }
 
