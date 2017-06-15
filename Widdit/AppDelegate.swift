@@ -69,6 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         installation?.setDeviceTokenFrom(deviceToken)
         installation?.channels = ["global"]
         installation?.saveEventually()
+        
+        NotificationCenter.default.post(name: NSNotification.Name.UIDocumentStateChanged, object: nil)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

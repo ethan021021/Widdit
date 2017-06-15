@@ -8,6 +8,7 @@
 
 import UIKit
 import PermissionScope
+import Parse
 
 
 class WDTPermissionViewController: UIViewController {
@@ -46,6 +47,8 @@ class WDTPermissionViewController: UIViewController {
 
 final class WDTNotificationsPermissionViewController: WDTPermissionViewController {
 
+    var timer: Timer!
+    
     fileprivate func showNextViewController() {
         if let nextVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTLocationPermissionViewController.self)) {
             self.navigationController?.pushViewController(nextVC, animated: true)
@@ -61,12 +64,20 @@ final class WDTNotificationsPermissionViewController: WDTPermissionViewControlle
     }
     
     override func setupView() {
+        NotificationCenter.default.addObserver(self, selector: #selector(WDTLocationPermissionViewController.permissionAllowed), name: NSNotification.Name.UIDocumentStateChanged, object: nil)
+        
+        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(WDTNotificationsPermissionViewController.checkPermissionStatus), userInfo: nil, repeats: true)
+        
         permissionTitleLabel.text = "Notificaitons permission"
         permissionDescriptionLabel.text = Constants.Arrays.TUTORIAL_TITLES[4]
     }
     
     override func checkPermissionStatus() {
         if permissionScope.statusNotifications() == .authorized {
+            timer.invalidate()
+            
+            UIApplication.shared.registerForRemoteNotifications()
+            
             permissionAllowed()
         }
     }
@@ -101,6 +112,13 @@ final class WDTLocationPermissionViewController: WDTPermissionViewController {
     override func checkPermissionStatus() {
         if permissionScope.statusLocationInUse() == .authorized {
             permissionAllowed()
+            PFGeoPoint.geoPointForCurrentLocation(inBackground: { (geoPoint, error) in
+                if error == nil {
+                    let user = PFUser.current()
+                    user!["geoPoint"] = geoPoint
+                    user!.saveInBackground()
+                }
+            })
         }
     }
     
