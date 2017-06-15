@@ -162,7 +162,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="21c-5f-ejc" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="120" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="120" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -197,7 +197,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tpt-uf-raG" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="189" width="280" height="38.5"/>
+                                                <rect key="frame" x="20" y="189.5" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -232,7 +232,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lw-gA-DDh" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="277.5" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="279" width="280" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="9dT-ha-cWy"/>
                                                 </constraints>
@@ -650,7 +650,7 @@
                                                 <rect key="frame" x="45" y="273" width="230" height="249"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIy-zU-ESL">
-                                                        <rect key="frame" x="99.5" y="5" width="31" height="14"/>
+                                                        <rect key="frame" x="100" y="5" width="31" height="14"/>
                                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                         <color key="textColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -1023,7 +1023,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ms3-ec-nQH" customClass="FlexButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="142" width="98" height="30"/>
+                                                <rect key="frame" x="-7.5" y="127" width="113" height="45"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="My Downs" image="profile_icon_down">
                                                     <color key="titleColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="deviceRGB"/>
@@ -1548,7 +1548,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAS-Ns-XtB">
-                                <rect key="frame" x="110.5" y="170" width="99" height="17"/>
+                                <rect key="frame" x="111" y="170" width="99" height="17"/>
                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1683,7 +1683,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpV-h0-1vF">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="534"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="536"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_avatar_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="GZX-xO-P0h">
                                                 <rect key="frame" x="116" y="16" width="88" height="88"/>
@@ -1698,13 +1698,13 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add avatar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9V-zK-f9z">
-                                                <rect key="frame" x="129.5" y="124" width="61" height="14"/>
+                                                <rect key="frame" x="130" y="124" width="61" height="14"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                 <color key="textColor" red="0.38039215686274508" green="0.81176470588235294" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XbT-Ke-cJs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="168" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="168" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1733,7 +1733,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Hh-jK-YmO" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="237" width="280" height="38.5"/>
+                                                <rect key="frame" x="20" y="237.5" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1762,7 +1762,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ejU-K8-EBs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="305.5" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="307" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1791,7 +1791,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aIY-Cm-tfQ" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="374.5" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="376.5" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1820,7 +1820,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0A-rc-Ruf" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="464" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="466" width="280" height="50"/>
                                                 <color key="backgroundColor" red="0.46666666666666667" green="0.8784313725490196" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="zci-h1-wRX"/>
@@ -1957,6 +1957,68 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Hw-NQ-7th" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3547.5" y="249.29577464788733"/>
+        </scene>
+        <!--Notifications Permission View Controller-->
+        <scene sceneID="JiX-pc-wXR">
+            <objects>
+                <viewController storyboardIdentifier="WDTNotificationsPermissionViewController" id="b4k-DT-9o7" customClass="WDTNotificationsPermissionViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Z9H-og-YVJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="iT8-uD-ywD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SHE-MV-6NK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrW-nL-uBr">
+                                <rect key="frame" x="20" y="229.5" width="280" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSN-TA-vLo">
+                                <rect key="frame" x="20" y="273.5" width="280" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xz6-g9-DIU">
+                                <rect key="frame" x="116" y="314.5" width="36" height="30"/>
+                                <state key="normal" title="Deny"/>
+                                <connections>
+                                    <action selector="onClickCancelButton" destination="b4k-DT-9o7" eventType="touchUpInside" id="GBb-Re-yNo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Egk-MP-pfr">
+                                <rect key="frame" x="168" y="314.5" width="37" height="30"/>
+                                <state key="normal" title="Allow"/>
+                                <connections>
+                                    <action selector="onClickAllowButton" destination="b4k-DT-9o7" eventType="touchUpInside" id="VYp-qu-73F"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="MrW-nL-uBr" secondAttribute="trailing" constant="20" id="2BK-zH-B5s"/>
+                            <constraint firstItem="tSN-TA-vLo" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="leading" constant="20" id="4ev-KZ-nuh"/>
+                            <constraint firstItem="Xz6-g9-DIU" firstAttribute="trailing" secondItem="SHE-MV-6NK" secondAttribute="centerX" constant="-8" id="6Gc-gu-gdo"/>
+                            <constraint firstItem="tSN-TA-vLo" firstAttribute="centerY" secondItem="SHE-MV-6NK" secondAttribute="centerY" id="IMi-UK-jW6"/>
+                            <constraint firstItem="tSN-TA-vLo" firstAttribute="top" secondItem="MrW-nL-uBr" secondAttribute="bottom" constant="20" id="M16-D3-XdH"/>
+                            <constraint firstItem="Egk-MP-pfr" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="centerX" constant="8" id="csv-JR-09j"/>
+                            <constraint firstItem="MrW-nL-uBr" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="leading" constant="20" id="g9w-Qy-flH"/>
+                            <constraint firstItem="Egk-MP-pfr" firstAttribute="top" secondItem="tSN-TA-vLo" secondAttribute="bottom" constant="20" id="he1-xV-t5Y"/>
+                            <constraint firstAttribute="trailing" secondItem="tSN-TA-vLo" secondAttribute="trailing" constant="20" id="mqA-rj-Hqe"/>
+                            <constraint firstItem="Xz6-g9-DIU" firstAttribute="top" secondItem="tSN-TA-vLo" secondAttribute="bottom" constant="20" id="vGk-Bj-9Gc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="permissionDescriptionLabel" destination="tSN-TA-vLo" id="PnV-AN-KcJ"/>
+                        <outlet property="permissionTitleLabel" destination="MrW-nL-uBr" id="8W1-jK-dzs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SnJ-uE-gQx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4538" y="249"/>
         </scene>
         <!--Tutorial View Controller-->
         <scene sceneID="6Db-JW-3Pb">
@@ -2134,6 +2196,68 @@ asd</string>
             </objects>
             <point key="canvasLocation" x="-474" y="713"/>
         </scene>
+        <!--Location Permission View Controller-->
+        <scene sceneID="Oo9-zd-VKg">
+            <objects>
+                <viewController storyboardIdentifier="WDTLocationPermissionViewController" id="YkO-ED-rvt" customClass="WDTLocationPermissionViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="f0T-pn-Kcp"/>
+                        <viewControllerLayoutGuide type="bottom" id="VAT-8b-AS1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zkq-Fp-hvN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywX-C1-x7A">
+                                <rect key="frame" x="20" y="229.5" width="280" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pp2-6d-eoM">
+                                <rect key="frame" x="20" y="273.5" width="280" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22F-i5-1Kh">
+                                <rect key="frame" x="116" y="314.5" width="36" height="30"/>
+                                <state key="normal" title="Deny"/>
+                                <connections>
+                                    <action selector="onClickCancelButton" destination="YkO-ED-rvt" eventType="touchUpInside" id="qaW-5w-vzY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SPa-aj-R7R">
+                                <rect key="frame" x="168" y="314.5" width="37" height="30"/>
+                                <state key="normal" title="Allow"/>
+                                <connections>
+                                    <action selector="onClickAllowButton" destination="YkO-ED-rvt" eventType="touchUpInside" id="fac-Zb-gl5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SPa-aj-R7R" firstAttribute="leading" secondItem="zkq-Fp-hvN" secondAttribute="centerX" constant="8" id="A2a-zc-ayv"/>
+                            <constraint firstItem="SPa-aj-R7R" firstAttribute="top" secondItem="Pp2-6d-eoM" secondAttribute="bottom" constant="20" id="E6j-1z-5Zr"/>
+                            <constraint firstItem="ywX-C1-x7A" firstAttribute="leading" secondItem="zkq-Fp-hvN" secondAttribute="leading" constant="20" id="Faa-y7-5Q0"/>
+                            <constraint firstItem="Pp2-6d-eoM" firstAttribute="top" secondItem="ywX-C1-x7A" secondAttribute="bottom" constant="20" id="PVm-LL-Mbf"/>
+                            <constraint firstItem="22F-i5-1Kh" firstAttribute="top" secondItem="Pp2-6d-eoM" secondAttribute="bottom" constant="20" id="XuJ-7F-E31"/>
+                            <constraint firstAttribute="trailing" secondItem="Pp2-6d-eoM" secondAttribute="trailing" constant="20" id="jPM-se-90j"/>
+                            <constraint firstItem="Pp2-6d-eoM" firstAttribute="centerY" secondItem="zkq-Fp-hvN" secondAttribute="centerY" id="lfx-AA-znV"/>
+                            <constraint firstItem="22F-i5-1Kh" firstAttribute="trailing" secondItem="zkq-Fp-hvN" secondAttribute="centerX" constant="-8" id="ubp-3a-1d6"/>
+                            <constraint firstAttribute="trailing" secondItem="ywX-C1-x7A" secondAttribute="trailing" constant="20" id="wgs-Nv-eFw"/>
+                            <constraint firstItem="Pp2-6d-eoM" firstAttribute="leading" secondItem="zkq-Fp-hvN" secondAttribute="leading" constant="20" id="whg-uM-LbK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="permissionDescriptionLabel" destination="Pp2-6d-eoM" id="Ps0-9P-0Im"/>
+                        <outlet property="permissionTitleLabel" destination="ywX-C1-x7A" id="CmV-S7-7ge"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v6R-6V-OYM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5394" y="250"/>
+        </scene>
     </scenes>
     <resources>
         <image name="common_avatar_placeholder" width="65" height="61"/>
@@ -2150,7 +2274,7 @@ asd</string>
         <image name="post_image_slider" width="186" height="186"/>
         <image name="profile_button_follow" width="45" height="45"/>
         <image name="profile_button_settings" width="45" height="45"/>
-        <image name="profile_icon_down" width="30" height="30"/>
+        <image name="profile_icon_down" width="45" height="45"/>
         <image name="tutorial_image_1" width="400" height="270"/>
     </resources>
 </document>
