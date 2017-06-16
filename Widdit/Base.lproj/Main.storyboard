@@ -162,7 +162,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="21c-5f-ejc" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="120" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="120" width="280" height="39"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -197,7 +197,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tpt-uf-raG" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="189.5" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="189" width="280" height="40"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -650,7 +650,7 @@
                                                 <rect key="frame" x="45" y="273" width="230" height="249"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIy-zU-ESL">
-                                                        <rect key="frame" x="100" y="5" width="31" height="14"/>
+                                                        <rect key="frame" x="99.5" y="5" width="31" height="14"/>
                                                         <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="12"/>
                                                         <color key="textColor" red="0.60784313725490191" green="0.60784313725490191" blue="0.60784313725490191" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -1416,73 +1416,81 @@
         <!--Title-->
         <scene sceneID="CHJ-lO-kGw">
             <objects>
-                <tableViewController storyboardIdentifier="WDTFeedViewController" id="Z69-9J-ZkF" customClass="WDTFeedViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="WDTFeedViewController" automaticallyAdjustsScrollViewInsets="NO" definesPresentationContext="YES" id="Z69-9J-ZkF" customClass="WDTFeedViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="ogD-aV-4Sz">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95686274509803915" green="0.96078431372549022" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="0cJ-3s-HhH">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qBI-3d-bZx" customClass="JHShadowView" customModule="Widdit" customModuleProvider="target">
-                                    <rect key="frame" x="12" y="12" width="296" height="62"/>
+                        <color key="sectionIndexBackgroundColor" red="0.90980392156862744" green="0.92549019607843142" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CategoriesCell" rowHeight="80" id="C0s-Tg-dn3">
+                                <rect key="frame" x="0.0" y="28" width="320" height="80"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C0s-Tg-dn3" id="YEM-7L-Uu7">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                                    <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Er5-ys-Zmy" customClass="JHView" customModule="Widdit" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="296" height="62"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qBI-3d-bZx" customClass="JHShadowView" customModule="Widdit" customModuleProvider="target">
+                                            <rect key="frame" x="12" y="12" width="296" height="62"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj3-NM-jM2">
-                                                    <rect key="frame" x="12" y="23" width="81" height="17"/>
-                                                    <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
-                                                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_image_next" translatesAutoresizingMaskIntoConstraints="NO" id="Nyh-Nv-Tdr">
-                                                    <rect key="frame" x="278" y="25" width="6" height="12"/>
-                                                </imageView>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Er5-ys-Zmy" customClass="JHView" customModule="Widdit" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="296" height="62"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vj3-NM-jM2">
+                                                            <rect key="frame" x="12" y="23" width="81" height="17"/>
+                                                            <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
+                                                            <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_image_next" translatesAutoresizingMaskIntoConstraints="NO" id="Nyh-Nv-Tdr">
+                                                            <rect key="frame" x="278" y="25" width="6" height="12"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="Nyh-Nv-Tdr" secondAttribute="trailing" constant="12" id="951-28-IsU"/>
+                                                        <constraint firstItem="Vj3-NM-jM2" firstAttribute="leading" secondItem="Er5-ys-Zmy" secondAttribute="leading" constant="12" id="c1d-LY-gr6"/>
+                                                        <constraint firstItem="Vj3-NM-jM2" firstAttribute="centerY" secondItem="Er5-ys-Zmy" secondAttribute="centerY" id="n5Z-MG-B63"/>
+                                                        <constraint firstItem="Nyh-Nv-Tdr" firstAttribute="centerY" secondItem="Vj3-NM-jM2" secondAttribute="centerY" id="w5R-cI-7Vq"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                                            <real key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="HN3-6G-UL7" appends="YES" id="zKv-fA-pFV"/>
+                                                    </connections>
+                                                </view>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="Nyh-Nv-Tdr" secondAttribute="trailing" constant="12" id="951-28-IsU"/>
-                                                <constraint firstItem="Vj3-NM-jM2" firstAttribute="leading" secondItem="Er5-ys-Zmy" secondAttribute="leading" constant="12" id="c1d-LY-gr6"/>
-                                                <constraint firstItem="Vj3-NM-jM2" firstAttribute="centerY" secondItem="Er5-ys-Zmy" secondAttribute="centerY" id="n5Z-MG-B63"/>
-                                                <constraint firstItem="Nyh-Nv-Tdr" firstAttribute="centerY" secondItem="Vj3-NM-jM2" secondAttribute="centerY" id="w5R-cI-7Vq"/>
+                                                <constraint firstItem="Er5-ys-Zmy" firstAttribute="height" secondItem="qBI-3d-bZx" secondAttribute="height" id="Rs8-3y-94E"/>
+                                                <constraint firstItem="Er5-ys-Zmy" firstAttribute="centerY" secondItem="qBI-3d-bZx" secondAttribute="centerY" id="Rx3-Yo-Aw7"/>
+                                                <constraint firstItem="Er5-ys-Zmy" firstAttribute="centerX" secondItem="qBI-3d-bZx" secondAttribute="centerX" id="gAq-lx-0J7"/>
+                                                <constraint firstItem="Er5-ys-Zmy" firstAttribute="width" secondItem="qBI-3d-bZx" secondAttribute="width" id="qur-b3-54m"/>
+                                                <constraint firstAttribute="height" constant="62" id="ytc-aU-nCA"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                                <userDefinedRuntimeAttribute type="number" keyPath="ShadowRadius">
                                                     <real key="value" value="4"/>
                                                 </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="ShadowOpacity">
+                                                    <real key="value" value="0.14999999999999999"/>
+                                                </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <outletCollection property="gestureRecognizers" destination="HN3-6G-UL7" appends="YES" id="zKv-fA-pFV"/>
-                                            </connections>
                                         </view>
                                     </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="Er5-ys-Zmy" firstAttribute="height" secondItem="qBI-3d-bZx" secondAttribute="height" id="Rs8-3y-94E"/>
-                                        <constraint firstItem="Er5-ys-Zmy" firstAttribute="centerY" secondItem="qBI-3d-bZx" secondAttribute="centerY" id="Rx3-Yo-Aw7"/>
-                                        <constraint firstItem="Er5-ys-Zmy" firstAttribute="centerX" secondItem="qBI-3d-bZx" secondAttribute="centerX" id="gAq-lx-0J7"/>
-                                        <constraint firstItem="Er5-ys-Zmy" firstAttribute="width" secondItem="qBI-3d-bZx" secondAttribute="width" id="qur-b3-54m"/>
+                                        <constraint firstAttribute="trailing" secondItem="qBI-3d-bZx" secondAttribute="trailing" constant="12" id="2FU-EQ-pGT"/>
+                                        <constraint firstItem="qBI-3d-bZx" firstAttribute="leading" secondItem="YEM-7L-Uu7" secondAttribute="leading" constant="12" id="OKp-rN-SbX"/>
+                                        <constraint firstItem="qBI-3d-bZx" firstAttribute="top" secondItem="YEM-7L-Uu7" secondAttribute="top" constant="12" id="Rej-M9-ApE"/>
+                                        <constraint firstAttribute="bottom" secondItem="qBI-3d-bZx" secondAttribute="bottom" constant="6" id="hOB-J4-pEX"/>
                                     </constraints>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="ShadowRadius">
-                                            <real key="value" value="4"/>
-                                        </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="ShadowOpacity">
-                                            <real key="value" value="0.14999999999999999"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                </view>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="qBI-3d-bZx" firstAttribute="leading" secondItem="0cJ-3s-HhH" secondAttribute="leading" constant="12" id="5jL-FU-uyk"/>
-                                <constraint firstItem="qBI-3d-bZx" firstAttribute="centerX" secondItem="0cJ-3s-HhH" secondAttribute="centerX" id="CG8-Mr-Ohe"/>
-                                <constraint firstItem="qBI-3d-bZx" firstAttribute="top" secondItem="0cJ-3s-HhH" secondAttribute="top" constant="12" id="dw4-np-366"/>
-                                <constraint firstAttribute="bottom" secondItem="qBI-3d-bZx" secondAttribute="bottom" constant="6" id="eGe-Nw-V6h"/>
-                            </constraints>
-                        </view>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Z69-9J-ZkF" id="tgY-CL-Id5"/>
                             <outlet property="delegate" destination="Z69-9J-ZkF" id="EMj-9b-slT"/>
@@ -1548,7 +1556,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAS-Ns-XtB">
-                                <rect key="frame" x="111" y="170" width="99" height="17"/>
+                                <rect key="frame" x="110.5" y="170" width="99" height="17"/>
                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1683,7 +1691,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpV-h0-1vF">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="536"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="535.5"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_avatar_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="GZX-xO-P0h">
                                                 <rect key="frame" x="116" y="16" width="88" height="88"/>
@@ -1704,7 +1712,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XbT-Ke-cJs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="168" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="168" width="280" height="39"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1733,7 +1741,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Hh-jK-YmO" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="237.5" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="237" width="280" height="40"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1762,7 +1770,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ejU-K8-EBs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="307" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="307" width="280" height="39"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1791,7 +1799,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aIY-Cm-tfQ" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="376.5" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="376" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1820,7 +1828,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0A-rc-Ruf" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="466" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="465.5" width="280" height="50"/>
                                                 <color key="backgroundColor" red="0.46666666666666667" green="0.8784313725490196" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="zci-h1-wRX"/>
