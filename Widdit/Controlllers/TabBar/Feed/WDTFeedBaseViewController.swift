@@ -20,6 +20,10 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     var m_searchedPosts = [PFObject]()
     
     fileprivate let searchController = UISearchController(searchResultsController: nil)
+    
+    var shouldShowCategories: Bool {
+        return false
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,11 +69,14 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        if shouldShowCategories {
+            return 2
+        }
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        if shouldShowCategories && section == 0 {
             return 1
         } else {
             if searchController.isActive && (searchController.searchBar.text ?? "").characters.count > 2 {
@@ -80,7 +87,7 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if shouldShowCategories && indexPath.section == 0 {
             return tableView.dequeueReusableCell(withIdentifier: "CategoriesCell", for: indexPath)
         } else {
             let cell = Bundle.main.loadNibNamed(String(describing: WDTFeedTableViewCell.self), owner: nil, options: nil)?.first as! WDTFeedTableViewCell
