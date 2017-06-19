@@ -19,6 +19,8 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
     
     var morePostsButtonColorSaved: [Int: UIColor] = [:]
     
+    var postsByUser: [String: Int] = [:]
+    
     fileprivate var filteredByCategory = false
     
     override func viewDidLoad() {
@@ -68,6 +70,7 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
                         {
                             return acc
                         } else {
+                            postsByUser[(current["user"] as! PFUser).objectId!] = 1
                             return acc + [current]
                         }
                     })
@@ -78,22 +81,43 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
             }
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    
+    fileprivate func loadMorePosts(user: PFUser?) {
+        if let key = user?.objectId {
+            if let currentCount = postsByUser[key] {
+                let userPosts = Array(WDTPost.sharedInstance()
+                    .getPosts(user: user, category: m_strCategory)
+                    .prefix(currentCount + 3))
+                    .filter { post in
+                    return !self.m_aryPosts.contains(post)
+                }
+                
+                if let lastUserPost = m_aryPosts
+                    .reversed()
+                    .first(where: { ($0["user"] as? PFUser)?.objectId == user?.objectId }) {
+                    
+                    if let index = m_aryPosts.index(of: lastUserPost) {
+                        m_aryPosts.insert(contentsOf: userPosts, at: index + 1)
+                        
+                        postsByUser[key] = (postsByUser[key] ?? 0) + userPosts.count
+                        
+                        
+                        self.tableView.insertRows(at: (index + 1...index + userPosts.count)
+                            .map { IndexPath(row: $0,
+                                             section: self.shouldShowCategories ? 1 : 0) },
+                                                  with: UITableViewRowAnimation.bottom)
+                        self.tableView.reloadRows(at: (index - currentCount + 1...index)
+                            .map { IndexPath(row: $0,
+                                            section: self.shouldShowCategories ? 1 : 0) },
+                                                  with: .none)
+                    }
+                    
+                }
+            }
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     @IBAction override func onClickBtnAddPost(_ sender: Any) {
         if let strCategory = m_strCategory {
@@ -107,18 +131,32 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
     }
     
     override func onClickBtnMorePosts(_ objUser: PFUser?) {
-        let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
-        morePostsVC.m_objUser = objUser
-        morePostsVC.m_strCategory = m_strCategory
-        navigationController?.pushViewController(morePostsVC, animated: true)
+//        let morePostsVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
+//        morePostsVC.m_objUser = objUser
+//        morePostsVC.m_strCategory = m_strCategory
+//        navigationController?.pushViewController(morePostsVC, animated: true)
+        loadMorePosts(user: objUser)
     }
     
     override func setMorePosts(_ index: Int) -> Int {
         if let category = m_strCategory, filteredByCategory {
             let post = m_aryPosts[index]
+            
+            let lastSamePost = m_aryPosts
+                .reversed()
+                .first(where: { ($0["user"] as? PFUser)?.objectId == (post["user"] as? PFUser)?.objectId })
+            
+            // неправильная логика
+            guard post.objectId == lastSamePost?.objectId else {
+                return 1
+            }
+            
+            let userPostCount = (self.postsByUser[(post["user"] as! PFUser).objectId!] ?? 1) - 1
+            
             let allCategoryPostsCount = WDTPost.sharedInstance().m_aryAllPosts.filter { tmpPost -> Bool in
                 if let categories = tmpPost["hashtags"] as? [String] {
-                    return categories.contains(category)
+                    return categories.contains(category) &&
+                        (post["user"] as! PFUser).objectId == (tmpPost["user"] as! PFUser).objectId
                 }
                 return false
             }.count
@@ -127,11 +165,11 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
                 morePostsButtonColorSaved[index] = UIColor.WDTPrimaryColor()
                 return WDTPost.sharedInstance().m_aryAllPosts.filter { (tmpPost) -> Bool in
                     return (post["user"] as! PFUser).objectId == (tmpPost["user"] as! PFUser).objectId
-                }.count
+                }.count - userPostCount
             }
             
             morePostsButtonColorSaved[index] = UIColor.purple
-            return allCategoryPostsCount
+            return allCategoryPostsCount - userPostCount
         } else {
             morePostsButtonColorSaved[index] = UIColor.WDTPrimaryColor()
             return super.setMorePosts(index)
