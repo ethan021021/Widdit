@@ -19,6 +19,8 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
     
     var morePostsButtonColorSaved: [Int: UIColor] = [:]
     
+    fileprivate var filteredByCategory = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -69,6 +71,7 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
                             return acc + [current]
                         }
                     })
+                filteredByCategory = true
             } else if let objPost = m_objPost {
                 title = "Post"
                 m_aryPosts = [objPost]
@@ -111,7 +114,7 @@ class WDTMorePostsViewController: WDTFeedBaseViewController {
     }
     
     override func setMorePosts(_ index: Int) -> Int {
-        if let category = m_strCategory {
+        if let category = m_strCategory, filteredByCategory {
             let post = m_aryPosts[index]
             let allCategoryPostsCount = WDTPost.sharedInstance().m_aryAllPosts.filter { tmpPost -> Bool in
                 if let categories = tmpPost["hashtags"] as? [String] {
