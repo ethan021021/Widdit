@@ -24,6 +24,8 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
     var shouldShowCategories: Bool {
         return false
     }
+    
+    var shouldShowSearch: Bool = true
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +42,9 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
         searchController.searchBar.backgroundImage = UIImage()
         
         definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
+        if shouldShowSearch {
+            tableView.tableHeaderView = searchController.searchBar
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -153,7 +157,9 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
                                 return post.objectId == objPost.objectId
                             }) {
                                 self.m_aryPosts.remove(at: index)
-                                self.tableView.deleteRows(at: [IndexPath.init(row: index, section: 1)], with: .automatic)
+                                self.tableView.deleteRows(at: [IndexPath.init(row: index,
+                                                                              section: self.shouldShowCategories ? 1 : 0)],
+                                                          with: .automatic)
                             }
                         }
                     })
@@ -213,7 +219,9 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
             return post.objectId == objPost.objectId
         })
         
-        tableView.reloadRows(at: [IndexPath(row: index!, section: 1)], with: .automatic)
+        tableView.reloadRows(at: [IndexPath(row: index!,
+                                            section: shouldShowCategories ? 1 : 0)],
+                             with: .automatic)
     }
 
     func onClickBtnReply(_ objPost: PFObject) {
@@ -233,7 +241,9 @@ class WDTFeedBaseViewController: UITableViewController, CPImageControllerProtoco
                         return post.objectId == objPost.objectId
                     }) {
                         self.m_aryPosts.remove(at: index)
-                        self.tableView.deleteRows(at: [IndexPath.init(row: index, section: 1)], with: .automatic)
+                        self.tableView.deleteRows(at: [IndexPath.init(row: index,
+                                                                      section: self.shouldShowCategories ? 1 : 0)],
+                                                  with: .automatic)
                     }
                 }
             })
