@@ -114,9 +114,11 @@ class WDTProfileHeaderViewController: UIViewController {
                     self?.m_btnFollow.tintColor = UIColor.WDTPrimaryColor()
                     self?.m_btnFollow.setImage(UIImage(named: "profile_button_following"), for: .normal)
                     self?.m_btnFollow.setTitle("Following", for: .normal)
+                    self?.m_btnFollow.setTitleColor(UIColor.WDTPrimaryColor(), for: .normal)
                 } else {
                     self?.m_btnFollow.setImage(UIImage(named: "profile_button_follow"), for: .normal)
                     self?.m_btnFollow.setTitle("Follow", for: .normal)
+                    self?.m_btnFollow.setTitleColor(UIColor(r: 189, g: 189, b: 189, a: 1), for: .normal)
                 }
                 self?.m_btnFollow.isHidden = false
             })
