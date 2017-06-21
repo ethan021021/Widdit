@@ -192,7 +192,7 @@ class WDTActivity {
                     }.filter { activity in
                         if activity.repliedBack {
                             return true
-                        } else if activity.to == self.currentUser {
+                        } else if activity.to.objectId == self.currentUser.objectId {
                             return true
                         }
                         return false
@@ -306,7 +306,7 @@ final class Activity {
         if reply.isDown {
             self.isDowned = reply.isDown
         }
-        if self.repliedBack != true && self.to == PFUser.current() {
+        if self.repliedBack != true && self.to.objectId == PFUser.current()?.objectId {
             self.repliedBack = true
         }
         

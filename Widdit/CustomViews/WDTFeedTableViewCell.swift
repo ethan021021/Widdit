@@ -279,7 +279,7 @@ class WDTFeedTableViewCell: UITableViewCell {
             }
         }
         
-//        updateDowns()
+        updateDowns()
 //        updateReplies()
     }
     
@@ -383,40 +383,40 @@ class WDTFeedTableViewCell: UITableViewCell {
     
     
     
-//    fileprivate func updateDowns() {
-//        if let objPost = m_objPost {
-//            let objUser = objPost["user"] as! PFUser
-//
-//            var totalDowns = 0
-//
-//            var pendingRequests = 2
-//            func incrementTotalDowns(by count: Int) {
-//                totalDowns += count
-//
-//                pendingRequests -= 1
-//
-//                if pendingRequests <= 0 {
+    fileprivate func updateDowns() {
+        if let objPost = m_objPost {
+            let objUser = objPost["user"] as! PFUser
+
+            var totalDowns = 0
+
+            var pendingRequests = 2
+            func incrementTotalDowns(by count: Int) {
+                totalDowns += count
+
+                pendingRequests -= 1
+
+                if pendingRequests <= 0 {
 //                    self.m_lblPostDowns.text = "\(totalDowns)"
-//                }
-//            }
-//
-//            let activity = WDTActivity()
-//            activity.post = objPost
-//            activity.requestDowns(completion: { succeeded in
-//                let downs = activity.downs.count
-//                incrementTotalDowns(by: downs)
-//            })
-//            activity.requestMyDowns(completion: { [weak self] succeeded in
-//                let downs = activity.myDowns.count
-//                
-//                if self?.isCurrentUserCell == false {
-//                    self?.m_bottomRightButton.isSelected = downs > 0
-//                }
-//                
-//                incrementTotalDowns(by: downs)
-//            })
-//        }
-//    }
+                }
+            }
+
+            let activity = WDTActivity()
+            activity.post = objPost
+            activity.requestDowns(completion: { succeeded in
+                let downs = activity.downs.count
+                incrementTotalDowns(by: downs)
+            })
+            activity.requestMyDowns(completion: { [weak self] succeeded in
+                let downs = activity.myDowns.count
+                
+                if self?.isCurrentUserCell == false {
+                    self?.m_bottomRightButton.isSelected = downs > 0
+                }
+                
+                incrementTotalDowns(by: downs)
+            })
+        }
+    }
 //
 //    fileprivate func updateReplies() {
 //        if let objPost = m_objPost {
