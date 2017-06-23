@@ -18,100 +18,71 @@ class WDTPermissionViewController: UIViewController {
     
     var permissionScope = PermissionScope()
     
+    var timer: Timer!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
-        
         permissionScope.viewControllerForAlerts = self
-        
-        permissionScope.onAuthChange = { (finished, results) in
-            self.checkPermissionStatus()
-        }
     }
     
     
-    @IBAction func onClickCancelButton() {}
-    
-    @IBAction func onClickAllowButton() {}
-    
-    
-    func setupView() {}
-    
-    func checkPermissionStatus() {}
-    
-    func permissionAllowed() {}
-
-}
-
-final class WDTNotificationsPermissionViewController: WDTPermissionViewController {
-
-    var timer: Timer!
-    
-    fileprivate func showNextViewController() {
-        if let nextVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTLocationPermissionViewController.self)) {
-            self.navigationController?.pushViewController(nextVC, animated: true)
-        }
+    @IBAction func onClickCancelButton() {
+        startApplication()
     }
     
-    override func onClickCancelButton() {
-        showNextViewController()
-    }
-    
-    override func onClickAllowButton() {
+    @IBAction func onClickAllowButton() {
+        setupNotificationPermissionTimer()
         permissionScope.requestNotifications()
     }
     
-    override func setupView() {
-        NotificationCenter.default.addObserver(self, selector: #selector(WDTLocationPermissionViewController.permissionAllowed), name: NSNotification.Name.UIDocumentStateChanged, object: nil)
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(WDTNotificationsPermissionViewController.checkPermissionStatus), userInfo: nil, repeats: true)
-        
-        permissionTitleLabel.text = "Notificaitons permission"
-        permissionDescriptionLabel.text = Constants.Arrays.TUTORIAL_TITLES[4]
-    }
     
-    override func checkPermissionStatus() {
-        if permissionScope.statusNotifications() == .authorized {
-            timer.invalidate()
-            
-            UIApplication.shared.registerForRemoteNotifications()
-            
-            permissionAllowed()
-        }
-    }
+    func notificationPermissionAllowed() {}
     
-    override func permissionAllowed() {
-        showNextViewController()
-    }
-
-}
-
-
-final class WDTLocationPermissionViewController: WDTPermissionViewController {
-
+    
+    
     fileprivate func startApplication() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.startApplication(true)
     }
     
-    override func onClickCancelButton() {
-        startApplication()
+    
+    func setupNotificationPermissionTimer() {
+        NotificationCenter.default.addObserver(self, selector: #selector(WDTPermissionViewController.notificationPermissionAllowed), name: NSNotification.Name.UIDocumentStateChanged, object: nil)
+        
+        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(WDTPermissionViewController.checkNotificationPermissionStatus), userInfo: nil, repeats: true)
+        
+        permissionScope.onAuthChange = { (finished, results) in
+            self.checkNotificationPermissionStatus()
+        }
     }
     
-    override func onClickAllowButton() {
-        permissionScope.requestLocationInUse()
+    func checkNotificationPermissionStatus() {
+        if permissionScope.statusNotifications() == .authorized {
+            timer.invalidate()
+            
+            UIApplication.shared.registerForRemoteNotifications()
+            
+            permissionScope.onAuthChange = { (finished, results) in
+                self.checkLocationPermissionStatus()
+            }
+            
+            permissionScope.requestLocationInUse()
+        } else if permissionScope.statusLocationInUse() == .disabled || permissionScope.statusLocationInUse() == .unauthorized {
+            timer.invalidate()
+            
+            permissionScope.onAuthChange = { (finished, results) in
+                self.checkLocationPermissionStatus()
+            }
+            
+            permissionScope.requestLocationInUse()
+        }
     }
     
-    override func setupView() {
-        permissionTitleLabel.text = "Location while use permission"
-        permissionDescriptionLabel.text = Constants.Arrays.TUTORIAL_TITLES[5]
-    }
-    
-    override func checkPermissionStatus() {
+    func checkLocationPermissionStatus() {
         if permissionScope.statusLocationInUse() == .authorized {
-            permissionAllowed()
+            startApplication()
             PFGeoPoint.geoPointForCurrentLocation(inBackground: { (geoPoint, error) in
                 if error == nil {
                     let user = PFUser.current()
@@ -119,11 +90,9 @@ final class WDTLocationPermissionViewController: WDTPermissionViewController {
                     user!.saveInBackground()
                 }
             })
+        } else if permissionScope.statusLocationInUse() == .disabled || permissionScope.statusLocationInUse() == .unauthorized {
+            startApplication()
         }
     }
-    
-    override func permissionAllowed() {
-        startApplication()
-    }
-    
+
 }

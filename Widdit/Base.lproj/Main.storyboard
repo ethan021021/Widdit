@@ -162,7 +162,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="21c-5f-ejc" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="120" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="120" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -197,7 +197,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tpt-uf-raG" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="189" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="189.5" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -232,7 +232,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lw-gA-DDh" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="278.5" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="279" width="280" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="9dT-ha-cWy"/>
                                                 </constraints>
@@ -1691,7 +1691,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpV-h0-1vF">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="535"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="536.5"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="common_avatar_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="GZX-xO-P0h">
                                                 <rect key="frame" x="116" y="16" width="88" height="88"/>
@@ -1712,7 +1712,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XbT-Ke-cJs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="168" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="168" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1741,7 +1741,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Hh-jK-YmO" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="237" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="237.5" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1770,7 +1770,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ejU-K8-EBs" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="306.5" width="280" height="39"/>
+                                                <rect key="frame" x="20" y="307" width="280" height="39.5"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1799,7 +1799,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aIY-Cm-tfQ" customClass="SkyFloatingLabelTextField" customModule="SkyFloatingLabelTextField">
-                                                <rect key="frame" x="20" y="375.5" width="280" height="39.5"/>
+                                                <rect key="frame" x="20" y="376.5" width="280" height="40"/>
                                                 <color key="tintColor" red="0.57647058819999997" green="0.92941176469999998" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -1828,7 +1828,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0A-rc-Ruf" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
-                                                <rect key="frame" x="20" y="465" width="280" height="50"/>
+                                                <rect key="frame" x="20" y="466.5" width="280" height="50"/>
                                                 <color key="backgroundColor" red="0.46666666666666667" green="0.8784313725490196" blue="0.70196078431372544" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="zci-h1-wRX"/>
@@ -1966,10 +1966,10 @@
             </objects>
             <point key="canvasLocation" x="3547.5" y="249.29577464788733"/>
         </scene>
-        <!--Notifications Permission View Controller-->
+        <!--Permission View Controller-->
         <scene sceneID="JiX-pc-wXR">
             <objects>
-                <viewController storyboardIdentifier="WDTNotificationsPermissionViewController" id="b4k-DT-9o7" customClass="WDTNotificationsPermissionViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WDTPermissionViewController" id="b4k-DT-9o7" customClass="WDTPermissionViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Z9H-og-YVJ"/>
                         <viewControllerLayoutGuide type="bottom" id="iT8-uD-ywD"/>
@@ -1978,45 +1978,69 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrW-nL-uBr">
-                                <rect key="frame" x="20" y="229.5" width="280" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We need a few permissions to get started" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrW-nL-uBr">
+                                <rect key="frame" x="20" y="60" width="280" height="48"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <color key="textColor" red="0.26666666666666666" green="0.29019607843137252" blue="0.34901960784313724" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSN-TA-vLo">
-                                <rect key="frame" x="20" y="273.5" width="280" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will need your location and notification permissions to give you a better experience." textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSN-TA-vLo">
+                                <rect key="frame" x="20" y="118" width="280" height="50.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xz6-g9-DIU">
-                                <rect key="frame" x="116" y="314.5" width="36" height="30"/>
-                                <state key="normal" title="Deny"/>
+                                <rect key="frame" x="125.5" y="530" width="69" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="m8b-c8-2Jk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="No Thanks">
+                                    <color key="titleColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="deviceRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="onClickCancelButton" destination="b4k-DT-9o7" eventType="touchUpInside" id="GBb-Re-yNo"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Egk-MP-pfr">
-                                <rect key="frame" x="168" y="314.5" width="37" height="30"/>
-                                <state key="normal" title="Allow"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Egk-MP-pfr" customClass="JHButton" customModule="Widdit" customModuleProvider="target">
+                                <rect key="frame" x="30" y="460" width="260" height="50"/>
+                                <color key="backgroundColor" red="0.46666666670000001" green="0.87843137250000003" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="CYi-If-udj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="ALLOW ACCESS"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                        <real key="value" value="25"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="onClickAllowButton" destination="b4k-DT-9o7" eventType="touchUpInside" id="VYp-qu-73F"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="common_auth_permissions" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-Wt-T0k">
+                                <rect key="frame" x="30" y="188.5" width="260" height="251.5"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="MrW-nL-uBr" secondAttribute="trailing" constant="20" id="2BK-zH-B5s"/>
+                            <constraint firstItem="Qpe-Wt-T0k" firstAttribute="top" secondItem="tSN-TA-vLo" secondAttribute="bottom" constant="20" id="4Q5-6Y-Gti"/>
                             <constraint firstItem="tSN-TA-vLo" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="leading" constant="20" id="4ev-KZ-nuh"/>
-                            <constraint firstItem="Xz6-g9-DIU" firstAttribute="trailing" secondItem="SHE-MV-6NK" secondAttribute="centerX" constant="-8" id="6Gc-gu-gdo"/>
-                            <constraint firstItem="tSN-TA-vLo" firstAttribute="centerY" secondItem="SHE-MV-6NK" secondAttribute="centerY" id="IMi-UK-jW6"/>
-                            <constraint firstItem="tSN-TA-vLo" firstAttribute="top" secondItem="MrW-nL-uBr" secondAttribute="bottom" constant="20" id="M16-D3-XdH"/>
-                            <constraint firstItem="Egk-MP-pfr" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="centerX" constant="8" id="csv-JR-09j"/>
+                            <constraint firstItem="Xz6-g9-DIU" firstAttribute="centerX" secondItem="SHE-MV-6NK" secondAttribute="centerX" id="6Gc-gu-gdo"/>
+                            <constraint firstAttribute="trailing" secondItem="Egk-MP-pfr" secondAttribute="trailing" constant="30" id="Ep8-AG-V2s"/>
+                            <constraint firstItem="Xz6-g9-DIU" firstAttribute="top" secondItem="Egk-MP-pfr" secondAttribute="bottom" constant="20" id="JWn-iN-HTC"/>
+                            <constraint firstItem="iT8-uD-ywD" firstAttribute="top" secondItem="Xz6-g9-DIU" secondAttribute="bottom" constant="20" id="MDg-d2-ljg"/>
+                            <constraint firstItem="Egk-MP-pfr" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="leading" constant="30" id="QbL-fb-ZX2"/>
+                            <constraint firstItem="tSN-TA-vLo" firstAttribute="top" secondItem="MrW-nL-uBr" secondAttribute="bottom" constant="10" id="SxG-NS-22h"/>
+                            <constraint firstItem="Egk-MP-pfr" firstAttribute="top" secondItem="Qpe-Wt-T0k" secondAttribute="bottom" constant="20" id="atV-rL-Tg6"/>
                             <constraint firstItem="MrW-nL-uBr" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="leading" constant="20" id="g9w-Qy-flH"/>
-                            <constraint firstItem="Egk-MP-pfr" firstAttribute="top" secondItem="tSN-TA-vLo" secondAttribute="bottom" constant="20" id="he1-xV-t5Y"/>
                             <constraint firstAttribute="trailing" secondItem="tSN-TA-vLo" secondAttribute="trailing" constant="20" id="mqA-rj-Hqe"/>
-                            <constraint firstItem="Xz6-g9-DIU" firstAttribute="top" secondItem="tSN-TA-vLo" secondAttribute="bottom" constant="20" id="vGk-Bj-9Gc"/>
+                            <constraint firstItem="MrW-nL-uBr" firstAttribute="top" secondItem="Z9H-og-YVJ" secondAttribute="bottom" constant="40" id="pdj-TE-p6z"/>
+                            <constraint firstItem="Qpe-Wt-T0k" firstAttribute="leading" secondItem="SHE-MV-6NK" secondAttribute="leading" constant="30" id="vw3-06-Ynl"/>
+                            <constraint firstAttribute="trailing" secondItem="Qpe-Wt-T0k" secondAttribute="trailing" constant="30" id="zeG-mO-1ej"/>
                         </constraints>
                     </view>
                     <connections>
@@ -2204,70 +2228,9 @@ asd</string>
             </objects>
             <point key="canvasLocation" x="-474" y="713"/>
         </scene>
-        <!--Location Permission View Controller-->
-        <scene sceneID="Oo9-zd-VKg">
-            <objects>
-                <viewController storyboardIdentifier="WDTLocationPermissionViewController" id="YkO-ED-rvt" customClass="WDTLocationPermissionViewController" customModule="Widdit" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="f0T-pn-Kcp"/>
-                        <viewControllerLayoutGuide type="bottom" id="VAT-8b-AS1"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="zkq-Fp-hvN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywX-C1-x7A">
-                                <rect key="frame" x="20" y="229.5" width="280" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pp2-6d-eoM">
-                                <rect key="frame" x="20" y="273.5" width="280" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22F-i5-1Kh">
-                                <rect key="frame" x="116" y="314.5" width="36" height="30"/>
-                                <state key="normal" title="Deny"/>
-                                <connections>
-                                    <action selector="onClickCancelButton" destination="YkO-ED-rvt" eventType="touchUpInside" id="qaW-5w-vzY"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SPa-aj-R7R">
-                                <rect key="frame" x="168" y="314.5" width="37" height="30"/>
-                                <state key="normal" title="Allow"/>
-                                <connections>
-                                    <action selector="onClickAllowButton" destination="YkO-ED-rvt" eventType="touchUpInside" id="fac-Zb-gl5"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="SPa-aj-R7R" firstAttribute="leading" secondItem="zkq-Fp-hvN" secondAttribute="centerX" constant="8" id="A2a-zc-ayv"/>
-                            <constraint firstItem="SPa-aj-R7R" firstAttribute="top" secondItem="Pp2-6d-eoM" secondAttribute="bottom" constant="20" id="E6j-1z-5Zr"/>
-                            <constraint firstItem="ywX-C1-x7A" firstAttribute="leading" secondItem="zkq-Fp-hvN" secondAttribute="leading" constant="20" id="Faa-y7-5Q0"/>
-                            <constraint firstItem="Pp2-6d-eoM" firstAttribute="top" secondItem="ywX-C1-x7A" secondAttribute="bottom" constant="20" id="PVm-LL-Mbf"/>
-                            <constraint firstItem="22F-i5-1Kh" firstAttribute="top" secondItem="Pp2-6d-eoM" secondAttribute="bottom" constant="20" id="XuJ-7F-E31"/>
-                            <constraint firstAttribute="trailing" secondItem="Pp2-6d-eoM" secondAttribute="trailing" constant="20" id="jPM-se-90j"/>
-                            <constraint firstItem="Pp2-6d-eoM" firstAttribute="centerY" secondItem="zkq-Fp-hvN" secondAttribute="centerY" id="lfx-AA-znV"/>
-                            <constraint firstItem="22F-i5-1Kh" firstAttribute="trailing" secondItem="zkq-Fp-hvN" secondAttribute="centerX" constant="-8" id="ubp-3a-1d6"/>
-                            <constraint firstAttribute="trailing" secondItem="ywX-C1-x7A" secondAttribute="trailing" constant="20" id="wgs-Nv-eFw"/>
-                            <constraint firstItem="Pp2-6d-eoM" firstAttribute="leading" secondItem="zkq-Fp-hvN" secondAttribute="leading" constant="20" id="whg-uM-LbK"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="permissionDescriptionLabel" destination="Pp2-6d-eoM" id="Ps0-9P-0Im"/>
-                        <outlet property="permissionTitleLabel" destination="ywX-C1-x7A" id="CmV-S7-7ge"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="v6R-6V-OYM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5394" y="250"/>
-        </scene>
     </scenes>
     <resources>
+        <image name="common_auth_permissions" width="305" height="193"/>
         <image name="common_avatar_placeholder" width="65" height="61"/>
         <image name="common_button_back" width="11" height="18"/>
         <image name="common_button_close" width="16" height="16"/>

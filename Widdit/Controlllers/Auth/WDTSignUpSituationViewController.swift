@@ -38,7 +38,7 @@ class WDTSignUpSituationViewController: UIViewController, UITableViewDelegate, U
     */
 
     @IBAction func onClickBtnSkip(_ sender: Any) {
-        if let nextVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTNotificationsPermissionViewController.self)) {
+        if let nextVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTPermissionViewController.self)) {
             self.navigationController?.pushViewController(nextVC, animated: true)
         }
     }
