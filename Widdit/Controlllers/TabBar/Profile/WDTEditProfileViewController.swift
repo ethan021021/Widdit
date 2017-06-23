@@ -15,11 +15,18 @@ class WDTEditProfileViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 48.0
         
         m_btnLinkFacebook.isSelected = PFFacebookUtils.isLinked(with: PFUser.current()!)
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spacer.width = -16
+        let backButton = WDTBackButton(frame: CGRect(x: 0, y: 0, width: 50, height: 36))
+        backButton.backColor = UIColor(r: 96, g: 219, b: 221, a: 1)
+        let backButtonItem = UIBarButtonItem(customView: backButton)
+        navigationItem.setLeftBarButtonItems([spacer, backButtonItem], animated: false)
+        backButton.onTouchUp = {
+            self.onClickButtonBack(backButton)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,6 +42,8 @@ class WDTEditProfileViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 1 || section == 3 {
             return 3
+        } else if section == 0 {
+            return 2
         } else {
             return 1
         }
@@ -42,10 +51,29 @@ class WDTEditProfileViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = Bundle.main.loadNibNamed(String(describing: WDTAvatarTableViewCell.self), owner: nil, options: [:])?.first as! WDTAvatarTableViewCell
-            cell.setView(self)
-            
-            return cell
+            if indexPath.row == 0 {
+                let cell = Bundle.main.loadNibNamed(String(describing: WDTAvatarTableViewCell.self), owner: nil, options: [:])?.first as! WDTAvatarTableViewCell
+                cell.setView(self)
+                
+                return cell
+            } else {
+                let cell = Bundle.main.loadNibNamed(String(describing: WDTCoverTableViewCell.self), owner: nil, options: [:])?.first as! WDTCoverTableViewCell
+                
+                cell.m_parentVC = self
+                
+                cell.deleteButton.isHidden = true
+                
+                if let objUser = PFUser.current() {
+                    if let cover = objUser["cover"] as? PFFile {
+                        if let path = cover.url {
+                            cell.coverView.kf.setImage(with: URL(string: path))
+                            cell.deleteButton.isHidden = false
+                        }
+                    }
+                }
+                
+                return cell
+            }
         } else  if indexPath.section == 1 {
             let cell = Bundle.main.loadNibNamed(String(describing: WDTProfileTextTableViewCell.self), owner: nil, options: [:])?.first as! WDTProfileTextTableViewCell
             
@@ -78,12 +106,18 @@ class WDTEditProfileViewController: UITableViewController {
     
     // MARK: - UITableViewDelegate
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0.1
-        } else if section == 1 || section == 3 {
-            return 40
+        if section == 2 {
+            return 2
         } else {
-            return 20
+            return 52
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 114
+        } else {
+            return 64
         }
     }
     
@@ -92,23 +126,28 @@ class WDTEditProfileViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 1 || section == 3 {
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 40))
-            
-            let lblTitle = UILabel()
-            lblTitle.text = section == 1 ? "PERSONAL DATA" : "SITUATION"
-            lblTitle.font = UIFont.WDTRegular(size: 12)
-            lblTitle.textColor = UIColor.WDTTealColor()
-            headerView.addSubview(lblTitle)
-            lblTitle.snp.makeConstraints { (make) in
-                make.centerY.equalToSuperview()
-                make.leading.equalTo(12)
-            }
-            
-            return headerView
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 52))
+        
+        let lblTitle = UILabel()
+        lblTitle.font = UIFont.WDTMedium(size: 14)
+        lblTitle.textColor = UIColor(r: 71, g: 211, b: 214, a: 1)
+        headerView.addSubview(lblTitle)
+        lblTitle.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().offset(-10)
+            make.leading.equalTo(12)
+        }
+        
+        if section == 0 {
+            lblTitle.text = "PHOTOS"
+        } else if section == 1{
+            lblTitle.text = "PERSONAL DATA"
+        } else if section == 3 {
+            lblTitle.text = "SITUATION"
         } else {
             return nil
         }
+        
+        return headerView
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -118,7 +157,7 @@ class WDTEditProfileViewController: UITableViewController {
         }
     }
 
-    @IBAction func onClickBtnDone(_ sender: Any) {
+    @IBAction func onClickButtonBack(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     

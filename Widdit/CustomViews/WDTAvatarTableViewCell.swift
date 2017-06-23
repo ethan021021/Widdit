@@ -24,6 +24,15 @@ class WDTAvatarTableViewCell: UITableViewCell {
             imgAvatar.addGestureRecognizer(tap)
         }
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        for tag in 100...102 {
+            let imgAvatar = viewWithTag(tag) as! UIImageView
+            imgAvatar.layer.cornerRadius = imgAvatar.frame.width * 0.5
+        }
+    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -37,7 +46,9 @@ class WDTAvatarTableViewCell: UITableViewCell {
         if let objUser = PFUser.current() {
             if let ava = objUser["ava"] as? PFFile {
                 let imgAvatar = viewWithTag(100) as! UIImageView
-                imgAvatar.kf.setImage(with: URL(string: ava.url!))
+                if let url = ava.url {
+                    imgAvatar.kf.setImage(with: URL(string: url))
+                }
                 
                 let btnDelete = viewWithTag(200) as! UIButton
                 btnDelete.isHidden = false
@@ -45,7 +56,9 @@ class WDTAvatarTableViewCell: UITableViewCell {
             
             if let ava = objUser["ava2"] as? PFFile {
                 let imgAvatar = viewWithTag(101) as! UIImageView
-                imgAvatar.kf.setImage(with: URL(string: ava.url!))
+                if let url = ava.url {
+                    imgAvatar.kf.setImage(with: URL(string: url))
+                }
                 
                 let btnDelete = viewWithTag(201) as! UIButton
                 btnDelete.isHidden = false
@@ -53,7 +66,9 @@ class WDTAvatarTableViewCell: UITableViewCell {
             
             if let ava = objUser["ava3"] as? PFFile {
                 let imgAvatar = viewWithTag(102) as! UIImageView
-                imgAvatar.kf.setImage(with: URL(string: ava.url!))
+                if let url = ava.url {
+                    imgAvatar.kf.setImage(with: URL(string: url))
+                }
                 
                 let btnDelete = viewWithTag(202) as! UIButton
                 btnDelete.isHidden = false
@@ -68,7 +83,7 @@ class WDTAvatarTableViewCell: UITableViewCell {
         let index = btnDelete.tag - 200
         
         let imgAvatar = viewWithTag(100 + index) as! UIImageView
-        imgAvatar.image = UIImage(named: "post_image_placeholder")
+        imgAvatar.image = UIImage(named: "profile_icon_avatar_placeholder")
         
         if let objUser = PFUser.current() {
             objUser.remove(forKey: "ava" + (index == 0 ? "" : String(index + 1)))
@@ -85,7 +100,7 @@ class WDTAvatarTableViewCell: UITableViewCell {
                 imgAvatar.image = image
                 let index = imgAvatar.tag - 100
                 if let objUser = PFUser.current() {
-                    let dataAvatar = UIImageJPEGRepresentation(image.resizeImage(CGFloat(Constants.Integer.AVATAR_SIZE)), 0.5)
+                    let dataAvatar = UIImageJPEGRepresentation(image.resizeImage(CGFloat(Constants.Integer.AVATAR_SIZE)), 0.9)
                     let fileAvatar = PFFile(name: "ava.jpg", data: dataAvatar!)
                     objUser["ava" + (index == 0 ? "" : String(index + 1))] = fileAvatar
                     objUser.saveInBackground()
@@ -99,6 +114,24 @@ class WDTAvatarTableViewCell: UITableViewCell {
         }
         
         m_parentVC?.present(cameraVC, animated: true, completion: nil)
+    }
+    
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        if let context = UIGraphicsGetCurrentContext() {
+            context.setStrokeColor(UIColor(r: 249, g: 249, b: 249, a: 1).cgColor)
+            context.setLineWidth(2)
+            
+            context.move(to: CGPoint(x: 0, y: 1))
+            context.addLine(to: CGPoint(x: rect.width, y: 1))
+            context.strokePath()
+            
+            context.move(to: CGPoint(x: 0, y: rect.height - 1))
+            context.addLine(to: CGPoint(x: rect.width, y: rect.height - 1))
+            context.strokePath()
+        }
     }
     
 }

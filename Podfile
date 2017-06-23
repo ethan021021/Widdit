@@ -30,4 +30,8 @@ target 'Widdit' do
     pod 'CircleSlider', '~> 0.5'
     pod 'SJSegmentedScrollView', '~> 1.3'
     pod 'JSQMessagesViewController', '~> 7.3'
+    pod 'DKImagePickerController'
+    pod 'NYTPhotoViewer', '~> 1.1.0'
+    pod 'RelativeFormatter'
+    pod 'DZNEmptyDataSet'
 end

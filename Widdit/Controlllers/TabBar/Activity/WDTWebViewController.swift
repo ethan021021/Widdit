@@ -44,6 +44,14 @@ class WDTWebViewController: UIViewController, UIWebViewDelegate {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func onClickBtnShare() {
+        if let url = m_strUrl {
+            let controller = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            controller.excludedActivityTypes = [UIActivityType.saveToCameraRoll, .openInIBooks, .print]
+            present(controller, animated: true, completion: nil)
+        }
+    }
+    
     // MARK: - UIWebViewDelegate
     func webViewDidFinishLoad(_ webView: UIWebView) {
         hideHud()

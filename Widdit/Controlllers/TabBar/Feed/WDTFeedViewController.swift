@@ -13,6 +13,12 @@ class WDTFeedViewController: WDTFeedBaseViewController {
     
     var m_ctlRefresh = UIRefreshControl()
     
+    
+    override var shouldShowCategories: Bool {
+        return true
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,9 +49,6 @@ class WDTFeedViewController: WDTFeedBaseViewController {
                 self.hideHud()
             } else {
                 WDTPost.sharedInstance().requestPosts(geoPoint: geoPoint, world: true, completion: { (aryPosts) in
-                    self.hideHud()
-                    self.m_ctlRefresh.endRefreshing()
-                    
                     self.m_aryPosts = aryPosts.reduce([], { (acc, current) -> [PFObject] in
                         if acc.contains( where: {
                             if ($0["user"] as! PFUser).objectId == (current["user"] as! PFUser).objectId {
@@ -61,7 +64,25 @@ class WDTFeedViewController: WDTFeedBaseViewController {
                         }
                     })
                     
-                    self.tableView.reloadData()
+                    FollowersManager.getFollowing(completion: { [weak self] follows in
+                        self?.m_aryPosts.sort(by: { (post1, post2) -> Bool in
+                            if let post1User = post1["user"] as? PFUser, let post2User = post2["user"] as? PFUser {
+                                if let post1UserId = post1User.objectId, let post2UserId = post2User.objectId {
+                                    return follows.contains(where: { follow -> Bool in
+                                        return follow.user.objectId == post1UserId
+                                    }) && !follows.contains(where: { follow -> Bool in
+                                        return follow.user.objectId == post2UserId
+                                    })
+                                }
+                            }
+                            return false
+                        })
+                        
+                        self?.hideHud()
+                        self?.m_ctlRefresh.endRefreshing()
+                        
+                        self?.tableView.reloadData()
+                    })
                 })
             }
         }

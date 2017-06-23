@@ -13,23 +13,46 @@ class WDTCategoriesViewController: UIViewController, UITableViewDelegate, UITabl
 
     @IBOutlet weak var m_tblCategories: UITableView!
     
+    fileprivate let refreshControl: UIRefreshControl = UIRefreshControl()
+    
     var m_aryCategories = [PFObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        refreshControl.addTarget(self,
+                                 action: #selector(WDTCategoriesViewController.refresh),
+                                 for: .valueChanged)
+        m_tblCategories.addSubview(refreshControl)
 
-        // Do any additional setup after loading the view.
-        showHud()
-        WDTPost.sharedInstance().requestCategories { (categories) in
-            self.hideHud()
-            self.m_aryCategories = categories
-            self.m_tblCategories.reloadData()
-        }
+
+        requestCategories()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func requestCategories(completion: (() -> Void)? = nil) {
+        showHud()
+        WDTPost.sharedInstance().requestCategories { [weak self] (categories) in
+            completion?()
+            self?.hideHud()
+            self?.m_aryCategories = categories
+            self?.m_tblCategories.reloadData()
+        }
+    }
+    
+    
+    func refresh() {
+        refreshControl.beginRefreshing()
+        requestCategories { [weak self] in
+            if self?.refreshControl.isRefreshing == true {
+                self?.refreshControl.endRefreshing()
+            }
+        }
     }
     
     /*
