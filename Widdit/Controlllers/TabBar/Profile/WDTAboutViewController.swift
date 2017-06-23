@@ -13,7 +13,7 @@ class WDTAboutViewController: UITableViewController {
 
     var m_objUser: PFUser?
     
-    let arySections = ["ABOUT", "SITUATION", "VERIFICATION", "FOllOWERS"]
+    let arySections = ["ABOUT", "SITUATION", "VERIFICATION", "FOLLOWERS"]
     
     let aryAccounts = [
         [

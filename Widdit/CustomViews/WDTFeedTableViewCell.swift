@@ -48,7 +48,7 @@ class WDTFeedTableViewCell: UITableViewCell {
     
     @IBOutlet weak var m_lblPostDowns: UILabel!
     @IBOutlet weak var m_lblPostReplies: UILabel!
-    @IBOutlet weak var m_viewPostInfo: UIView!
+//    @IBOutlet weak var m_viewPostInfo: UIView!
     
     
     var m_objPost: PFObject?
@@ -235,7 +235,7 @@ class WDTFeedTableViewCell: UITableViewCell {
         
         // Replies and downs
         
-        m_viewPostInfo.isHidden = !isCurrentUserCell
+//        m_viewPostInfo.isHidden = !isCurrentUserCell
         
 
         // Bottom buttons
@@ -280,7 +280,7 @@ class WDTFeedTableViewCell: UITableViewCell {
         }
         
         updateDowns()
-        updateReplies()
+//        updateReplies()
     }
     
     func setMorePosts(_ postCount: Int) {
@@ -290,11 +290,7 @@ class WDTFeedTableViewCell: UITableViewCell {
             m_constraintBtnMorePostsHeight.constant = 30
         } else {
             m_btnMorePost.isHidden = true
-            if isCurrentUserCell {
-                m_constraintBtnMorePostsHeight.constant = 30
-            } else {
-                m_constraintBtnMorePostsHeight.constant = 0
-            }
+            m_constraintBtnMorePostsHeight.constant = 0
         }
     }
     
@@ -400,7 +396,7 @@ class WDTFeedTableViewCell: UITableViewCell {
                 pendingRequests -= 1
 
                 if pendingRequests <= 0 {
-                    self.m_lblPostDowns.text = "\(totalDowns)"
+//                    self.m_lblPostDowns.text = "\(totalDowns)"
                 }
             }
 
@@ -421,21 +417,21 @@ class WDTFeedTableViewCell: UITableViewCell {
             })
         }
     }
-
-    fileprivate func updateReplies() {
-        if let objPost = m_objPost {
-            let objUser = objPost["user"] as! PFUser
-            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
-                if let down = down {
-                    let relation = down.relation(forKey: "replies")
-                    let query = relation.query()
-                    query.countObjectsInBackground(block: { (replies, error) in
-                        self.m_lblPostReplies.text = "\(replies)"
-                    })
-                }
-            }
-        }
-    }
+//
+//    fileprivate func updateReplies() {
+//        if let objPost = m_objPost {
+//            let objUser = objPost["user"] as! PFUser
+//            WDTActivity.isDownAndReverseDown(user: objUser, post: objPost) { down in
+//                if let down = down {
+//                    let relation = down.relation(forKey: "replies")
+//                    let query = relation.query()
+//                    query.countObjectsInBackground(block: { (replies, error) in
+//                        self.m_lblPostReplies.text = "\(replies)"
+//                    })
+//                }
+//            }
+//        }
+//    }
     
 //    fileprivate func updateMyReplies() {
 //        if let objPost = m_objPost {

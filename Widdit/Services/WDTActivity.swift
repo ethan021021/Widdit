@@ -81,7 +81,8 @@ class WDTActivity {
                                         lastMessageDate: Date(),
                                         lastMessageRead: false,
                                         lastMessageUser: PFUser.current()!,
-                                        isDowned: false)
+                                        isDowned: false,
+                                        repliedBack: false)
                 
                 activity.object.saveInBackground(block: { (success, error) in
                     completion(activity.object)
@@ -175,7 +176,7 @@ class WDTActivity {
         
         let activitiesFromMeQuery = PFQuery(className: "Activity")
         activitiesFromMeQuery.whereKey("to", equalTo: currentUser)
-        
+                
         let activitiesQuery = PFQuery.orQuery(withSubqueries: [activitiesToMeQuery, activitiesFromMeQuery])
         activitiesQuery.includeKey("post")
         activitiesQuery.includeKey("by")
@@ -185,9 +186,17 @@ class WDTActivity {
         activitiesQuery.findObjectsInBackground(block: { (chats, error) in
             if let chats = chats {
                 
-                self.chats = chats.flatMap { chat in
-                    return Activity(pfObject: chat)
-                }
+                self.chats = chats
+                    .flatMap { chat in
+                        return Activity(pfObject: chat)
+                    }.filter { activity in
+                        if activity.repliedBack {
+                            return true
+                        } else if activity.to.objectId == self.currentUser.objectId {
+                            return true
+                        }
+                        return false
+                    }
                 
                 completion(true)
             } else {
@@ -209,7 +218,8 @@ final class Activity {
     var lastMessageRead: Bool
     var lastMessageUser: PFUser?
     var isDowned: Bool
-//    var replies: [PFObject]
+    var repliedBack: Bool
+    
     
     fileprivate var pfObject: PFObject
     
@@ -227,6 +237,7 @@ final class Activity {
             let lastMessageRead = pfObject["lastMessageRead"] as? Bool ?? true
             let lastMessageUser = pfObject["lastMessageUser"] as? PFUser
             let isDowned = pfObject["isDowned"] as? Bool ?? false
+            let repliedBack = pfObject["repliedBack"] as? Bool ?? false
             
             self.by = by
             self.to = to
@@ -237,6 +248,7 @@ final class Activity {
             self.lastMessageRead = lastMessageRead
             self.lastMessageUser = lastMessageUser
             self.isDowned = isDowned
+            self.repliedBack = repliedBack
             
         } else {
             return nil
@@ -251,7 +263,8 @@ final class Activity {
          lastMessageDate: Date,
          lastMessageRead: Bool,
          lastMessageUser: PFUser,
-         isDowned: Bool) {
+         isDowned: Bool,
+         repliedBack: Bool) {
         pfObject = PFObject(className: "Activity")
         
         self.by = by
@@ -263,6 +276,7 @@ final class Activity {
         self.lastMessageRead = lastMessageRead
         self.lastMessageUser = lastMessageUser
         self.isDowned = isDowned
+        self.repliedBack = repliedBack
     }
     
     var object: PFObject {
@@ -275,6 +289,7 @@ final class Activity {
         pfObject["lastMessageRead"] = self.lastMessageRead
         pfObject["lastMessageUser"] = self.lastMessageUser ?? NSNull()
         pfObject["isDowned"] = self.isDowned
+        pfObject["repliedBack"] = self.repliedBack
         
         return pfObject
     }
@@ -290,6 +305,9 @@ final class Activity {
         self.lastMessageUser = PFUser.current()
         if reply.isDown {
             self.isDowned = reply.isDown
+        }
+        if self.repliedBack != true && self.to.objectId == PFUser.current()?.objectId {
+            self.repliedBack = true
         }
         
         self.object.saveInBackground { (_, _) in

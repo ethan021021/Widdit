@@ -173,7 +173,7 @@ extension WDTActivitiesViewController: DZNEmptyDataSetSource {
         }
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = .center
-        return NSAttributedString(string: "No activities", attributes: [
+        return NSAttributedString(string: "No activity yet", attributes: [
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: UIFont.WDTRegular(size: 12),
             NSParagraphStyleAttributeName: paragraph
@@ -185,6 +185,13 @@ extension WDTActivitiesViewController: DZNEmptyDataSetSource {
             return nil
         }
         return UIImage(named: "common_reload")!
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        if isFirstLoad {
+            return nil
+        }
+        return UIImage(named: "tabbar_icon_empty_activity")
     }
 
 }

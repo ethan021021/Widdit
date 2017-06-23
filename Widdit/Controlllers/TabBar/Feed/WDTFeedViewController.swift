@@ -13,6 +13,12 @@ class WDTFeedViewController: WDTFeedBaseViewController {
     
     var m_ctlRefresh = UIRefreshControl()
     
+    
+    override var shouldShowCategories: Bool {
+        return true
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

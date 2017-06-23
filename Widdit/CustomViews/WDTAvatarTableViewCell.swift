@@ -46,7 +46,9 @@ class WDTAvatarTableViewCell: UITableViewCell {
         if let objUser = PFUser.current() {
             if let ava = objUser["ava"] as? PFFile {
                 let imgAvatar = viewWithTag(100) as! UIImageView
-                imgAvatar.kf.setImage(with: URL(string: ava.url!))
+                if let url = ava.url {
+                    imgAvatar.kf.setImage(with: URL(string: url))
+                }
                 
                 let btnDelete = viewWithTag(200) as! UIButton
                 btnDelete.isHidden = false
@@ -54,7 +56,9 @@ class WDTAvatarTableViewCell: UITableViewCell {
             
             if let ava = objUser["ava2"] as? PFFile {
                 let imgAvatar = viewWithTag(101) as! UIImageView
-                imgAvatar.kf.setImage(with: URL(string: ava.url!))
+                if let url = ava.url {
+                    imgAvatar.kf.setImage(with: URL(string: url))
+                }
                 
                 let btnDelete = viewWithTag(201) as! UIButton
                 btnDelete.isHidden = false
@@ -62,7 +66,9 @@ class WDTAvatarTableViewCell: UITableViewCell {
             
             if let ava = objUser["ava3"] as? PFFile {
                 let imgAvatar = viewWithTag(102) as! UIImageView
-                imgAvatar.kf.setImage(with: URL(string: ava.url!))
+                if let url = ava.url {
+                    imgAvatar.kf.setImage(with: URL(string: url))
+                }
                 
                 let btnDelete = viewWithTag(202) as! UIButton
                 btnDelete.isHidden = false

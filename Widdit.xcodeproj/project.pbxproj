@@ -71,6 +71,7 @@
 		967471151EC5A3E700AFBDD0 /* WDTBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */; };
 		967471171EC5B8D900AFBDD0 /* WDTArcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471161EC5B8D900AFBDD0 /* WDTArcView.swift */; };
 		967471231EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967471221EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift */; };
+		969CD07D1EF2703E0025453C /* WDTPermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CD07C1EF2703E0025453C /* WDTPermissionViewController.swift */; };
 		96B2AEED1EBF8DAD00C02531 /* WDTPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */; };
 		96B3434A1EBAE90B0087CC8B /* LinkPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */; };
 		96E06E371EC0BAF000C7F83D /* FollowersManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E06E361EC0BAF000C7F83D /* FollowersManager.swift */; };
@@ -117,7 +118,7 @@
 		3F3CFDCA1E7CCD5E00AD8FF8 /* WDTProfileTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTProfileTextTableViewCell.swift; sourceTree = "<group>"; };
 		3F3CFDCB1E7CCD5E00AD8FF8 /* WDTProfileTextTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WDTProfileTextTableViewCell.xib; sourceTree = "<group>"; };
 		3F78B9B71E67ACED006DE822 /* Widdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Widdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F78B9BA1E67ACED006DE822 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3F78B9BA1E67ACED006DE822 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		3F78B9BF1E67ACED006DE822 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3F78B9C11E67ACED006DE822 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F78B9C41E67ACED006DE822 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -148,6 +149,7 @@
 		967471141EC5A3E700AFBDD0 /* WDTBackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTBackButton.swift; sourceTree = "<group>"; };
 		967471161EC5B8D900AFBDD0 /* WDTArcView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTArcView.swift; sourceTree = "<group>"; };
 		967471221EC79A0F00AFBDD0 /* WDTNewFollowersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTNewFollowersCell.swift; sourceTree = "<group>"; };
+		969CD07C1EF2703E0025453C /* WDTPermissionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPermissionViewController.swift; sourceTree = "<group>"; };
 		96B2AEEC1EBF8DAD00C02531 /* WDTPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WDTPhotoCell.swift; sourceTree = "<group>"; };
 		96B343491EBAE90A0087CC8B /* LinkPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkPreviewView.swift; sourceTree = "<group>"; };
 		96E06E361EC0BAF000C7F83D /* FollowersManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersManager.swift; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				3F3917B61E6CF04F007409D9 /* WDTLogInViewController.swift */,
 				3F3917B81E6D0DF6007409D9 /* WDTSignUpProfileViewController.swift */,
 				3F3A314B1E6D62E6009267A6 /* WDTSignUpSituationViewController.swift */,
+				969CD07C1EF2703E0025453C /* WDTPermissionViewController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 				3F3A31671E6EB036009267A6 /* WDTFeedTableViewCell.swift in Sources */,
 				3F3917B51E6CE8C4007409D9 /* WDTSignUpVerificationViewController.swift in Sources */,
 				3FEBD97D1E6F08CD00878392 /* JHShadowView.swift in Sources */,
+				969CD07D1EF2703E0025453C /* WDTPermissionViewController.swift in Sources */,
 				3FEBD97F1E70E04000878392 /* WDTAddPostViewController.swift in Sources */,
 				96E06E3E1EC0E40700C7F83D /* FlexButton.swift in Sources */,
 				3F3A31621E6E9AC2009267A6 /* WDTActivity.swift in Sources */,

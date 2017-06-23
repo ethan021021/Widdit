@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -102,6 +102,7 @@
                     <constraint firstItem="Dfx-wE-4sP" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="K99-uk-voo"/>
                     <constraint firstItem="rT5-0Q-s82" firstAttribute="top" secondItem="S55-Kg-8ds" secondAttribute="bottom" constant="5" id="Qr9-uH-Cg6"/>
                     <constraint firstItem="nbm-xf-xew" firstAttribute="top" secondItem="rT5-0Q-s82" secondAttribute="bottom" constant="2" id="THA-a9-TJi"/>
+                    <constraint firstItem="S55-Kg-8ds" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="UFw-LJ-uuH"/>
                     <constraint firstItem="rT5-0Q-s82" firstAttribute="leading" secondItem="Dfx-wE-4sP" secondAttribute="trailing" constant="15" id="UvL-xr-PO3"/>
                     <constraint firstItem="Xtj-wt-RPj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="VP6-Oe-Nif"/>
                     <constraint firstItem="Dwn-b6-rzS" firstAttribute="leading" secondItem="S55-Kg-8ds" secondAttribute="trailing" constant="8" id="YRw-IT-xyS"/>
@@ -112,6 +113,7 @@
                     <constraint firstItem="Dfx-wE-4sP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="25" id="jnn-2u-0hC"/>
                     <constraint firstItem="rT5-0Q-s82" firstAttribute="centerY" secondItem="Dfx-wE-4sP" secondAttribute="centerY" id="jtm-Zr-KdA"/>
                     <constraint firstItem="Yln-91-CQh" firstAttribute="centerY" secondItem="S55-Kg-8ds" secondAttribute="centerY" id="mRU-bA-hLo"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="nbm-xf-xew" secondAttribute="bottom" constant="8" id="nHj-v4-cCe"/>
                     <constraint firstItem="Xtj-wt-RPj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="tVQ-kK-WZR"/>
                     <constraint firstAttribute="trailing" secondItem="Yln-91-CQh" secondAttribute="trailing" constant="8" id="xl1-9h-CUY"/>
                 </constraints>

@@ -117,13 +117,15 @@ extension UIViewController {
     }
     
     func showHud() {
-        let viewActivity = DGActivityIndicatorView(type: .ballRotate, tintColor: UIColor.WDTTealColor(), size: 70)
-        viewActivity?.startAnimating()
-        
-        let hud = MBProgressHUD.showAdded(to: view, animated: true)
-        hud?.customView = viewActivity
-        hud?.mode = .customView
-        hud?.color = UIColor.clear
+        if MBProgressHUD.allHUDs(for: view).count == 0 {
+            let viewActivity = DGActivityIndicatorView(type: .ballRotate, tintColor: UIColor.WDTTealColor(), size: 70)
+            viewActivity?.startAnimating()
+            
+            let hud = MBProgressHUD.showAdded(to: view, animated: true)
+            hud?.customView = viewActivity
+            hud?.mode = .customView
+            hud?.color = UIColor.clear
+        }
     }
     
     func hideHudWithError(_ error: String) {

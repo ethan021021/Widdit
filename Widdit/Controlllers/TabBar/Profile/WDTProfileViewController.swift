@@ -87,6 +87,7 @@ class WDTProfileViewController: SJSegmentedViewController, SJSegmentedViewContro
     @IBAction func showMyDownsViewController() {
         let feedVC = storyboard?.instantiateViewController(withIdentifier: String(describing: WDTMorePostsViewController.self)) as! WDTMorePostsViewController
         feedVC.shouldRequestMyDowns = true
+        feedVC.shouldShowSearch = false
         feedVC.title = "My Downs"
         
         navigationController?.pushViewController(feedVC, animated: true)
